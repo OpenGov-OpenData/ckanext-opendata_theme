@@ -17,8 +17,8 @@
   color: white;
 }
 .btn-danger:hover {
-  border: 1px solid #6b1c0b;
-  box-shadow: none;
+    border: 1px solid #6b1c0b;
+    box-shadow: none;
 }
 .account-masthead .account ul li {
   border-left: none;
@@ -151,6 +151,9 @@
 .media-view:hover, .media-view.hovered {
   border: 1px solid #616365;
   box-shadow: 0 1px 3px 0 #616365;
+}
+.search-form, .dataset-item {
+  border-bottom: none;
 }
 .dataset-content>p.empty {
   display: none;
@@ -302,7 +305,7 @@ form.form-inline.form-select.lang-select {
   .col-sm-10, .col-md-10, .span10 {
     width: calc(83.33333333% - 20px);
   }
-  .col-sm-9, .col-md-9, .span9 {
+  .col-sm-9, .col-md-9, span9 {
     width: calc(75% - 20px);
   }
   .col-sm-8, .col-md-8, .span8 {
