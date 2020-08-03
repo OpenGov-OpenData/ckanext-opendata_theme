@@ -31,9 +31,9 @@ class CustomCSSController(admin.AdminController):
             return render('admin/custom_css.html', extra_vars={'data': dump_css})
 
         dump_css = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_css_dump"})
-        try:
+        if not dump_css:
             dump_css = self.save_dump_css({})
-        except ValueError:
+        else:
             dump_css = ast.literal_eval(dump_css)
         return render('admin/custom_css.html', extra_vars={'data': dump_css})
 
@@ -41,4 +41,4 @@ class CustomCSSController(admin.AdminController):
         custom_css, dump_css = custom_style_processor.get_custom_css(data)
         get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_raw_css": custom_css})
         get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_css_dump": dump_css})
-        return custom_css, dump_css
+        return dump_css

@@ -23,7 +23,7 @@
         {% for name, field in data.iteritems() %}
             <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
             <input type="text" class='opendata-theme-color-picker'
-                   name={{ name }} id={{ name }} value={{ field["value"] or field["default_value"]}}/>
+                   name="{{ name }}" id="{{ name }}" value="{{ field["value"]}}"/>
         {% endfor %}
 
     </div>

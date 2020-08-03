@@ -6,6 +6,8 @@ __all__ = ["custom_style_processor"]
 
 class AbstractParser:
 
+    color = None
+
     @abstractmethod
     def get_css_from_data(self, data):
         return
@@ -33,10 +35,11 @@ class FooterColorJob(AbstractParser):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'color': value.encode('utf-8')}
+        self.color = value
+        return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return 'custom-footer'
+        return '.site-footer'
 
     def get_form_name(self):
         return 'custom-css-footer-color'
@@ -53,10 +56,11 @@ class FooterBackGroundJob(AbstractParser):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'background': value.encode('utf-8')}
+        self.color = value
+        return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return 'custom-footer'
+        return '.site-footer'
 
     def get_form_name(self):
         return "custom-css-footer-background-color"
@@ -73,7 +77,8 @@ class NavigationHeaderBackGroundJob(AbstractParser):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'background': value.encode('utf-8')}
+        self.color = value
+        return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.masthead'
@@ -93,7 +98,8 @@ class NavigationHeaderColorJob(AbstractParser):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'color': value.encode('utf-8')}
+        self.color = value
+        return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.masthead'
@@ -113,7 +119,8 @@ class ModuleHeaderColorJob(AbstractParser):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'color': value.encode('utf-8')}
+        self.color = value
+        return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.module-heading'
@@ -133,7 +140,8 @@ class ModuleHeaderBackgroundColorJob(AbstractParser):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'background': value.encode('utf-8')}
+        self.color = value
+        return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.module-heading'
@@ -142,7 +150,7 @@ class ModuleHeaderBackgroundColorJob(AbstractParser):
         return "custom-css-module-header-background-color"
 
     def get_default_color(self):
-        return "#002664"
+        return "red"
 
     def get_title(self):
         return "Side Menu header background color"
@@ -153,7 +161,8 @@ class AccountHoverBackgroundColorJob(AbstractParser):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'background': value.encode('utf-8')}
+        self.color = value
+        return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.account-masthead .account ul li a:hover'
@@ -169,11 +178,13 @@ class AccountHoverBackgroundColorJob(AbstractParser):
 
 
 class HorizontalLineColorJob(AbstractParser):
+
     def get_css_from_data(self, data):
         value = data.get(self.get_form_name())
         if not value:
             return
-        return {'border-top': "2px solid {}".format(value.encode('utf-8'))}
+        self.color = value
+        return {'border-top': "2px solid {}".format(self.color.encode('utf-8'))}
 
     def get_class_name(self):
         return 'hr'
@@ -207,6 +218,7 @@ class CustomStyleProcessor:
 
     ]
 
+
     def get_custom_css(self, data):
         result_css = defaultdict(dict)
         dump_css = {}
@@ -215,9 +227,8 @@ class CustomStyleProcessor:
             if value is not None:
                 result_css[processor.get_class_name()].update(value)
             dump_css[processor.get_form_name()] = {
-                "value": value,
-                "title": processor.get_title(),
-                "default_value": processor.get_default_color()
+                "value": processor.color or processor.get_default_color(),
+                "title": processor.get_title()
             }
 
         result = "\n"
