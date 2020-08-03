@@ -1,0 +1,7 @@
+{% ckan_extends %}
+{% block styles %}
+  {{ super() }}
+    <style>
+        {{ g['ckanext.opendata_theme.custom_raw_css'] }}
+    </style>
+{% endblock %}

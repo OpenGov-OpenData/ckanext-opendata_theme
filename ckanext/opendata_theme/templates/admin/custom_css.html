@@ -1,0 +1,51 @@
+{# The site to config site styles, accessibile to sysadmins#}
+
+{% extends "admin/base.html" %}
+
+{% import 'macros/form.html' as form %}
+
+{% set action = h.url_for(
+  controller='ckanext.opendata_theme.controller:CustomCSSController',
+  action='custom_css')
+%}
+
+{% block styles %}
+  {{ super() }}
+{% resource 'opendata_theme_resource/main' %}
+{% endblock %}
+
+{% block primary_content_inner %}
+  {{ form.errors(error_summary) }}
+    <label> {{ data }}</label>
+  <form method="post" action="{{ action }}" id="custom-css-form">
+    <div class="control-group control-medium">
+
+        {% for name, field in data.iteritems() %}
+            <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
+            <input type="text" class='opendata-theme-color-picker'
+                   name={{ name }} id={{ name }} value={{ field["value"] or field["default_value"]}}/>
+        {% endfor %}
+
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" name="save" type="submit">{{ _('Update Config') }}</button>
+    </div>
+  </form>
+
+{% endblock %}
+
+{% block secondary_content %}
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+      <i class="fa fa-info-circle"></i>
+      {{ _('Config Options Guide') }}
+    </h2>
+    <div class="module-content">
+      {% block admin_form_help %}
+      {% trans %}
+      <p><strong>Custom CSS</strong> Here will be explanation of our plugin </p>
+      {% endtrans %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}
