@@ -1,16 +1,19 @@
-from collections import defaultdict
 from abc import ABCMeta, abstractmethod
+from collections import defaultdict
 
 __all__ = ["custom_style_processor"]
 
 
 class AbstractParser:
-
     color = None
 
     @abstractmethod
     def get_css_from_data(self, data):
         return
+
+    def parse_form_data(self, data):
+        value = data.get(self.get_form_name())
+        self.color = value
 
     @abstractmethod
     def get_class_name(self):
@@ -29,7 +32,7 @@ class AbstractParser:
         raise NotImplementedError
 
 
-class FooterColorJob(AbstractParser):
+class FooterTextColorJob(AbstractParser):
 
     def get_css_from_data(self, data):
         value = data.get(self.get_form_name())
@@ -69,7 +72,7 @@ class FooterBackGroundJob(AbstractParser):
         return "Footer Background Color"
 
     def get_default_color(self):
-        return "#002664"
+        return "#1f76d8"
 
 
 class NavigationHeaderBackGroundJob(AbstractParser):
@@ -174,7 +177,7 @@ class AccountHoverBackgroundColorJob(AbstractParser):
         return "Account name background color on hover"
 
     def get_default_color(self):
-        return "#002664"
+        return "#1f76d8"
 
 
 class HorizontalLineColorJob(AbstractParser):
@@ -199,11 +202,190 @@ class HorizontalLineColorJob(AbstractParser):
         return "#002664"
 
 
-class CustomStyleProcessor:
+class BasicPaginationLink(AbstractParser):
 
+    def get_class_name(self):
+        return (".pagination li.active a,"
+                ".pagination li.active span,"
+                ".pagination li.active a:hover,"
+                ".pagination li.active span:hover,"
+                ".pagination li.active a:focus,"
+                ".pagination li.active span:focus")
+
+
+class PaginationLinkTextColor(BasicPaginationLink):
+
+    def get_form_name(self):
+        return "custom-css-pagination-link-color"
+
+    def get_title(self):
+        return "Pagination Link Text Color"
+
+    def get_default_color(self):
+        return "#ffffff"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"color": self.color.encode('utf-8')}
+
+
+class PaginationLinkBackgroundColor(BasicPaginationLink):
+
+    def get_form_name(self):
+        return "custom-css-pagination-link-background-color"
+
+    def get_title(self):
+        return "Pagination Link Background Color"
+
+    def get_default_color(self):
+        return "#1f76d8"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"background": self.color.encode('utf-8')}
+
+
+class PaginationLinkBorderColor(BasicPaginationLink):
+
+    def get_form_name(self):
+        return "custom-css-pagination-link-border-color"
+
+    def get_title(self):
+        return "Pagination Link Text Color"
+
+    def get_default_color(self):
+        return "#1f76d8"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"border-color": self.color.encode('utf-8')}
+
+
+class AccountHeaderBackGroundColor(AbstractParser):
+
+    def get_class_name(self):
+        return ".account-masthead"
+
+    def get_form_name(self):
+        return "custom-css-account-header-background-color"
+
+    def get_title(self):
+        return "Account Header Background Color"
+
+    def get_default_color(self):
+        return "#044187"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"background": self.color.encode('utf-8')}
+
+
+class AccountHeaderColor(AbstractParser):
+
+    def get_class_name(self):
+        return ".account-masthead"
+
+    def get_form_name(self):
+        return "custom-css-account-header-color"
+
+    def get_title(self):
+        return "Account Header Text Color"
+
+    def get_default_color(self):
+        return "#ffffff"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"color": self.color.encode('utf-8')}
+
+
+class HoverOverNavigationHeaderButtonBackGroundColor(AbstractParser):
+
+    def get_class_name(self):
+        return (".masthead .navigation .nav-pills li a:hover,"
+                ".masthead .navigation .nav-pills li.active a")
+
+    def get_form_name(self):
+        return "custom-css-account-hover-navigation-button-background-color"
+
+    def get_title(self):
+        return "Hover Over navigation button"
+
+    def get_default_color(self):
+        return "#044187"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"background-color": self.color.encode('utf-8')}
+
+
+class Headers(AbstractParser):
+    def get_class_name(self):
+        return "h1, h2, h3, h4, h5, h6"
+
+    def get_form_name(self):
+        return "custom-css-headers"
+
+    def get_title(self):
+        return "Headers ??? "
+
+    def get_default_color(self):
+        return "#131517"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"color": self.color.encode('utf-8')}
+
+
+class Links(AbstractParser):
+    def get_class_name(self):
+        return "a"
+
+    def get_form_name(self):
+        return "custom-css-links"
+
+    def get_title(self):
+        return "Links"
+
+    def get_default_color(self):
+        return "#165cab"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"color": self.color.encode('utf-8')}
+
+
+class HoverLinks(AbstractParser):
+    def get_class_name(self):
+        return "a:hover"
+
+    def get_form_name(self):
+        return "custom-css-links-hover"
+
+    def get_title(self):
+        return "Hover Links"
+
+    def get_default_color(self):
+        return "#131517"
+
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {"color": self.color.encode('utf-8')}
+
+
+class CustomStyleProcessor:
     processors = [
         FooterBackGroundJob(),
-        FooterColorJob(),
+        FooterTextColorJob(),
 
         NavigationHeaderBackGroundJob(),
         NavigationHeaderColorJob(),
@@ -216,8 +398,22 @@ class CustomStyleProcessor:
         HorizontalLineColorJob(),
 
 
-    ]
+        PaginationLinkBackgroundColor(),
+        PaginationLinkTextColor(),
+        PaginationLinkBorderColor(),
 
+        HoverOverNavigationHeaderButtonBackGroundColor(),
+
+        AccountHeaderBackGroundColor(),
+        AccountHeaderColor(),
+
+        AccountHoverBackgroundColorJob(),
+
+        Headers(),
+        Links(),
+        HoverLinks()
+
+    ]
 
     def get_custom_css(self, data):
         result_css = defaultdict(dict)
@@ -243,3 +439,4 @@ class CustomStyleProcessor:
 
 
 custom_style_processor = CustomStyleProcessor()
+
