@@ -1,7 +1,9 @@
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 from collections import defaultdict
 
 __all__ = ["custom_style_processor"]
+
+from ckanext.opendata_theme.color_conrast import get_contrast
 
 
 class AbstractParser:
@@ -32,14 +34,12 @@ class AbstractParser:
         raise NotImplementedError
 
 
-class FooterTextColorJob(AbstractParser):
+class FooterTextColor(AbstractParser):
 
     def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'color': self.color.encode('utf-8')}
+        self.parse_form_data(data)
+        if self.color:
+            return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.site-footer'
@@ -54,13 +54,11 @@ class FooterTextColorJob(AbstractParser):
         return "#ffffff"
 
 
-class FooterBackGroundJob(AbstractParser):
+class FooterBackGround(AbstractParser):
     def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'background': self.color.encode('utf-8')}
+        self.parse_form_data(data)
+        if self.color:
+            return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.site-footer'
@@ -75,7 +73,7 @@ class FooterBackGroundJob(AbstractParser):
         return "#1f76d8"
 
 
-class NavigationHeaderBackGroundJob(AbstractParser):
+class NavigationHeaderBackGround(AbstractParser):
     def get_css_from_data(self, data):
         value = data.get(self.get_form_name())
         if not value:
@@ -96,13 +94,11 @@ class NavigationHeaderBackGroundJob(AbstractParser):
         return "#002664"
 
 
-class NavigationHeaderColorJob(AbstractParser):
+class NavigationHeaderColor(AbstractParser):
     def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'color': self.color.encode('utf-8')}
+        self.parse_form_data(data)
+        if self.color:
+            return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.masthead'
@@ -117,13 +113,11 @@ class NavigationHeaderColorJob(AbstractParser):
         return "Navigation Header Text color"
 
 
-class ModuleHeaderColorJob(AbstractParser):
+class ModuleHeaderColor(AbstractParser):
     def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'color': self.color.encode('utf-8')}
+        self.parse_form_data(data)
+        if self.color:
+            return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.module-heading'
@@ -138,13 +132,11 @@ class ModuleHeaderColorJob(AbstractParser):
         return "Side Menu header text color"
 
 
-class ModuleHeaderBackgroundColorJob(AbstractParser):
+class ModuleHeaderBackgroundColor(AbstractParser):
     def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'background': self.color.encode('utf-8')}
+        self.parse_form_data(data)
+        if self.color:
+            return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.module-heading'
@@ -159,13 +151,11 @@ class ModuleHeaderBackgroundColorJob(AbstractParser):
         return "Side Menu header background color"
 
 
-class AccountHoverBackgroundColorJob(AbstractParser):
+class AccountHoverBackgroundColor(AbstractParser):
     def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'background': self.color.encode('utf-8')}
+        self.parse_form_data(data)
+        if self.color:
+            return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
         return '.account-masthead .account ul li a:hover'
@@ -180,14 +170,12 @@ class AccountHoverBackgroundColorJob(AbstractParser):
         return "#1f76d8"
 
 
-class HorizontalLineColorJob(AbstractParser):
+class HorizontalLineColor(AbstractParser):
 
     def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'border-top': "2px solid {}".format(self.color.encode('utf-8'))}
+        self.parse_form_data(data)
+        if self.color:
+            return {'border-top': "2px solid {}".format(self.color.encode('utf-8'))}
 
     def get_class_name(self):
         return 'hr'
@@ -230,7 +218,7 @@ class PaginationLinkTextColor(BasicPaginationLink):
             return {"color": self.color.encode('utf-8')}
 
 
-class PaginationLinkBackgroundColor(BasicPaginationLink):
+class PaginationLinkBackgroundAndBorderColor(BasicPaginationLink):
 
     def get_form_name(self):
         return "custom-css-pagination-link-background-color"
@@ -244,24 +232,10 @@ class PaginationLinkBackgroundColor(BasicPaginationLink):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"background": self.color.encode('utf-8')}
-
-
-class PaginationLinkBorderColor(BasicPaginationLink):
-
-    def get_form_name(self):
-        return "custom-css-pagination-link-border-color"
-
-    def get_title(self):
-        return "Pagination Link Text Color"
-
-    def get_default_color(self):
-        return "#1f76d8"
-
-    def get_css_from_data(self, data):
-        self.parse_form_data(data)
-        if self.color:
-            return {"border-color": self.color.encode('utf-8')}
+            return {
+                "border-color": self.color.encode('utf-8'),
+                "background": self.color.encode('utf-8')
+            }
 
 
 class AccountHeaderBackGroundColor(AbstractParser):
@@ -333,7 +307,7 @@ class Headers(AbstractParser):
         return "custom-css-headers"
 
     def get_title(self):
-        return "Headers ??? "
+        return "Headers Text Color "
 
     def get_default_color(self):
         return "#131517"
@@ -383,37 +357,63 @@ class HoverLinks(AbstractParser):
 
 
 class CustomStyleProcessor:
-    processors = [
-        FooterBackGroundJob(),
-        FooterTextColorJob(),
+    def __init__(self):
+        self.processor_footer_background = FooterBackGround()
+        self.processor_footer_text_color = FooterTextColor()
 
-        NavigationHeaderBackGroundJob(),
-        NavigationHeaderColorJob(),
+        self.processor_navigation_header_background = NavigationHeaderBackGround()
+        self.processor_navigation_header_color = NavigationHeaderColor()
 
-        ModuleHeaderBackgroundColorJob(),
-        ModuleHeaderColorJob(),
+        self.processor_module_header_background_color = ModuleHeaderBackgroundColor()
+        self.processor_module_header_color = ModuleHeaderColor()
 
-        AccountHoverBackgroundColorJob(),
+        self.processor_account_hover_background_color = AccountHoverBackgroundColor()
+        self.processor_horizontal_line = HorizontalLineColor()
 
-        HorizontalLineColorJob(),
+        self.processor_pagination_background_color = PaginationLinkBackgroundAndBorderColor()
+        self.processor_pagination_text_color = PaginationLinkTextColor()
 
+        self.processor_hover_navigation_header = HoverOverNavigationHeaderButtonBackGroundColor()
 
-        PaginationLinkBackgroundColor(),
-        PaginationLinkTextColor(),
-        PaginationLinkBorderColor(),
+        self.processor_account_header_background_color = AccountHeaderBackGroundColor()
+        self.processor_account_header_color = AccountHeaderColor()
 
-        HoverOverNavigationHeaderButtonBackGroundColor(),
+        self.processor_account_hover_background = AccountHoverBackgroundColor()
 
-        AccountHeaderBackGroundColor(),
-        AccountHeaderColor(),
+        self.processor_headers = Headers()
+        self.processor_links = Links()
+        self.processor_hover_links = HoverLinks()
 
-        AccountHoverBackgroundColorJob(),
+        self.processors = [
+            self.processor_footer_background,
+            self.processor_footer_text_color,
 
-        Headers(),
-        Links(),
-        HoverLinks()
+            self.processor_navigation_header_background,
+            self.processor_navigation_header_color,
 
-    ]
+            self.processor_module_header_background_color,
+            self.processor_module_header_color,
+
+            self.processor_navigation_header_background,
+
+            self.processor_account_hover_background_color,
+
+            self.processor_horizontal_line,
+
+            self.processor_pagination_background_color,
+            self.processor_pagination_text_color,
+
+            self.processor_hover_navigation_header,
+
+            self.processor_account_header_background_color,
+            self.processor_account_header_color,
+
+            self.processor_account_hover_background,
+
+            self.processor_headers,
+            self.processor_links,
+            self.processor_hover_links
+        ]
 
     def get_custom_css(self, data):
         result_css = defaultdict(dict)
@@ -437,6 +437,26 @@ class CustomStyleProcessor:
 
         return result, dump_css
 
+    def check_contrast(self):
+
+        errors = {}
+        pairs = [
+            (self.processor_footer_background, self.processor_footer_text_color),
+            (self.processor_navigation_header_background, self.processor_navigation_header_color),
+            (self.processor_account_header_background_color, self.processor_account_header_color),
+            (self.processor_module_header_background_color, self.processor_module_header_color),
+            (self.processor_pagination_background_color, self.processor_pagination_text_color)
+        ]
+        for pair in pairs:
+            pr_1 = pair[0]
+            pr_2 = pair[1]
+            contrast_value = get_contrast(pr_1.color, pr_2.color)
+            if contrast_value <= 7:
+                key = "{} and {}".format(
+                    pr_1.get_title(),
+                    pr_2.get_title())
+                errors[key] = ["Does not have enough contrast."]
+        return errors
+
 
 custom_style_processor = CustomStyleProcessor()
-

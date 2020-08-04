@@ -15,8 +15,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-  {{ form.errors(error_summary) }}
-    <label> {{ data }}</label>
+    {{ form.errors(errors) }}
   <form method="post" action="{{ action }}" id="custom-css-form">
     <div class="control-group control-medium">
 
