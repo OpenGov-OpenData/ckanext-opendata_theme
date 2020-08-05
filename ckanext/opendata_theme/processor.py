@@ -1,5 +1,6 @@
 from abc import abstractmethod
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
+import wcag_contrast_ratio as contrast
 
 __all__ = ["custom_style_processor"]
 
@@ -88,7 +89,7 @@ class NavigationHeaderBackGround(AbstractParser):
         return "custom-css-header-background-color"
 
     def get_title(self):
-        return "Footer Background Color"
+        return "Navigation Header Background Color"
 
     def get_default_color(self):
         return "#002664"
@@ -145,7 +146,7 @@ class ModuleHeaderBackgroundColor(AbstractParser):
         return "custom-css-module-header-background-color"
 
     def get_default_color(self):
-        return "red"
+        return "#1f76d8"
 
     def get_title(self):
         return "Side Menu header background color"
@@ -414,17 +415,23 @@ class CustomStyleProcessor:
             self.processor_links,
             self.processor_hover_links
         ]
+        self.add_position_to_processors()
+
+    def add_position_to_processors(self):
+        for i, processor in enumerate(self.processors):
+            processor.position = i
 
     def get_custom_css(self, data):
         result_css = defaultdict(dict)
-        dump_css = {}
+        dump_css = OrderedDict()
         for processor in self.processors:
             value = processor.get_css_from_data(data)
             if value is not None:
                 result_css[processor.get_class_name()].update(value)
             dump_css[processor.get_form_name()] = {
                 "value": processor.color or processor.get_default_color(),
-                "title": processor.get_title()
+                "title": processor.get_title(),
+                "position": processor.position
             }
 
         result = "\n"
@@ -451,7 +458,7 @@ class CustomStyleProcessor:
             pr_1 = pair[0]
             pr_2 = pair[1]
             contrast_value = get_contrast(pr_1.color, pr_2.color)
-            if contrast_value <= 7:
+            if not contrast.passes_AA(contrast_value):
                 key = "{} and {}".format(
                     pr_1.get_title(),
                     pr_2.get_title())

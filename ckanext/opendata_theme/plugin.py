@@ -36,7 +36,6 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
                     action='custom_css', controller=ctrl, ckan_icon='paint-brush')
         return m
 
-
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
 
