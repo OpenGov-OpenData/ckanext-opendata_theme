@@ -40,7 +40,7 @@ class CustomCSSController(admin.AdminController):
             self.save_dump_css({}, dump_css)
         else:
             dump_css = ast.literal_eval(dump_css)
-
+        dump_css = self.sort_inputs_by_position(dump_css)
         return render('admin/custom_css.html', extra_vars=self.split_inputs_onto_two_columns(dump_css))
 
     def save_dump_css(self, custom_css, dump_css):
@@ -52,3 +52,9 @@ class CustomCSSController(admin.AdminController):
         part_1 = OrderedDict(data.items()[0:input_numbers / 2])
         part_2 = OrderedDict(data.items()[input_numbers / 2:])
         return {"data_part_1": part_1, "data_part_2": part_2}
+
+    def sort_inputs_by_position(self, dump_css):
+        list_for_sort = [(key, value) for key, value in dump_css.items()]
+        list_for_sort = sorted(list_for_sort, key=lambda x: x[1].get('position', 0))
+        return OrderedDict(list_for_sort)
+

@@ -92,7 +92,7 @@ class NavigationHeaderBackGround(AbstractParser):
         return "Navigation Header Background Color"
 
     def get_default_color(self):
-        return "#002664"
+        return "#1f76d8"
 
 
 class NavigationHeaderColor(AbstractParser):
@@ -105,16 +105,16 @@ class NavigationHeaderColor(AbstractParser):
         return '.masthead'
 
     def get_form_name(self):
-        return "custom-css-header-background-color"
+        return "custom-css-header-text-color"
 
     def get_default_color(self):
-        return "#002664"
+        return "#ffffff"
 
     def get_title(self):
         return "Navigation Header Text color"
 
 
-class ModuleHeaderColor(AbstractParser):
+class SideModuleHeaderColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
@@ -133,7 +133,7 @@ class ModuleHeaderColor(AbstractParser):
         return "Side Menu header text color"
 
 
-class ModuleHeaderBackgroundColor(AbstractParser):
+class SideModuleHeaderBackgroundColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
@@ -188,7 +188,7 @@ class HorizontalLineColor(AbstractParser):
         return "Horizontal Line color"
 
     def get_default_color(self):
-        return "#002664"
+        return "#1f76d8"
 
 
 class BasicPaginationLink(AbstractParser):
@@ -365,8 +365,8 @@ class CustomStyleProcessor:
         self.processor_navigation_header_background = NavigationHeaderBackGround()
         self.processor_navigation_header_color = NavigationHeaderColor()
 
-        self.processor_module_header_background_color = ModuleHeaderBackgroundColor()
-        self.processor_module_header_color = ModuleHeaderColor()
+        self.processor_module_header_background_color = SideModuleHeaderBackgroundColor()
+        self.processor_module_header_color = SideModuleHeaderColor()
 
         self.processor_account_hover_background_color = AccountHoverBackgroundColor()
         self.processor_horizontal_line = HorizontalLineColor()
@@ -394,8 +394,6 @@ class CustomStyleProcessor:
 
             self.processor_module_header_background_color,
             self.processor_module_header_color,
-
-            self.processor_navigation_header_background,
 
             self.processor_account_hover_background_color,
 
