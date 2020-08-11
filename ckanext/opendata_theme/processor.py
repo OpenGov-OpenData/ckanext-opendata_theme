@@ -2,7 +2,7 @@ from abc import abstractmethod
 from collections import defaultdict, OrderedDict
 import wcag_contrast_ratio as contrast
 
-__all__ = ["custom_style_processor"]
+__all__ = ['custom_style_processor']
 
 from ckanext.opendata_theme.color_conrast import get_contrast
 
@@ -27,129 +27,51 @@ class AbstractParser:
         raise NotImplemented
 
     @abstractmethod
-    def get_default_color(self):
+    def get_title(self):
         raise NotImplementedError
 
     @abstractmethod
-    def get_title(self):
+    def get_default_color(self):
         raise NotImplementedError
 
 
-class FooterTextColor(AbstractParser):
-
-    def get_css_from_data(self, data):
-        self.parse_form_data(data)
-        if self.color:
-            return {'color': self.color.encode('utf-8')}
-
-    def get_class_name(self):
-        return '.site-footer'
-
-    def get_form_name(self):
-        return 'custom-css-footer-color'
-
-    def get_title(self):
-        return "Footer Text Color"
-
-    def get_default_color(self):
-        return "#ffffff"
-
-
-class FooterBackGround(AbstractParser):
+class AccountHeaderBackGroundColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
             return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return '.site-footer'
+        return '.account-masthead'
 
     def get_form_name(self):
-        return "custom-css-footer-background-color"
+        return 'custom-css-account-header-background-color'
 
     def get_title(self):
-        return "Footer Background Color"
+        return 'Account Header Background Color'
 
     def get_default_color(self):
-        return "#1f76d8"
+        return '#044187'
 
 
-class NavigationHeaderBackGround(AbstractParser):
-    def get_css_from_data(self, data):
-        value = data.get(self.get_form_name())
-        if not value:
-            return
-        self.color = value
-        return {'background': self.color.encode('utf-8')}
-
-    def get_class_name(self):
-        return '.masthead'
-
-    def get_form_name(self):
-        return "custom-css-header-background-color"
-
-    def get_title(self):
-        return "Navigation Header Background Color"
-
-    def get_default_color(self):
-        return "#1f76d8"
-
-
-class NavigationHeaderColor(AbstractParser):
+class AccountHeaderTextColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
             return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return '.masthead'
+        return ('.account-masthead .account ul li a,'
+                '.account-masthead .account ul li a:hover')
 
     def get_form_name(self):
-        return "custom-css-header-text-color"
-
-    def get_default_color(self):
-        return "#ffffff"
+        return 'custom-css-account-header-color'
 
     def get_title(self):
-        return "Navigation Header Text color"
-
-
-class SideModuleHeaderColor(AbstractParser):
-    def get_css_from_data(self, data):
-        self.parse_form_data(data)
-        if self.color:
-            return {'color': self.color.encode('utf-8')}
-
-    def get_class_name(self):
-        return '.module-heading'
-
-    def get_form_name(self):
-        return "custom-css-module-header-color"
+        return 'Account Header Text Color'
 
     def get_default_color(self):
-        return "#ffffff"
-
-    def get_title(self):
-        return "Side Menu header text color"
-
-
-class SideModuleHeaderBackgroundColor(AbstractParser):
-    def get_css_from_data(self, data):
-        self.parse_form_data(data)
-        if self.color:
-            return {'background': self.color.encode('utf-8')}
-
-    def get_class_name(self):
-        return '.module-heading'
-
-    def get_form_name(self):
-        return "custom-css-module-header-background-color"
-
-    def get_default_color(self):
-        return "#1f76d8"
-
-    def get_title(self):
-        return "Side Menu header background color"
+        return '#ffffff'
 
 
 class AccountHoverBackgroundColor(AbstractParser):
@@ -162,305 +84,313 @@ class AccountHoverBackgroundColor(AbstractParser):
         return '.account-masthead .account ul li a:hover'
 
     def get_form_name(self):
-        return "custom-css-account-hover-background-color"
+        return 'custom-css-account-hover-background-color'
 
     def get_title(self):
-        return "Account name background color on hover"
+        return 'Account Header Hover Background Color'
 
     def get_default_color(self):
-        return "#1f76d8"
+        return '#1f76d8'
 
 
-class HorizontalLineColor(AbstractParser):
-
+class NavigationHeaderBackGroundColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {'border-top': "2px solid {}".format(self.color.encode('utf-8'))}
+            return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return 'hr'
+        return '.masthead'
 
     def get_form_name(self):
-        return "custom-css-horizontal-line"
+        return 'custom-css-header-background-color'
 
     def get_title(self):
-        return "Horizontal Line color"
+        return 'Navigation Header Background Color'
 
     def get_default_color(self):
-        return "#1f76d8"
+        return '#1f76d8'
 
 
-class BasicPaginationLink(AbstractParser):
+class NavigationHeaderTextColor(AbstractParser):
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return (".pagination li.active a,"
-                ".pagination li.active span,"
-                ".pagination li.active a:hover,"
-                ".pagination li.active span:hover,"
-                ".pagination li.active a:focus,"
-                ".pagination li.active span:focus")
-
-
-class PaginationLinkTextColor(BasicPaginationLink):
+        return ('.navbar .nav>li>a,'
+                '.masthead .nav>li>a,'
+                '.masthead .nav>li>a:focus,'
+                '.masthead .nav>li>a:hover,'
+                '.masthead .nav>.active>a,'
+                '.masthead .nav>.active>a:hover,'
+                '.masthead .nav>.active>a:focus')
 
     def get_form_name(self):
-        return "custom-css-pagination-link-color"
+        return 'custom-css-header-text-color'
 
     def get_title(self):
-        return "Pagination Link Text Color"
+        return 'Navigation Header Text color'
 
     def get_default_color(self):
-        return "#ffffff"
+        return '#ffffff'
 
+
+class NavigationButtonHoverBackgroundColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"color": self.color.encode('utf-8')}
-
-
-class PaginationLinkBackgroundAndBorderColor(BasicPaginationLink):
-
-    def get_form_name(self):
-        return "custom-css-pagination-link-background-color"
-
-    def get_title(self):
-        return "Pagination Link Background Color"
-
-    def get_default_color(self):
-        return "#1f76d8"
-
-    def get_css_from_data(self, data):
-        self.parse_form_data(data)
-        if self.color:
-            return {
-                "border-color": self.color.encode('utf-8'),
-                "background": self.color.encode('utf-8')
-            }
-
-
-class AccountHeaderBackGroundColor(AbstractParser):
+            return {'background-color': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return ".account-masthead"
+        return ('.masthead .navigation .nav-pills li a:hover,'
+                '.masthead .navigation .nav-pills li.active a')
 
     def get_form_name(self):
-        return "custom-css-account-header-background-color"
+        return 'custom-css-account-hover-navigation-button-background-color'
 
     def get_title(self):
-        return "Account Header Background Color"
+        return 'Navigation Button Hover Background Color'
 
     def get_default_color(self):
-        return "#044187"
+        return '#044187'
 
+
+class ModuleHeaderBackgroundColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"background": self.color.encode('utf-8')}
-
-
-class AccountHeaderColor(AbstractParser):
+            return {'background': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return ".account-masthead"
+        return '.module-heading'
 
     def get_form_name(self):
-        return "custom-css-account-header-color"
+        return 'custom-css-module-header-background-color'
 
     def get_title(self):
-        return "Account Header Text Color"
+        return 'Side Menu Header Background Color'
 
     def get_default_color(self):
-        return "#ffffff"
+        return '#1f76d8'
 
+
+class ModuleHeaderTextColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"color": self.color.encode('utf-8')}
-
-
-class HoverOverNavigationHeaderButtonBackGroundColor(AbstractParser):
+            return {'color': self.color.encode('utf-8')}
 
     def get_class_name(self):
-        return (".masthead .navigation .nav-pills li a:hover,"
-                ".masthead .navigation .nav-pills li.active a")
+        return '.module-heading'
 
     def get_form_name(self):
-        return "custom-css-account-hover-navigation-button-background-color"
+        return 'custom-css-module-header-color'
 
     def get_title(self):
-        return "Hover Over navigation button"
+        return 'Side Menu Header Text Color'
 
     def get_default_color(self):
-        return "#044187"
+        return '#ffffff'
 
+
+class FooterBackGroundColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"background-color": self.color.encode('utf-8')}
+            return {'background': self.color.encode('utf-8')}
 
-
-class Headers(AbstractParser):
     def get_class_name(self):
-        return "h1, h2, h3, h4, h5, h6"
+        return 'body, .site-footer'
 
     def get_form_name(self):
-        return "custom-css-headers"
+        return 'custom-css-footer-background-color'
 
     def get_title(self):
-        return "Headers Text Color "
+        return 'Footer Background Color'
 
     def get_default_color(self):
-        return "#131517"
+        return '#383b3d'
 
+
+class FooterTextColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"color": self.color.encode('utf-8')}
+            return {'color': self.color.encode('utf-8')}
 
-
-class Links(AbstractParser):
     def get_class_name(self):
-        return "a"
+        return ('.site-footer,'
+                '.site-footer label,'
+                '.site-footer small')
 
     def get_form_name(self):
-        return "custom-css-links"
+        return 'custom-css-footer-color'
 
     def get_title(self):
-        return "Links"
+        return 'Footer Text Color'
 
     def get_default_color(self):
-        return "#165cab"
+        return '#ffffff'
 
+
+class LinkColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"color": self.color.encode('utf-8')}
+            return {'color': self.color.encode('utf-8')}
 
-
-class HoverLinks(AbstractParser):
     def get_class_name(self):
-        return "a:hover"
+        return 'a'
 
     def get_form_name(self):
-        return "custom-css-links-hover"
+        return 'custom-css-link-color'
 
     def get_title(self):
-        return "Hover Links"
+        return 'Link Color'
 
     def get_default_color(self):
-        return "#131517"
+        return '#131517'
 
+
+class LinkHoverColor(AbstractParser):
     def get_css_from_data(self, data):
         self.parse_form_data(data)
         if self.color:
-            return {"color": self.color.encode('utf-8')}
+            return {'color': self.color.encode('utf-8')}
+
+    def get_class_name(self):
+        return 'a:hover'
+
+    def get_form_name(self):
+        return 'custom-css-link-hover-color'
+
+    def get_title(self):
+        return 'Link Hover Color'
+
+    def get_default_color(self):
+        return '#165cab'
+
+
+class FooterLinkColor(AbstractParser):
+    def get_css_from_data(self, data):
+        self.parse_form_data(data)
+        if self.color:
+            return {'color': self.color.encode('utf-8')}
+
+    def get_class_name(self):
+        return ('.site-footer a,'
+                '.site-footer a:hover')
+
+    def get_form_name(self):
+        return 'custom-css-footer-link-color'
+
+    def get_title(self):
+        return 'Footer Link Color'
+
+    def get_default_color(self):
+        return '#ffffff'
 
 
 class CustomStyleProcessor:
     def __init__(self):
-        self.processor_footer_background = FooterBackGround()
-        self.processor_footer_text_color = FooterTextColor()
-
-        self.processor_navigation_header_background = NavigationHeaderBackGround()
-        self.processor_navigation_header_color = NavigationHeaderColor()
-
-        self.processor_module_header_background_color = SideModuleHeaderBackgroundColor()
-        self.processor_module_header_color = SideModuleHeaderColor()
+        self.processor_account_header_background_color = AccountHeaderBackGroundColor()
+        self.processor_account_header_text_color = AccountHeaderTextColor()
 
         self.processor_account_hover_background_color = AccountHoverBackgroundColor()
-        self.processor_horizontal_line = HorizontalLineColor()
 
-        self.processor_pagination_background_color = PaginationLinkBackgroundAndBorderColor()
-        self.processor_pagination_text_color = PaginationLinkTextColor()
+        self.processor_navigation_header_background_color = NavigationHeaderBackGroundColor()
+        self.processor_navigation_header_text_color = NavigationHeaderTextColor()
 
-        self.processor_hover_navigation_header = HoverOverNavigationHeaderButtonBackGroundColor()
+        self.processor_navigation_hover_background_color = NavigationButtonHoverBackgroundColor()
 
-        self.processor_account_header_background_color = AccountHeaderBackGroundColor()
-        self.processor_account_header_color = AccountHeaderColor()
+        self.processor_module_header_background_color = ModuleHeaderBackgroundColor()
+        self.processor_module_header_text_color = ModuleHeaderTextColor()
 
-        self.processor_account_hover_background = AccountHoverBackgroundColor()
+        self.processor_footer_background_color = FooterBackGroundColor()
+        self.processor_footer_text_color = FooterTextColor()
 
-        self.processor_headers = Headers()
-        self.processor_links = Links()
-        self.processor_hover_links = HoverLinks()
+        self.processor_link_color = LinkColor()
+        self.processor_link_hover_color = LinkHoverColor()
+
+        self.processor_footer_link_color = FooterLinkColor()
 
         self.processors = [
-            self.processor_footer_background,
-            self.processor_footer_text_color,
-
-            self.processor_navigation_header_background,
-            self.processor_navigation_header_color,
-
-            self.processor_module_header_background_color,
-            self.processor_module_header_color,
+            self.processor_account_header_background_color,
+            self.processor_account_header_text_color,
 
             self.processor_account_hover_background_color,
 
-            self.processor_horizontal_line,
+            self.processor_navigation_header_background_color,
+            self.processor_navigation_header_text_color,
 
-            self.processor_pagination_background_color,
-            self.processor_pagination_text_color,
+            self.processor_navigation_hover_background_color,
 
-            self.processor_hover_navigation_header,
+            self.processor_module_header_background_color,
+            self.processor_module_header_text_color,
 
-            self.processor_account_header_background_color,
-            self.processor_account_header_color,
+            self.processor_footer_background_color,
+            self.processor_footer_text_color,
 
-            self.processor_account_hover_background,
+            self.processor_link_color,
+            self.processor_link_hover_color,
 
-            self.processor_headers,
-            self.processor_links,
-            self.processor_hover_links
+            self.processor_footer_link_color
         ]
         self.add_position_to_processors()
+
 
     def add_position_to_processors(self):
         for i, processor in enumerate(self.processors):
             processor.position = i
 
+
     def get_custom_css(self, data):
         result_css = defaultdict(dict)
-        dump_css = OrderedDict()
+        css_metadata = OrderedDict()
+
         for processor in self.processors:
-            value = processor.get_css_from_data(data)
-            if value is not None:
-                result_css[processor.get_class_name()].update(value)
-            dump_css[processor.get_form_name()] = {
-                "value": processor.color or processor.get_default_color(),
-                "title": processor.get_title(),
-                "position": processor.position
+            css_declaration = processor.get_css_from_data(data)
+            if css_declaration is not None:
+                result_css[processor.get_class_name()].update(css_declaration)
+
+            css_metadata[processor.get_form_name()] = {
+                'title': processor.get_title(),
+                'value': processor.color or processor.get_default_color(),
+                'position': processor.position
             }
 
-        result = "\n"
-        for class_name, css in result_css.items():
-            css = str(css).replace(',', ';').replace("'", "")
-            result = "{previous_block}\n {class_name} {css}".format(
-                previous_block=result,
-                class_name=class_name,
-                css=css)
+        raw_css = '\n'
+        for class_name, css_declaration in result_css.items():
+            css_declaration = str(css_declaration).replace(',', ';').replace("'", "")
+            raw_css = '{previous_block}\n {css_selector} {css_declaration}'.format(
+                previous_block=raw_css,
+                css_selector=class_name,
+                css_declaration=css_declaration)
 
-        return result, dump_css
+        return raw_css, css_metadata
+
 
     def check_contrast(self):
-
         errors = {}
-        pairs = [
-            (self.processor_footer_background, self.processor_footer_text_color),
-            (self.processor_navigation_header_background, self.processor_navigation_header_color),
-            (self.processor_account_header_background_color, self.processor_account_header_color),
-            (self.processor_module_header_background_color, self.processor_module_header_color),
-            (self.processor_pagination_background_color, self.processor_pagination_text_color)
+        color_pairs = [
+            (self.processor_account_header_background_color, self.processor_account_header_text_color),
+            (self.processor_navigation_header_background_color, self.processor_navigation_header_text_color),
+            (self.processor_module_header_background_color, self.processor_module_header_text_color),
+            (self.processor_footer_background_color, self.processor_footer_text_color),
+            (self.processor_footer_background_color, self.processor_footer_link_color)
         ]
-        for pair in pairs:
+        for pair in color_pairs:
             pr_1 = pair[0]
             pr_2 = pair[1]
-            contrast_value = get_contrast(pr_1.color, pr_2.color)
-            if not contrast.passes_AA(contrast_value):
-                key = "{} and {}".format(
-                    pr_1.get_title(),
-                    pr_2.get_title())
-                errors[key] = ["Does not have enough contrast."]
+            if pr_1.color and pr_2.color:
+                contrast_value = get_contrast(pr_1.color, pr_2.color)
+                if not contrast.passes_AA(contrast_value):
+                    key = '{} and {}'.format(
+                        pr_1.get_title(),
+                        pr_2.get_title())
+                    errors[key] = ['Contrast ratio is not high enough.']
         return errors
 
 

@@ -17,18 +17,18 @@
     {{ form.errors(errors) }}
     <form method="post" action="{{ action }}" id="custom-css-form">
         <div class="control-group control-medium">
-            <div class="container" style="width: 100%">
-                <div class="first_column" style="float: left; width: 50%">
+            <div class="row">
+                <div class="col-sm-6 span6 col1">
                     {% for name, field in data_part_1.iteritems() %}
                         <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
-                        <input type="text" class='opendata-theme-color-picker'
+                        <input type="text" class="opendata-theme-color-picker"
                                name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
                     {% endfor %}
                 </div>
-                <div class="second_column" style="float: right; width: 50%">
+                <div class="col-sm-6 span6 col2">
                     {% for name, field in data_part_2.iteritems() %}
                         <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
-                        <input type="text" class='opendata-theme-color-picker'
+                        <input type="text" class="opendata-theme-color-picker"
                                name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
                     {% endfor %}
                 </div>
@@ -50,7 +50,7 @@
         <div class="module-content">
             {% block admin_form_help %}
                 {% trans %}
-                    <p><strong>Custom CSS</strong> Here will be explanation of our plugin </p>
+                    <p><strong>Custom CSS:</strong> Customize colors of different elements</p>
                 {% endtrans %}
             {% endblock %}
         </div>
