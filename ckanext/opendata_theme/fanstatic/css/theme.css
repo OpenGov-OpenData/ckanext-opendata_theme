@@ -29,6 +29,12 @@
 .account-masthead .account ul li a:hover {
   background-color: transparent;
 }
+.masthead {
+  padding: 10px 0;
+}
+.masthead .logo img {
+  max-height: 60px;
+}
 .masthead .navigation {
   margin-right: 5px;
 }
@@ -83,7 +89,20 @@
 }
 .media-grid .media-item {
   height: 240px;
+  width: 200px;
   text-align: center;
+}
+#organization-search-form + .media-grid h3,
+#group-search-form + .media-grid h3 {
+  overflow-y: hidden;
+  display: -webkit-box;
+  max-height: 100px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+#organization-search-form + .media-grid p,
+#group-search-form + .media-grid p {
+  display: none;
 }
 .media-view:hover, .media-view.hovered {
   border: 1px solid #616365;
@@ -111,13 +130,31 @@
 .dropdown-menu>li>a:focus,
 .dropdown-submenu:hover>a,
 .dropdown-submenu:focus>a {
-  background: #1f76d8
+  background: #1f76d8;
+  color: #ffffff;
 }
 form.form-inline.form-select.lang-select {
   display: none;
 }
 
+.pagination-wrapper {
+  border-top: none;
+}
+.pagination li.active a,
+.pagination li.active span,
+.pagination li.active a:hover,
+.pagination li.active span:hover,
+.pagination li.active a:focus,
+.pagination li.active span:focus {
+  background-color: #1f76d8;
+  border-color: #1f76d8;
+  color: #ffffff;
+}
+
 /* Custom background color for select format labels */
+.dataset-resources li a {
+  background-color: #6e6e6e;
+}
 .label[data-format=html],
 .label[data-format*=html] {
   background-color: #2E759E;
@@ -169,6 +206,10 @@ form.form-inline.form-select.lang-select {
 .label[data-format*=kml] {
   background-color: #548300;
 }
+.label[data-format=chart],
+.label[data-format*=chart] {
+  background-color: #935DA7;
+}
 
 @media (max-width: 767px) {
   .toolbar {
@@ -184,6 +225,9 @@ form.form-inline.form-select.lang-select {
     background: #ffffff;
     min-height: 480px;
   }
+  .wrapper:before {
+    width: 220px;
+  }
 }
 @media (min-width: 980px) {
   .col-sm-12, .col-md-12, .span12 {
@@ -195,7 +239,7 @@ form.form-inline.form-select.lang-select {
   .col-sm-10, .col-md-10, .span10 {
     width: calc(83.33333333% - 20px);
   }
-  .col-sm-9, .col-md-9, span9 {
+  .col-sm-9, .col-md-9, .span9 {
     width: calc(75% - 20px);
   }
   .col-sm-8, .col-md-8, .span8 {
