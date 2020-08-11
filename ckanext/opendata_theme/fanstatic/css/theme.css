@@ -17,8 +17,8 @@
   color: white;
 }
 .btn-danger:hover {
-    border: 1px solid #6b1c0b;
-    box-shadow: none;
+  border: 1px solid #6b1c0b;
+  box-shadow: none;
 }
 .account-masthead .account ul li {
   border-left: none;
@@ -35,8 +35,16 @@
 .masthead .logo img {
   max-height: 60px;
 }
+.masthead .nav-collapse {
+  padding: 10px 0;
+}
 .masthead .navigation {
   margin-right: 5px;
+}
+.masthead .nav > li > a {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 10px 15px;
 }
 .masthead .site-search input {
   color: #ffffff;
@@ -92,6 +100,9 @@
   width: 200px;
   text-align: center;
 }
+.media-grid .media-item .media-image {
+  max-height: 120px;
+}
 #organization-search-form + .media-grid h3,
 #group-search-form + .media-grid h3 {
   overflow-y: hidden;
@@ -107,9 +118,6 @@
 .media-view:hover, .media-view.hovered {
   border: 1px solid #616365;
   box-shadow: 0 1px 3px 0 #616365;
-}
-.search-form, .dataset-item {
-  border-bottom: none;
 }
 .dataset-content>p.empty {
   display: none;
@@ -227,6 +235,9 @@ form.form-inline.form-select.lang-select {
   }
   .wrapper:before {
     width: 220px;
+  }
+  .primary div.module-content {
+    padding-left: 10px;
   }
 }
 @media (min-width: 980px) {
