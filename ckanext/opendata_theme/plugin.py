@@ -45,6 +45,11 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         m.connect(
             'custom_css',
             '/ckan-admin/custom_css',
-            action='custom_css', controller=ctrl, ckan_icon='paint-brush'
+            action='custom_css', controller=ctrl, ckan_icon='paint-brush',
+        )
+        m.connect(
+            'reset_custom_css',
+            '/ckan-admin/reset_custom_css',
+            action='reset_custom_css', controller=ctrl
         )
         return m

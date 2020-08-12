@@ -54,6 +54,17 @@ class CustomCSSController(admin.AdminController):
             extra_vars=extra_vars
         )
 
+    def reset_custom_css(self):
+        extra_vars = {}
+        _, css_metadata = custom_style_processor.get_custom_css({})
+        self.save_css_metadata({}, css_metadata)
+        css_metadata = self.sort_inputs_by_position(css_metadata)
+        extra_vars.update(self.split_inputs_onto_two_columns(css_metadata))
+        redirect_to(
+            controller='ckanext.opendata_theme.controller:CustomCSSController',
+            action='custom_css',
+            extra_vars=extra_vars
+        )
 
     def save_css_metadata(self, custom_css, css_metadata):
         get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_raw_css": custom_css})

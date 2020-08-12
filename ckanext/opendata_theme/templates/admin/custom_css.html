@@ -4,9 +4,13 @@
 
 {% import 'macros/form.html' as form %}
 
-{% set action = h.url_for(
+{% set custom_css_action = h.url_for(
   controller='ckanext.opendata_theme.controller:CustomCSSController',
   action='custom_css') %}
+
+{% set reset_custom_css = h.url_for(
+  controller='ckanext.opendata_theme.controller:CustomCSSController',
+  action='reset_custom_css') %}
 
 {% block styles %}
     {{ super() }}
@@ -15,7 +19,7 @@
 
 {% block primary_content_inner %}
     {{ form.errors(errors) }}
-    <form method="post" action="{{ action }}" id="custom-css-form">
+    <form method="post" action="{{ custom_css_action }}" id="custom-css-form">
         <div class="control-group control-medium">
             <div class="row">
                 <div class="col-sm-6 span6 col1">
@@ -35,7 +39,12 @@
             </div>
         </div>
         <div class="form-actions">
-            <button class="btn btn-primary" name="save" type="submit">{{ _('Update Config') }}</button>
+            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
+            <a class="btn btn-danger pull-left" data-module="confirm-action"
+               data-module-content="Do you really want to reset custom colors? All your changes will be lost."
+               href="{{ reset_custom_css }}">{{ _('Reset to Default') }}
+            </a>
+
         </div>
     </form>
 
