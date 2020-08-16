@@ -1,0 +1,7 @@
+{% ckan_extends %}
+
+{% block admin_form %}
+{{  super() }}
+{{ form.image_upload(data, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload, upload_label = _('Site favicon upload '), url_label=_('Site favicon url label'),  field_url=field_url, field_upload='ckan.favicon', field_clear='clear_logo_upload' )}}
+
+{%  endblock %}

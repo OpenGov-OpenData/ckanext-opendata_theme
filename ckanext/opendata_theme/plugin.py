@@ -23,7 +23,8 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         schema.update({
             # This is a custom configuration option
             'ckanext.opendata_theme.custom_raw_css': [ignore_missing, unicode],
-            'ckanext.opendata_theme.custom_css_metadata': [ignore_missing, dict]
+            'ckanext.opendata_theme.custom_css_metadata': [ignore_missing, dict],
+            'ckan.favicon': [ignore_missing, unicode]
         })
         return schema
 
