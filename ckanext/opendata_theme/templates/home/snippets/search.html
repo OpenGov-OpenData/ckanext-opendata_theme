@@ -1,0 +1,31 @@
+{% set tags = h.get_facet_items_dict('tags', limit=10) %}
+{% set placeholder = _('Search Datasets') %}
+
+<div class="homepage-search container">
+    <div class="span6 pull-left">
+        <div class="module module-search module-narrow module-shallow box">
+            <form class="search-form" method="get" action="{% url_for controller='package', action='search' %}">
+                <div class="search-input control-group search-giant">
+                    <input type="text" class="search" name="q" value="" autocomplete="off"
+                           id="data-search-keyword-input-field"
+                           placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}"
+                           title="{{ _('Type search term here') }}"/>
+                    <button type="submit" title="Search">
+                        <i class="fa fa-search"></i>
+                        <span>{{ _(g.showcase_custom_title) }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <p class="span6 pull-right">
+        <span>
+          Get started by searching from
+        </span>
+        <br/>
+        <span>
+          {{ h.opendata_theme_get_dataset_count() }} Datasets
+        </span>
+    </p>
+</div>

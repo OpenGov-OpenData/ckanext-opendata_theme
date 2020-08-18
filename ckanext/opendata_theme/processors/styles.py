@@ -1,13 +1,15 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from collections import defaultdict, OrderedDict
+
 import wcag_contrast_ratio as contrast
 
-__all__ = ['custom_style_processor']
+__all__ = ['CustomStyleProcessor']
 
 from ckanext.opendata_theme.color_conrast import get_contrast
 
 
 class AbstractParser:
+    __metaclass__ = ABCMeta
     color = None
 
     @abstractmethod
@@ -340,11 +342,9 @@ class CustomStyleProcessor:
         ]
         self.add_position_to_processors()
 
-
     def add_position_to_processors(self):
         for i, processor in enumerate(self.processors):
             processor.position = i
-
 
     def get_custom_css(self, data):
         result_css = defaultdict(dict)
@@ -371,7 +371,6 @@ class CustomStyleProcessor:
 
         return raw_css, css_metadata
 
-
     def check_contrast(self):
         errors = {}
         color_pairs = [
@@ -392,6 +391,3 @@ class CustomStyleProcessor:
                         pr_2.get_title())
                     errors[key] = ['Contrast ratio is not high enough.']
         return errors
-
-
-custom_style_processor = CustomStyleProcessor()

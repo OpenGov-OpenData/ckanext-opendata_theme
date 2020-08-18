@@ -1,5 +1,4 @@
 # encoding: utf-8
-import json
 import ast
 from collections import OrderedDict
 
@@ -17,7 +16,8 @@ from ckan.plugins.toolkit import (
     request
 )
 
-from processor import custom_style_processor
+from ckanext.opendata_theme.constants import LAYOUTS
+from ckanext.opendata_theme.processors import custom_style_processor, custom_naming_processor
 
 
 class CustomCSSController(admin.AdminController):
@@ -66,20 +66,76 @@ class CustomCSSController(admin.AdminController):
             extra_vars=extra_vars
         )
 
-    def save_css_metadata(self, custom_css, css_metadata):
+    def custom_home_page(self):
+        extra_vars = {}
+        if request.method == 'POST':
+            data = clean_dict(dict_fns.unflatten(
+                tuplize_dict(parse_params(request.POST))))
+
+            # Check and update home page layout style
+            layout_style = data.get('custom_homepage_layout')
+            if layout_style:
+                get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_homepage_style": layout_style})
+            extra_vars["actual_layout"] = layout_style
+
+            # Parse and save namings
+            namings = custom_naming_processor.get_custom_namings(data)
+            extra_vars["custom_namings"] = namings
+            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_namings": namings})
+
+            redirect_to(
+                controller='ckanext.opendata_theme.controller:CustomCSSController',
+                action='custom_home_page',
+                extra_vars=extra_vars
+            )
+        # Get last or default custom namings
+        custom_namings = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_namings"})
+        if not custom_namings:
+            custom_namings = custom_naming_processor.get_custom_namings({})
+            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_namings": custom_namings})
+        else:
+            custom_namings = ast.literal_eval(custom_namings)
+        custom_namings = self.sort_inputs_by_position(custom_namings)
+
+        # Get last or default layout
+        actual_layout = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_homepage_style"})
+        if not actual_layout:
+            actual_layout = 1
+        return render(
+            'admin/custom_home_page.html',
+            extra_vars={
+                "home_page_layouts_list": LAYOUTS,
+                "custom_namings": custom_namings,
+                "actual_layout": actual_layout
+            }
+        )
+
+    def reset_custom_namings(self):
+        extra_vars = {}
+        namings = custom_naming_processor.get_custom_namings({})
+        get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_namings": namings})
+        namings = self.sort_inputs_by_position(namings)
+        extra_vars["custom_namings"] = namings
+        redirect_to(
+            controller='ckanext.opendata_theme.controller:CustomCSSController',
+            action='custom_home_page',
+            extra_vars=extra_vars
+        )
+
+    @staticmethod
+    def save_css_metadata(custom_css, css_metadata):
         get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_raw_css": custom_css})
         get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_css_metadata": css_metadata})
 
-
-    def split_inputs_onto_two_columns(self, data):
+    @staticmethod
+    def split_inputs_onto_two_columns(data):
         input_numbers = len(data)
-        part_1 = OrderedDict(data.items()[0:input_numbers / 2])
-        part_2 = OrderedDict(data.items()[input_numbers / 2:])
+        part_1 = OrderedDict(list(data.items())[0:input_numbers / 2])
+        part_2 = OrderedDict(list(data.items())[input_numbers / 2:])
         return {"data_part_1": part_1, "data_part_2": part_2}
 
-
-    def sort_inputs_by_position(self, css_metadata):
+    @staticmethod
+    def sort_inputs_by_position(css_metadata):
         list_for_sort = [(key, value) for key, value in css_metadata.items()]
         list_for_sort = sorted(list_for_sort, key=lambda x: x[1].get('position', 0))
         return OrderedDict(list_for_sort)
-
