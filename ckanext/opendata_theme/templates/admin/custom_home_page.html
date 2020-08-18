@@ -7,9 +7,9 @@
   controller='ckanext.opendata_theme.controller:CustomCSSController',
   action='custom_home_page') %}
 
-{% set reset_custom_namings = h.url_for(
+{% set reset_custom_naming = h.url_for(
   controller='ckanext.opendata_theme.controller:CustomCSSController',
-  action='reset_custom_namings') %}
+  action='reset_custom_naming') %}
 
 {% block primary_content_inner %}
     {{ form.errors(error_summary) }}
@@ -26,7 +26,7 @@
         {% endblock %}
 
         <div class="control-group control-medium">
-            {% for name, field in custom_namings.iteritems() %}
+            {% for name, field in custom_naming.iteritems() %}
                 <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
                 <input type="text" name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
             {% endfor %}

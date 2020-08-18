@@ -5,7 +5,7 @@ import wcag_contrast_ratio as contrast
 
 __all__ = ['CustomStyleProcessor']
 
-from ckanext.opendata_theme.color_conrast import get_contrast
+from ckanext.opendata_theme.color_contrast import get_contrast
 
 
 class AbstractParser:

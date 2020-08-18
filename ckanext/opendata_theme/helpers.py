@@ -64,11 +64,11 @@ def get_package_metadata(package):
 
 
 def get_custom_name(key, default_name):
-    custom_namings = toolkit.get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_namings"})
-    if not custom_namings:
+    custom_naming = toolkit.get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_naming"})
+    if not custom_naming:
         return default_name
-    custom_namings = ast.literal_eval(custom_namings)
-    name = custom_namings.get(key)
+    custom_naming = ast.literal_eval(custom_naming)
+    name = custom_naming.get(key)
     if not name:
         return default_name
     elif not name['value']:

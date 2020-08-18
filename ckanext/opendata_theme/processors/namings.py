@@ -24,7 +24,6 @@ class BaseNaming:
 
 
 class ShowcaseNaming(BaseNaming):
-
     def get_form_name(self):
         return "showcase-custom-name"
 
@@ -32,7 +31,7 @@ class ShowcaseNaming(BaseNaming):
         return "Showcase"
 
 
-class PopularDatasetsNamings(BaseNaming):
+class PopularDatasetsNaming(BaseNaming):
     def get_form_name(self):
         return "datasets-popular-custom-name"
 
@@ -40,7 +39,7 @@ class PopularDatasetsNamings(BaseNaming):
         return "Popular Datasets"
 
 
-class RecentDatasetsNamings(BaseNaming):
+class RecentDatasetsNaming(BaseNaming):
     def get_form_name(self):
         return "datasets-recent-custom-name"
 
@@ -48,7 +47,7 @@ class RecentDatasetsNamings(BaseNaming):
         return "New and Recent Datasets"
 
 
-class GroupsNamings(BaseNaming):
+class GroupsNaming(BaseNaming):
     def get_form_name(self):
         return "groups-custom-name"
 
@@ -60,11 +59,11 @@ class CustomNamingProcessor:
 
     def __init__(self):
         self.showcase = ShowcaseNaming()
-        self.groups = GroupsNamings()
-        self.popular_datasets = PopularDatasetsNamings()
-        self.recent_datasets = RecentDatasetsNamings()
+        self.groups = GroupsNaming()
+        self.popular_datasets = PopularDatasetsNaming()
+        self.recent_datasets = RecentDatasetsNaming()
 
-        self.namings_processors = [
+        self.naming_processors = [
             self.showcase,
             self.groups,
             self.popular_datasets,
@@ -73,12 +72,12 @@ class CustomNamingProcessor:
         self.add_position_to_processors()
 
     def add_position_to_processors(self):
-        for i, processor in enumerate(self.namings_processors):
+        for i, processor in enumerate(self.naming_processors):
             processor.position = i
 
-    def get_custom_namings(self, data):
+    def get_custom_naming(self, data):
         result = {}
-        for processor in self.namings_processors:
+        for processor in self.naming_processors:
             processor.parse_name_from_form(data)
             result[processor.get_form_name()] = {
                 "title": processor.get_default_name(),

@@ -1,3 +1,4 @@
+import six
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckanext.opendata_theme.controller import CustomCSSController
@@ -24,9 +25,9 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         ignore_missing = toolkit.get_validator('ignore_missing')
         schema.update({
             # This is a custom configuration option
-            'ckanext.opendata_theme.custom_raw_css': [ignore_missing, unicode],
+            'ckanext.opendata_theme.custom_raw_css': [ignore_missing, six.text_type],
             'ckanext.opendata_theme.custom_css_metadata': [ignore_missing, dict],
-            'ckanext.opendata_theme.custom_namings': [ignore_missing, dict],
+            'ckanext.opendata_theme.custom_naming': [ignore_missing, dict],
             'ckanext.opendata_theme.custom_homepage_style': [ignore_missing, int]
         })
         return schema
@@ -69,8 +70,8 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
             action='custom_home_page', controller=ctrl
         )
         m.connect(
-            'reset_custom_namings',
-            '/ckan-admin/reset_custom_namings',
-            action='reset_custom_namings', controller=ctrl
+            'reset_custom_naming',
+            '/ckan-admin/reset_custom_naming',
+            action='reset_custom_naming', controller=ctrl
         )
         return m

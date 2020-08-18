@@ -78,24 +78,24 @@ class CustomCSSController(admin.AdminController):
                 get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_homepage_style": layout_style})
             extra_vars["actual_layout"] = layout_style
 
-            # Parse and save namings
-            namings = custom_naming_processor.get_custom_namings(data)
-            extra_vars["custom_namings"] = namings
-            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_namings": namings})
+            # Parse and save naming
+            naming = custom_naming_processor.get_custom_naming(data)
+            extra_vars["custom_naming"] = naming
+            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_naming": naming})
 
             redirect_to(
                 controller='ckanext.opendata_theme.controller:CustomCSSController',
                 action='custom_home_page',
                 extra_vars=extra_vars
             )
-        # Get last or default custom namings
-        custom_namings = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_namings"})
-        if not custom_namings:
-            custom_namings = custom_naming_processor.get_custom_namings({})
-            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_namings": custom_namings})
+        # Get last or default custom naming
+        custom_naming = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_naming"})
+        if not custom_naming:
+            custom_naming = custom_naming_processor.get_custom_naming({})
+            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_naming": custom_naming})
         else:
-            custom_namings = ast.literal_eval(custom_namings)
-        custom_namings = self.sort_inputs_by_position(custom_namings)
+            custom_naming = ast.literal_eval(custom_naming)
+        custom_naming = self.sort_inputs_by_position(custom_naming)
 
         # Get last or default layout
         actual_layout = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_homepage_style"})
@@ -105,17 +105,17 @@ class CustomCSSController(admin.AdminController):
             'admin/custom_home_page.html',
             extra_vars={
                 "home_page_layouts_list": LAYOUTS,
-                "custom_namings": custom_namings,
+                "custom_naming": custom_naming,
                 "actual_layout": actual_layout
             }
         )
 
-    def reset_custom_namings(self):
+    def reset_custom_naming(self):
         extra_vars = {}
-        namings = custom_naming_processor.get_custom_namings({})
-        get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_namings": namings})
-        namings = self.sort_inputs_by_position(namings)
-        extra_vars["custom_namings"] = namings
+        naming = custom_naming_processor.get_custom_naming({})
+        get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_naming": naming})
+        naming = self.sort_inputs_by_position(naming)
+        extra_vars["custom_naming"] = naming
         redirect_to(
             controller='ckanext.opendata_theme.controller:CustomCSSController',
             action='custom_home_page',
