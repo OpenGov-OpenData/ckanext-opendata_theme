@@ -23,12 +23,20 @@ class BaseNaming:
         return self.name or self.get_default_name()
 
 
+class GroupsNaming(BaseNaming):
+    def get_form_name(self):
+        return "groups-custom-name"
+
+    def get_default_name(self):
+        return "Groups"
+
+
 class ShowcaseNaming(BaseNaming):
     def get_form_name(self):
         return "showcase-custom-name"
 
     def get_default_name(self):
-        return "Showcase"
+        return "Showcases"
 
 
 class PopularDatasetsNaming(BaseNaming):
@@ -47,25 +55,17 @@ class RecentDatasetsNaming(BaseNaming):
         return "New and Recent Datasets"
 
 
-class GroupsNaming(BaseNaming):
-    def get_form_name(self):
-        return "groups-custom-name"
-
-    def get_default_name(self):
-        return "Groups"
-
-
 class CustomNamingProcessor:
 
     def __init__(self):
-        self.showcase = ShowcaseNaming()
         self.groups = GroupsNaming()
+        self.showcase = ShowcaseNaming()
         self.popular_datasets = PopularDatasetsNaming()
         self.recent_datasets = RecentDatasetsNaming()
 
         self.naming_processors = [
-            self.showcase,
             self.groups,
+            self.showcase,
             self.popular_datasets,
             self.recent_datasets
         ]

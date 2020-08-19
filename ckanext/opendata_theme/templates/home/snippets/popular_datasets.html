@@ -1,6 +1,6 @@
 {% set popular_datasets = h.opendata_theme_get_datasets_popular() %}
 
-<div class="module-content box">
+<div class="module-content">
     <header>
         <h2 class="heading">{{ h.opendata_theme_get_custom_name('datasets-popular-custom-name', 'Popular Datasets') }}</h2>
         <hr/>
@@ -20,7 +20,7 @@
                                         <li>
                                             <a href="{{ h.url_for(controller='package', action='read', id=package.name) }}"
                                                class="label" data-format="{{ resource.lower() }}"
-                                               style="color:white;">{{ resource }}</a>
+                                               >{{ resource }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>

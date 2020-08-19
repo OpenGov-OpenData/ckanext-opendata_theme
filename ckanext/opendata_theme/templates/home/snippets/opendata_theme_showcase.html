@@ -1,14 +1,14 @@
 <div class="main-featured">
     <div class="container">
         <div class="row">
-            <div class="span12 col1 showcase-container">
-                <div class="module-content box" style="padding-bottom:0px">
-                    <h2 class="heading" style="margin-bottom:0px">
+            <div class="col-md-12 span12 col1 showcase-container">
+                <div class="module-content">
+                    <h2 class="heading">
                         <a href="/showcase">
-                            {{ h.opendata_theme_get_custom_name('showcase-custom-name', 'Showcase Default') }}
+                            {{ h.opendata_theme_get_custom_name('showcase-custom-name', 'Showcases') }}
                         </a></h2>
                     <hr/>
-                    {% snippet 'home/snippets/showcase_list.html', showcases=h.opendata_theme_get_groups() %}
+                    {% snippet 'home/snippets/showcase_list.html', showcases=h.opendata_theme_get_showcases() %}
                 </div>
             </div>
         </div>

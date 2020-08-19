@@ -1,11 +1,13 @@
 <div class="main-browse">
     <div class="container">
         <div class="row">
-            <div class="span12 col1">
-                <div class="module-content box">
-                    <h2 class="heading"><a href="/group">
-                        {{ h.opendata_theme_get_custom_name('groups-custom-name', 'Groups') }}
-                    </a></h2>
+            <div class="col-md-12 span12 col1">
+                <div class="module-content">
+                    <h2 class="heading">
+                        <a href="/group">
+                            {{ h.opendata_theme_get_custom_name('groups-custom-name', 'Groups') }}
+                        </a>
+                    </h2>
                     <hr/>
                     {% for group in h.opendata_theme_get_groups() %}
                         {% if group.package_count > 0 %}
