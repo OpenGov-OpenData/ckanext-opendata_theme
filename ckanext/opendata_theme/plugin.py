@@ -20,6 +20,7 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         if toolkit.check_ckan_version(min_version='2.4'):
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_css', 'Custom CSS')
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_home_page', 'Home Page Layout')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom_footer', 'Custom Footer Layout')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
@@ -28,7 +29,10 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
             'ckanext.opendata_theme.custom_raw_css': [ignore_missing, six.text_type],
             'ckanext.opendata_theme.custom_css_metadata': [ignore_missing, dict],
             'ckanext.opendata_theme.custom_naming': [ignore_missing, dict],
-            'ckanext.opendata_theme.custom_homepage_style': [ignore_missing, int]
+            'ckanext.opendata_theme.custom_homepage_style': [ignore_missing, int],
+            'ckanext.opendata_theme.all_footer_links': [ignore_missing, dict],
+            'ckanext.opendata_theme.footer_layout_style': [ignore_missing, int],
+            'ckanext.opendata_theme.footer_columns_links': [ignore_missing, dict]
         })
         return schema
 
@@ -73,5 +77,10 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
             'reset_custom_naming',
             '/ckan-admin/reset_custom_naming',
             action='reset_custom_naming', controller=ctrl
+        )
+        m.connect(
+            'custom_footer',
+            '/ckan-admin/custom_footer',
+            action='custom_footer', controller=ctrl
         )
         return m

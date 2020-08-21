@@ -16,8 +16,8 @@ from ckan.plugins.toolkit import (
     request
 )
 
-from ckanext.opendata_theme.constants import LAYOUTS
-from ckanext.opendata_theme.processors import custom_style_processor, custom_naming_processor
+from ckanext.opendata_theme.constants import LAYOUTS, DEFAULT_LINKS, EMPTY_LINK
+from ckanext.opendata_theme.processors import custom_style_processor, custom_naming_processor, custom_footer_processor
 
 
 class CustomCSSController(admin.AdminController):
@@ -121,6 +121,47 @@ class CustomCSSController(admin.AdminController):
             action='custom_home_page',
             extra_vars=extra_vars
         )
+
+    def custom_footer(self):
+
+        all_links = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.all_footer_links"})
+        footer_layout = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.footer_layout_style"})
+        if not footer_layout:
+            get_action('config_option_update')({}, {"ckanext.opendata_theme.footer_layout_style": 1})
+        if not all_links:
+            all_links = custom_footer_processor.get_all_links_from_defaults()
+
+            get_action('config_option_update')(
+                {},
+                {"ckanext.opendata_theme.all_footer_links": all_links}
+            )
+        else:
+            if isinstance(all_links, basestring):
+                all_links = ast.literal_eval(all_links)
+
+        if request.method == 'POST':
+            data = clean_dict(dict_fns.unflatten(
+                tuplize_dict(parse_params(request.POST))))
+            custom_footer_processor.parse_form_data(data, all_links)
+
+        footer_column_1, footer_column_2, footer_column_3 = custom_footer_processor.get_links_for_columns()
+        all_links = self.sort_all_links_by_title_and_add_empty(all_links)
+        return render(
+            'admin/custom_footer.html',
+            extra_vars={
+                "footer_column_1": footer_column_1,
+                "footer_column_2": footer_column_2,
+                "footer_column_3": footer_column_3,
+                "all_links": all_links
+            }
+        )
+
+    def sort_all_links_by_title_and_add_empty(self, data):
+        result = list(data.values())
+        result.sort(key=lambda x: x.get('text'))
+        result.insert(0, EMPTY_LINK)
+        return result
+
 
     @staticmethod
     def save_css_metadata(custom_css, css_metadata):

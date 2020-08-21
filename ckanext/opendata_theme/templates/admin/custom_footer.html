@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+
+{% import 'macros/form.html' as form %}
+
+{% set footer_layout_style = ( g['ckanext.opendata_theme.footer_layout_style'] or '1' ) %}
+{% set custom_footer = h.url_for(
+  controller='ckanext.opendata_theme.controller:CustomCSSController',
+  action='custom_footer') %}
+
+{% set reset_custom_footer = h.url_for(
+  controller='ckanext.opendata_theme.controller:CustomCSSController',
+  action='reset_custom_footer') %}
+
+
+{% block primary_content_inner %}
+    {{ form.errors(errors) }}
+    <form method="post" action="{{ custom_footer }}" id="custom-footer-form">
+
+    {% snippet "home/footer/footer_form_layout_{0}.html".format(footer_layout_style),
+     footer_column_1=footer_column_1,
+     footer_column_2=footer_column_2,
+     footer_column_3=footer_column_3,
+            all_links=all_links%}
+
+        <label class="control-label" for="new-link-text"> New Link Name </label>
+        <input type="text"
+               name="new-link-text" id="new-link-text"/>
+
+        <label class="control-label" for="new-link-url"> New Link Url </label>
+        <input type="text"
+               name="new-link-url" id="new-link-url"/>
+
+
+
+        <div class="form-actions">
+            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
+            <a class="btn btn-danger pull-left" data-module="confirm-action"
+               data-module-content="Do you really want to reset all custom links ? All your changes will be lost."
+               href="{{ reset_custom_footer }}">{{ _('Reset to Default') }}
+            </a>
+
+        </div>
+    </form>
+
+{% endblock %}
