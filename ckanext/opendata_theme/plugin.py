@@ -1,11 +1,7 @@
 import six
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckanext.opendata_theme.controller import CustomCSSController
 import ckanext.opendata_theme.helpers as helper
-from ckanext.opendata_theme.processor import custom_style_processor
-from ckan.plugins.toolkit import get_action
-
 
 
 class Opendata_ThemePlugin(plugins.SingletonPlugin):
@@ -19,9 +15,6 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         toolkit.add_template_directory(ckan_config, 'templates')
         toolkit.add_public_directory(ckan_config, 'static')
         toolkit.add_resource('fanstatic', 'opendata_theme_resource')
-        # toolkit.add_template_directory(config_, 'templates')
-        # toolkit.add_public_directory(config_, 'public')
-        # toolkit.add_resource('fanstatic', 'opendata_theme')
 
         if toolkit.check_ckan_version(min_version='2.4'):
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_css', 'Custom CSS')
@@ -65,8 +58,7 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         m.connect(
             'custom_css',
             '/ckan-admin/custom_css',
-            action='custom_css', controller=ctrl, ckan_icon='paint-brush'
-        ,
+            action='custom_css', controller=ctrl, ckan_icon='paint-brush',
         )
         m.connect(
             'reset_custom_css',
