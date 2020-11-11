@@ -15,4 +15,3 @@ def get_rgb_from_color(color):
 def get_contrast(color_1, color_2):
 
     return contrast.rgb(get_rgb_from_color(color_1), get_rgb_from_color(color_2))
-

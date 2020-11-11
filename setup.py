@@ -81,6 +81,7 @@ setup(
     entry_points='''
         [ckan.plugins]
         opendata_theme=ckanext.opendata_theme.plugin:Opendata_ThemePlugin
+        opendata_theme_custom_colors=ckanext.opendata_custom_css_colors.plugin:Opendata_ThemePlugin
 
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan

@@ -1,31 +1,10 @@
-import abc
 from collections import defaultdict, OrderedDict
 import wcag_contrast_ratio as contrast
+from ckanext.base.processor import AbstractParser
+from ckanext.base.color_contrast import get_contrast
+
 
 __all__ = ['custom_style_processor']
-
-from ckanext.opendata_theme.color_conrast import get_contrast
-
-
-class AbstractParser(object):
-    __metaclass__ = abc.ABCMeta
-    class_name = ''
-    form_name = ''
-    title = ''
-    location = ''
-    color = ''
-    _default_color = ''
-
-    @classmethod
-    def get_css_from_data(cls, data):
-        cls.parse_form_data(data)
-        if cls.color:
-            return {cls.location: cls.color.encode('utf-8')}
-
-    @classmethod
-    def parse_form_data(cls, data):
-        value = data.get(cls.form_name, cls._default_color)
-        cls.color = value
 
 
 class AccountHeaderBackGroundColor(AbstractParser):
@@ -194,7 +173,7 @@ class CustomStyleProcessor:
         result_css = defaultdict(dict)
         css_metadata = OrderedDict()
 
-        for position, processor in enumerate(self.processors):
+        for processor in self.processors:
             css_declaration = processor.get_css_from_data(data)
             if css_declaration is not None:
                 result_css[processor.class_name].update(css_declaration)
@@ -202,7 +181,6 @@ class CustomStyleProcessor:
             css_metadata[processor.form_name] = {
                 'title': processor.title,
                 'value': processor.color,
-                'position': position
             }
 
         raw_css = '\n'

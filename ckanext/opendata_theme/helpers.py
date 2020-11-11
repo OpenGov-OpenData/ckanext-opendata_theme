@@ -58,7 +58,7 @@ def get_package_metadata(package):
     result = {}
     try:
         result = toolkit.get_action('package_show')(None, {'id': package.get('name'), 'include_tracking': True})
-    except:
+    except Exception:
         print "[og_theme] Error in retrieving dataset metadata for " + str(package)
     return result
 

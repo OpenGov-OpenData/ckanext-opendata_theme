@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block styles %}
+  {{ super() }}
+    <style>
+        {% resource 'opendata_custom_css_colors_resource/css/theme.css' %}
+        {{ g['ckanext.opendata_theme.custom_raw_css'] | safe }}
+    </style>
+{% endblock %}

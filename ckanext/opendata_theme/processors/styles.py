@@ -2,10 +2,9 @@ from abc import abstractmethod, ABCMeta
 from collections import defaultdict, OrderedDict
 
 import wcag_contrast_ratio as contrast
+from ckanext.base.color_contrast import get_contrast
 
 __all__ = ['CustomStyleProcessor']
-
-from ckanext.opendata_theme.color_contrast import get_contrast
 
 
 class AbstractParser:
