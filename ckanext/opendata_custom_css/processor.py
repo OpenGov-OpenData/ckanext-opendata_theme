@@ -12,7 +12,7 @@ class AccountHeaderBackGroundColor(AbstractParser):
     form_name = 'custom-css-account-header-background-color'
     title = 'Account Header Background Color'
     location = 'background'
-    _default_color = '#044187'
+    _default_value = '#044187'
 
 
 class AccountHeaderTextColor(AbstractParser):
@@ -21,7 +21,7 @@ class AccountHeaderTextColor(AbstractParser):
     form_name = 'custom-css-account-header-color'
     title = 'Account Header Text Color'
     location = 'color'
-    _default_color = '#ffffff'
+    _default_value = '#ffffff'
 
 
 class AccountHoverBackgroundColor(AbstractParser):
@@ -29,7 +29,7 @@ class AccountHoverBackgroundColor(AbstractParser):
     form_name = 'custom-css-account-hover-background-color'
     title = 'Account Header Hover Background Color'
     location = 'background'
-    _default_color = '#1f76d8'
+    _default_value = '#1f76d8'
 
 
 class NavigationHeaderBackGroundColor(AbstractParser):
@@ -37,7 +37,7 @@ class NavigationHeaderBackGroundColor(AbstractParser):
     form_name = 'custom-css-header-background-color'
     title = 'Navigation Header Background Color'
     location = 'background'
-    _default_color = '#1f76d8'
+    _default_value = '#1f76d8'
 
 
 class NavigationHeaderTextColor(AbstractParser):
@@ -51,7 +51,7 @@ class NavigationHeaderTextColor(AbstractParser):
     form_name = 'custom-css-header-text-color'
     title = 'Navigation Header Text color'
     location = 'color'
-    _default_color = '#ffffff'
+    _default_value = '#ffffff'
 
 
 class NavigationButtonHoverBackgroundColor(AbstractParser):
@@ -60,7 +60,7 @@ class NavigationButtonHoverBackgroundColor(AbstractParser):
     form_name = 'custom-css-account-hover-navigation-button-background-color'
     title = 'Navigation Button Hover Background Color'
     location = 'background-color'
-    _default_color = '#044187'
+    _default_value = '#044187'
 
 
 class ModuleHeaderBackgroundColor(AbstractParser):
@@ -68,7 +68,7 @@ class ModuleHeaderBackgroundColor(AbstractParser):
     form_name = 'custom-css-module-header-background-color'
     title = 'Side Menu Header Background Color'
     location = 'background'
-    _default_color = '#1f76d8'
+    _default_value = '#1f76d8'
 
 
 class ModuleHeaderTextColor(AbstractParser):
@@ -76,7 +76,7 @@ class ModuleHeaderTextColor(AbstractParser):
     form_name = 'custom-css-module-header-color'
     title = 'Side Menu Header Text Color'
     location = 'color'
-    _default_color = '#ffffff'
+    _default_value = '#ffffff'
 
 
 class FooterBackGroundColor(AbstractParser):
@@ -84,7 +84,7 @@ class FooterBackGroundColor(AbstractParser):
     form_name = 'custom-css-footer-background-color'
     title = 'Footer Background Color'
     location = 'background'
-    _default_color = '#383b3d'
+    _default_value = '#383b3d'
 
 
 class FooterTextColor(AbstractParser):
@@ -94,7 +94,7 @@ class FooterTextColor(AbstractParser):
     form_name = 'custom-css-footer-color'
     title = 'Footer Text Color'
     location = 'color'
-    _default_color = '#ffffff'
+    _default_value = '#ffffff'
 
 
 class LinkColor(AbstractParser):
@@ -102,7 +102,7 @@ class LinkColor(AbstractParser):
     form_name = 'custom-css-link-color'
     title = 'Link Color'
     location = 'color'
-    _default_color = '#131517'
+    _default_value = '#131517'
 
 
 class LinkHoverColor(AbstractParser):
@@ -110,7 +110,7 @@ class LinkHoverColor(AbstractParser):
     form_name = 'custom-css-link-hover-color'
     title = 'Link Hover Color'
     location = 'color'
-    _default_color = '#165cab'
+    _default_value = '#165cab'
 
 
 class FooterLinkColor(AbstractParser):
@@ -120,7 +120,7 @@ class FooterLinkColor(AbstractParser):
     form_name = 'custom-css-footer-link-color'
     title = 'Footer Link Color'
     location = 'color'
-    _default_color = '#ffffff'
+    _default_value = '#ffffff'
 
 
 class CustomStyleProcessor:
@@ -180,7 +180,7 @@ class CustomStyleProcessor:
 
             css_metadata[processor.form_name] = {
                 'title': processor.title,
-                'value': processor.color,
+                'value': processor.value,
             }
 
         raw_css = '\n'
@@ -205,8 +205,8 @@ class CustomStyleProcessor:
         for pair in color_pairs:
             pr_1 = pair[0]
             pr_2 = pair[1]
-            if pr_1.color and pr_2.color:
-                contrast_value = get_contrast(pr_1.color, pr_2.color)
+            if pr_1.value and pr_2.value:
+                contrast_value = get_contrast(pr_1.value, pr_2.value)
                 if not contrast.passes_AA(contrast_value):
                     key = '{} and {}'.format(
                         pr_1.title,

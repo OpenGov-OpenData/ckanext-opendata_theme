@@ -5,16 +5,16 @@
 {% import 'macros/form.html' as form %}
 
 {% set custom_css_action = h.url_for(
-  controller='ckanext.opendata_custom_css_colors.controller:CustomCSSColorController',
+  controller='ckanext.opendata_custom_css.controller:CustomCSSController',
   action='custom_css') %}
 
 {% set reset_custom_css = h.url_for(
-  controller='ckanext.opendata_custom_css_colors.controller:CustomCSSColorController',
+  controller='ckanext.opendata_custom_css.controller:CustomCSSController',
   action='reset_custom_css') %}
 
 {% block styles %}
     {{ super() }}
-    {% resource 'opendata_custom_css_colors_resource/main' %}
+    {% resource 'opendata_custom_css_resource/main' %}
 {% endblock %}
 
 {% block primary_content_inner %}
