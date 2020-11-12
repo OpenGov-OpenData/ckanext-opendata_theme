@@ -16,7 +16,7 @@ from ckan.plugins.toolkit import (
     request
 )
 
-from ckanext.opendata_custom_css.processor import custom_style_processor
+from ckanext.opendata_theme.opengov_custom_css.processor import custom_style_processor
 
 
 class CustomCSSController(admin.AdminController):
@@ -45,7 +45,7 @@ class CustomCSSController(admin.AdminController):
         css_metadata = self.sort_inputs_by_title(css_metadata)
         extra_vars.update(self.split_inputs_onto_two_columns(css_metadata))
         redirect_to(
-            controller='ckanext.opendata_custom_css.controller:CustomCSSController',
+            controller='ckanext.opendata_theme.opengov_custom_css.controller:CustomCSSController',
             action='custom_css',
             extra_vars=extra_vars
         )
@@ -60,7 +60,7 @@ class CustomCSSController(admin.AdminController):
             css_metadata = self.sort_inputs_by_title(css_metadata)
             extra_vars.update(self.split_inputs_onto_two_columns(css_metadata))
             redirect_to(
-                controller='ckanext.opendata_custom_css.controller:CustomCSSController',
+                controller='ckanext.opendata_theme.opengov_custom_css.controller:CustomCSSController',
                 action='custom_css',
                 extra_vars=extra_vars
             )

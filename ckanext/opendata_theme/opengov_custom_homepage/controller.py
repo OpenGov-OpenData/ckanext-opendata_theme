@@ -16,8 +16,8 @@ from ckan.plugins.toolkit import (
     request
 )
 
-from ckanext.opendata_theme.constants import LAYOUTS
-from ckanext.opendata_theme.processor import custom_naming_processor
+from ckanext.opendata_theme.opengov_custom_homepage.constants import LAYOUTS
+from ckanext.opendata_theme.opengov_custom_homepage.processor import custom_naming_processor
 
 
 class CustomCSSController(admin.AdminController):
@@ -54,7 +54,7 @@ class CustomCSSController(admin.AdminController):
         naming = self.sort_inputs_by_title(naming)
         extra_vars["custom_naming"] = naming
         redirect_to(
-            controller='ckanext.opendata_theme.controller:CustomCSSController',
+            controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
             action='custom_home_page',
             extra_vars=extra_vars
         )
@@ -74,7 +74,7 @@ class CustomCSSController(admin.AdminController):
         get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_naming": naming})
 
         redirect_to(
-            controller='ckanext.opendata_theme.controller:CustomCSSController',
+            controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
             action='custom_home_page',
             extra_vars=extra_vars
         )

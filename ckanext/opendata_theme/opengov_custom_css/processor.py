@@ -1,7 +1,7 @@
 from collections import defaultdict, OrderedDict
 import wcag_contrast_ratio as contrast
-from ckanext.base.processor import AbstractParser
-from ckanext.base.color_contrast import get_contrast
+from ckanext.opendata_theme.base.processor import AbstractParser
+from ckanext.opendata_theme.base.color_contrast import get_contrast
 
 
 __all__ = ['custom_style_processor']

@@ -80,8 +80,8 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points='''
         [ckan.plugins]
-        opendata_theme=ckanext.opendata_theme.plugin:Opendata_ThemePlugin
-        opendata_theme_custom_css=ckanext.opendata_custom_css.plugin:Opendata_ThemePlugin
+        opengov_custom_homepage=ckanext.opendata_theme.opengov_custom_homepage.plugin:Opendata_ThemePlugin
+        opengov_custom_css=ckanext.opendata_theme.opengov_custom_css.plugin:Opendata_ThemePlugin
 
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan

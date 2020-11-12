@@ -1,4 +1,4 @@
-from ckanext.base.processor import AbstractParser
+from ckanext.opendata_theme.base.processor import AbstractParser
 
 __all__ = ["custom_naming_processor"]
 

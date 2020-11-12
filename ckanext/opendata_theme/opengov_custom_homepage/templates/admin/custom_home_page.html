@@ -4,11 +4,11 @@
 
 
 {% set custom_home_page_action = h.url_for(
-  controller='ckanext.opendata_theme.controller:CustomCSSController',
+  controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
   action='custom_home_page') %}
 
 {% set reset_custom_naming = h.url_for(
-  controller='ckanext.opendata_theme.controller:CustomCSSController',
+  controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
   action='reset_custom_naming') %}
 
 {% block primary_content_inner %}

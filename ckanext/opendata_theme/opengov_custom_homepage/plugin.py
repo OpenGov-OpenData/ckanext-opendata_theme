@@ -1,7 +1,7 @@
 import six
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-import ckanext.opendata_theme.helpers as helper
+import ckanext.opendata_theme.opengov_custom_homepage.helpers as helper
 
 
 class Opendata_ThemePlugin(plugins.SingletonPlugin):
@@ -51,7 +51,7 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         m.connect takes up to 5 parameters
         1.page template, 2.url route, 3.controller action, 4.controller class, 5. font-awesome icon class
         '''
-        ctrl = 'ckanext.opendata_theme.controller:CustomCSSController'
+        ctrl = 'ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController'
         m.connect(
             'custom_home_page',
             '/ckan-admin/custom_home_page',

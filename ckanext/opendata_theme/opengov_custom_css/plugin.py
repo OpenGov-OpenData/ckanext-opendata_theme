@@ -13,7 +13,7 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, 'templates')
         toolkit.add_public_directory(ckan_config, 'static')
-        toolkit.add_resource('../base/fanstatic', 'opendata_custom_css_resource')
+        toolkit.add_resource('../base/fanstatic', 'opengov_custom_css_resource')
 
         if toolkit.check_ckan_version(min_version='2.4'):
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_css', 'Custom CSS')
@@ -41,7 +41,7 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         m.connect takes up to 5 parameters
         1.page template, 2.url route, 3.controller action, 4.controller class, 5. font-awesome icon class
         '''
-        ctrl = 'ckanext.opendata_custom_css.controller:CustomCSSController'
+        ctrl = 'ckanext.opendata_theme.opengov_custom_css.controller:CustomCSSController'
         m.connect(
             'custom_css',
             '/ckan-admin/custom_css',
