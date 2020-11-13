@@ -23,8 +23,6 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         ignore_missing = toolkit.get_validator('ignore_missing')
         schema.update({
             # This is a custom configuration option
-            'ckanext.footer_color': [ignore_missing, unicode],
-            'ckanext.opendata_theme.custom_raw_css': [ignore_missing, six.text_type],
             'ckanext.opendata_theme.custom_naming': [ignore_missing, dict],
             'ckanext.opendata_theme.custom_homepage_style': [ignore_missing, int]
         })
