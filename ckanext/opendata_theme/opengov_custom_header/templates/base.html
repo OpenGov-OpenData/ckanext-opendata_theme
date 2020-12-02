@@ -1,0 +1,11 @@
+{% ckan_extends %}
+
+{% block styles %}
+  {{ super() }}
+    <style>
+        {% resource 'opengov_custom_theme_resource/css/theme.css' %}
+{#        {{ g['ckanext.opendata_theme.custom_header'] | safe }}#}
+    </style>
+{% endblock %}
+
+{#{% block page_header %}{% endblock %}#}
