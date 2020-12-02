@@ -2,7 +2,7 @@ import re
 import six
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckan.lib.helpers import build_nav_main
+from ckan.common import config
 from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Header
 from webhelpers.html import escape, HTML, literal, url_escape
 
@@ -74,17 +74,33 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
 def build_pages_nav_main(*args):
     default_metadata = CustomHeaderController.get_default_custom_header_metadata()
     if not default_metadata.get('links'):
-        base_links = build_nav_main(*args)
-        expr = re.compile('(<li.*?</li>)', flags=re.DOTALL)
-        default_header_links = expr.findall(base_links)
+        plugins = config.get('ckan.plugins', '').split(' ')
         data = {'links': []}
-        for index, link in enumerate(args):
-            data['links'].append(Header(
-                title=link[1],
-                link=link[0],
-                position=index,
-                html=default_header_links[index]
-            ))
+        if 'pages' in plugins:
+            from ckanext.pages.plugin import build_pages_nav_main
+            output = build_pages_nav_main(*args)
+            expr = re.compile('(<li><a href="(.*?)">(.*?)</a></li>)', flags=re.DOTALL)
+            default_header_links = expr.findall(output)
+            for index, link in enumerate(default_header_links):
+                data['links'].append(Header(
+                    title=link[2],
+                    link=link[1],
+                    position=index,
+                    html=link[0]
+                ))
+        else:
+            from ckan.lib.helpers import build_nav_main
+            base_links = build_nav_main(*args)
+            expr = re.compile('(<li.*?</li>)', flags=re.DOTALL)
+            default_header_links = expr.findall(base_links)
+
+            for index, link in enumerate(args):
+                data['links'].append(Header(
+                    title=link[1],
+                    link=link[0],
+                    position=index,
+                    html=default_header_links[index]
+                ))
         CustomHeaderController.save_default_header_metadata(data)
 
     custom_header = CustomHeaderController.get_custom_header_metadata()

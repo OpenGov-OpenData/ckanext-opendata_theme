@@ -3,6 +3,7 @@ import ast
 
 import ckan.controllers.admin as admin
 import ckan.lib.navl.dictization_functions as dict_fns
+import six
 from ckan.logic import (
     clean_dict,
     tuplize_dict,
@@ -21,11 +22,11 @@ from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTIO
 
 class Header(object):
     def __init__(self, title, link, position, html=''):
-        self.title = title.lower()
-        self.link = link
+        self.title = six.text_type(title).lower()
+        self.link = six.text_type(link)
         self.position = position
         self._html = None
-        self.html = html
+        self.html = six.text_type(html)
 
     def __repr__(self):
         return '{}:{}'.format(self.position, self.title)
@@ -35,7 +36,7 @@ class Header(object):
             'title': self.title,
             'link': self.link,
             'position': self.position,
-            'html': str(self.html)
+            'html': self._html
         }
 
     @property
@@ -47,7 +48,7 @@ class Header(object):
 
     @html.setter
     def html(self, value):
-        self._html = str(value)
+        self._html = value
 
 
 class CustomHeaderController(admin.AdminController):
