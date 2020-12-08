@@ -63,8 +63,12 @@
         <div class="control-group">
             <div class="controls">
                 <h3 >Header Layout</h3>
-                <label class="checkbox inline"><input class="form-check-input" type="radio" name="layout_type" id="Default" checked>Default</label>
-                <label class="checkbox inline"><input class="form-check-input" type="radio" name="layout_type" id="Compressed">Compressed</label>
+                <label class="checkbox inline">
+                    <input class="form-check-input" type="radio" name="layout_type" value="default"  {% if layout_type=='default' %}checked {% endif %}>Default
+                </label>
+                <label class="checkbox inline">
+                    <input class="form-check-input" type="radio" name="layout_type" value="compressed" {% if layout_type=='compressed' %}checked {% endif %}>Compressed
+                </label>
             </div>
         </div>
         <div class="form-group ">

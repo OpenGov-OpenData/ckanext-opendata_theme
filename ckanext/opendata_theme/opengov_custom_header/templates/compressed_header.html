@@ -1,0 +1,65 @@
+{% extends "header.html" %}
+
+{% block header_wrapper %}
+<header class="navbar navbar-static-top masthead">
+  {% block header_debug %}
+    {{ super() }}
+  {% endblock %}
+  <div class="container">
+    <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+      <span class="fa fa-bars"></span>
+    </button>
+    {# The .header-image class hides the main text and uses image replacement for the title #}
+    <hgroup class="{{ g.header_class }} pull-left">
+
+      {% block header_logo %}
+        {{ super() }}
+      {% endblock %}
+
+    </hgroup>
+
+    <div class="nav-collapse collapse container">
+
+      {% block header_site_navigation %}
+        <nav class="section navigation">
+          <ul class="nav nav-pills">
+            {% block header_site_navigation_tabs %}
+              {{ h.build_nav_main(
+                ('search', _('Datasets')),
+                ('organizations_index', _('Organizations')),
+                ('group_index', _('Groups')),
+                ('about', _('About'))
+              ) }}
+            {% endblock %}
+          </ul>
+        </nav>
+      {% endblock %}
+      {% block header_account %}
+      <div class="account-masthead">
+
+          {% block header_account_container_content %}
+            {% if c.userobj %}
+              <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
+                <ul class="unstyled">
+                  {% block header_account_logged %}
+                    {{ super() }}
+                  {% endblock %}
+                </ul>
+              </div>
+            {% else %}
+              <nav class="account not-authed">
+                <ul class="unstyled">
+                  {% block header_account_notlogged %}
+                    {{ super() }}
+                  {% endblock %}
+                </ul>
+              </nav>
+            {% endif %}
+          {% endblock %}
+      </div>
+      {% endblock %}
+
+    </div>
+  </div>
+</header>
+{% endblock %}

@@ -7,7 +7,7 @@ import six
 from ckan.logic import (
     clean_dict,
     tuplize_dict,
-    parse_params
+    parse_params, ValidationError
 )
 from ckan.plugins.toolkit import (
     get_action,
@@ -21,12 +21,13 @@ from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTIO
 
 
 class Header(object):
-    def __init__(self, title, link, position, html=''):
+    def __init__(self, title, link, position, html='', active=False):
         self.title = six.text_type(title).lower()
         self.link = six.text_type(link)
         self.position = position
         self._html = None
         self.html = six.text_type(html)
+        self.active = active
 
     def __repr__(self):
         return '{}:{}'.format(self.position, self.title)
@@ -36,7 +37,8 @@ class Header(object):
             'title': self.title,
             'link': self.link,
             'position': self.position,
-            'html': self._html
+            'html': self._html,
+            'active': self.active,
         }
 
     @property
@@ -59,7 +61,8 @@ class CustomHeaderController(admin.AdminController):
                 tuplize_dict(parse_params(request.POST))))
             item = [link for link in header_data['links'] if link.title == data['to_remove']]
             header_data['links'].remove(item[0])
-            self.save_header_metadata(header_data)
+            error = self.save_header_metadata(header_data)
+            header_data['errors'] = error
             self.redirect_to_custom_header_page(header_data)
 
     def add_link(self):
@@ -73,15 +76,20 @@ class CustomHeaderController(admin.AdminController):
                     link=data.get('new_link'),
                     position=len(header_data['links'])+1,
                 ))
-            self.save_header_metadata(header_data)
-            self.redirect_to_custom_header_page(header_data)
+            error = self.save_header_metadata(header_data)
+            header_data['errors'] = error
+            return render('admin/custom_header.html',
+                          extra_vars=header_data)
 
     def custom_header(self):
         custom_header = self.get_custom_header_metadata()
         if request.method == 'POST':
             data = clean_dict(dict_fns.unflatten(
                 tuplize_dict(parse_params(request.POST))))
-            custom_header = {'links': []}
+            custom_header = {
+                'links': [],
+                'layout_type': data.get('layout_type', 'default')
+            }
             data_len = len(data.get('link', []))
             if data_len > 1:
                 for index in range(data_len):
@@ -96,7 +104,9 @@ class CustomHeaderController(admin.AdminController):
                     link=data['link'],
                     position=data['position'],
                 ))
-            self.save_header_metadata(custom_header)
+            error = self.save_header_metadata(custom_header)
+            custom_header['errors'] = error
+
         return render('admin/custom_header.html',
                       extra_vars=custom_header)
 
@@ -108,7 +118,9 @@ class CustomHeaderController(admin.AdminController):
         )
 
     def reset_custom_header(self):
-        custom_header = {}
+        custom_header = {
+            'layout_type': 'default',
+        }
         self.save_default_header_metadata(custom_header)
         self.save_header_metadata(custom_header)
         # for setting default headers from page to db
@@ -118,7 +130,10 @@ class CustomHeaderController(admin.AdminController):
 
     @staticmethod
     def save_header_metadata(custom_header):
-        CustomHeaderController.store_data(CONFIG_SECTION, custom_header)
+        try:
+            CustomHeaderController.store_data(CONFIG_SECTION, custom_header)
+        except ValidationError as ex:
+            return ex.error_summary
 
     @staticmethod
     def get_custom_header_metadata():

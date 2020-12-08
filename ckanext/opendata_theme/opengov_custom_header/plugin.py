@@ -1,5 +1,9 @@
 import re
 import six
+import string
+
+from ckan.logic.validators import Invalid
+from six.moves.urllib.parse import urlparse, quote
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckan.common import config
@@ -14,7 +18,12 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IRoutes, inherit=True)
+    plugins.implements(plugins.IValidators)
 
+    def get_validators(self):
+        return {
+            u'custom_header_url_validator': custom_header_url_validator,
+        }
     # IConfigurer
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, 'templates')
@@ -27,9 +36,10 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
+        custom_header_url_validator = toolkit.get_validator('custom_header_url_validator')
         schema.update({
             # This is a custom configuration option
-            CONFIG_SECTION: [ignore_missing, dict],
+            CONFIG_SECTION: [ignore_missing, custom_header_url_validator],
             DEFAULT_CONFIG_SECTION: [ignore_missing, dict],
         })
         return schema
@@ -106,5 +116,26 @@ def build_pages_nav_main(*args):
     custom_header = CustomHeaderController.get_custom_header_metadata()
     final_header_links = [item for item in custom_header.get('links', [])]
 
-    final_header_links.sort(key=lambda x: x.position)
+    final_header_links.sort(key=lambda x: int(x.position))
     return literal(''.join([item.html for item in final_header_links]))
+
+
+def custom_header_url_validator(value):
+    def check_characters(value):
+        if set(value) <= set(string.ascii_letters + string.digits + '-./'):
+            return False
+        return True
+    for item in value.get('links', []):
+        link = item.get('link', '')
+        if len(link) > 2000:
+            raise Invalid('Url is too long. Only 2000 characters allowed for "{}"'.format(link))
+        pieces = urlparse(link)
+        if pieces.scheme and pieces.scheme != 'https':
+            raise Invalid('Only HTTPS urls supported "{}"'.format(link))
+        elif not pieces.path and not all([pieces.scheme, pieces.netloc]):
+            raise Invalid('Empty relative path in relative url {}'.format(link))
+        elif pieces.path and not all([pieces.scheme, pieces.netloc]) and check_characters(pieces.path):
+            raise Invalid('Relative path contains invalid characters {}'.format(link))
+        elif pieces.netloc and check_characters(pieces.netloc):
+            raise Invalid('Url contains invalid characters "{}"'.format(link))
+    return value
