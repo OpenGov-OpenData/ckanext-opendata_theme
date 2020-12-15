@@ -29,7 +29,6 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
         toolkit.add_template_directory(ckan_config, 'templates')
         toolkit.add_public_directory(ckan_config, 'static')
         toolkit.add_resource('../base/fanstatic', 'opengov_custom_theme_resource')
-        toolkit.add_resource('../opengov_custom_header/fanstatic', 'opengov_custom_header_resource')
 
         if toolkit.check_ckan_version(min_version='2.4'):
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_header', 'Custom Header')

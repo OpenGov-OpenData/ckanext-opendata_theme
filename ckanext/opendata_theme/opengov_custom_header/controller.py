@@ -141,7 +141,7 @@ class CustomHeaderController(admin.AdminController):
         default_data = CustomHeaderController.get_default_custom_header_metadata()
         if not data.get('links'):
             for h in default_data.get('links', []):
-                data['links'].append(h)
+                data.get('links', []).append(h)
         return data
 
     @staticmethod
