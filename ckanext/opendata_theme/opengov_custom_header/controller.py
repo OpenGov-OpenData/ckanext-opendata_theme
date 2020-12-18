@@ -83,6 +83,13 @@ class CustomHeaderController(admin.AdminController):
 
     def custom_header(self):
         custom_header = self.get_custom_header_metadata()
+        if not custom_header:
+            # this block is required for base initialization
+            # it happens only once when default custom header metadata is not set
+            # because it is set in build_pages_nav_main helper function which is called
+            # during the page rendering.
+            # reset_custom_header is able to render the page in the background for setting default metadata.
+            self.reset_custom_header()
         if request.method == 'POST':
             data = clean_dict(dict_fns.unflatten(
                 tuplize_dict(parse_params(request.POST))))
@@ -90,9 +97,8 @@ class CustomHeaderController(admin.AdminController):
                 'links': [],
                 'layout_type': data.get('layout_type', 'default')
             }
-            data_len = len(data.get('link', []))
-            if data_len > 1:
-                for index in range(data_len):
+            if isinstance(data.get('link'), list):
+                for index in range(len(data.get('link'))):
                     custom_header['links'].append(Header(
                         title=data['title'][index],
                         link=data['link'][index],
@@ -118,14 +124,8 @@ class CustomHeaderController(admin.AdminController):
         )
 
     def reset_custom_header(self):
-        custom_header = {
-            'layout_type': 'default',
-        }
-        self.save_default_header_metadata(custom_header)
+        custom_header = {}
         self.save_header_metadata(custom_header)
-        # for setting default headers from page to db
-        render('admin/custom_header.html',
-               extra_vars=custom_header)
         self.redirect_to_custom_header_page(custom_header)
 
     @staticmethod
@@ -173,5 +173,6 @@ class CustomHeaderController(admin.AdminController):
         links = []
         for item in data_dict.get('links', []):
             links.append(Header(**item))
-        data_dict['links'] = links
+        if links:
+            data_dict['links'] = links
         return data_dict
