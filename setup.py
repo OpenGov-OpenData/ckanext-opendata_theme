@@ -83,6 +83,7 @@ setup(
         opengov_custom_homepage=ckanext.opendata_theme.opengov_custom_homepage.plugin:Opendata_ThemePlugin
         opengov_custom_css=ckanext.opendata_theme.opengov_custom_css.plugin:Opendata_ThemePlugin
         opengov_custom_header=ckanext.opendata_theme.opengov_custom_header.plugin:Opendata_ThemePlugin
+        opengov_custom_footer=ckanext.opendata_theme.opengov_custom_footer.plugin:Opendata_ThemePlugin
 
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan
