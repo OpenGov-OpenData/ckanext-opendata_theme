@@ -1,0 +1,10 @@
+main_script:
+  output: ckanext-custom-footer/extension.js
+  contents:
+    - vendor/ckeditor/adapters/jquery.js
+    - vendor/ckeditor/ckeditor.js
+    - ckedit.js
+main_style:
+  output: ckanext-custom-footer/extension.css
+  contents:
+    - ckedit.css

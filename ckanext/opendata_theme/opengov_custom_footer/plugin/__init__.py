@@ -1,12 +1,19 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
+from ckan.exceptions import CkanVersionException
 
+try:
+    toolkit.requires_ckan_version("2.9")
+except CkanVersionException:
+    from ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin import MixinPlugin
+else:
+    from ckanext.opendata_theme.opengov_custom_footer.plugin.flask_plugin import MixinPlugin
 from webhelpers.html import literal
 from ckanext.opendata_theme.opengov_custom_footer.controller import CustomFooterController
 from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_SECTION, CONTROLLER
 
 
-class Opendata_ThemePlugin(plugins.SingletonPlugin):
+class Opendata_ThemePlugin(MixinPlugin, plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
@@ -20,10 +27,10 @@ class Opendata_ThemePlugin(plugins.SingletonPlugin):
 
     # IConfigurer
     def update_config(self, ckan_config):
-        toolkit.add_template_directory(ckan_config, 'templates')
-        toolkit.add_public_directory(ckan_config, 'static')
-        toolkit.add_resource('../base/fanstatic', 'opengov_custom_theme_resource')
-        toolkit.add_resource('fanstatic', 'opengov_custom_footer_resource')
+        toolkit.add_template_directory(ckan_config, '../templates')
+        toolkit.add_public_directory(ckan_config, '../static')
+        toolkit.add_resource('../../base/fanstatic', 'opengov_custom_theme_resource')
+        toolkit.add_resource('../fanstatic', 'opengov_custom_footer_resource')
 
         if toolkit.check_ckan_version(min_version='2.4'):
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_footer', 'Custom Footer')
