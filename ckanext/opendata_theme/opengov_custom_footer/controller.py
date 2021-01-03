@@ -1,5 +1,6 @@
 # encoding: utf-8
 import ast
+import bleach
 
 import ckan.controllers.admin as admin
 import ckan.lib.navl.dictization_functions as dict_fns
@@ -15,7 +16,12 @@ from ckan.plugins.toolkit import (
     request
 )
 
-from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_SECTION, CONTROLLER
+from ckanext.opendata_theme.opengov_custom_footer.constants import (
+    CONFIG_SECTION, CONTROLLER, ALLOWED_HTML_TAGS, ALLOWED_ATTRIBUTES)
+
+
+def clean_html(text):
+    return bleach.clean(text, tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_ATTRIBUTES)
 
 
 class CustomFooterController(admin.AdminController):
@@ -26,10 +32,10 @@ class CustomFooterController(admin.AdminController):
                 tuplize_dict(parse_params(request.POST))))
             custom_footer = {
                 'layout_type': int(data.get('layout_type', 1)),
-                'content_0': data.get('content-0'),
-                'content_1': data.get('content-1'),
-                'content_2': data.get('content-2'),
-                'content_3': data.get('content-3'),
+                'content_0': clean_html(data.get('content-0')),
+                'content_1': clean_html(data.get('content-1')),
+                'content_2': clean_html(data.get('content-2')),
+                'content_3': clean_html(data.get('content-3')),
             }
             error = self.save_footer_metadata(custom_footer)
             custom_footer['errors'] = error
