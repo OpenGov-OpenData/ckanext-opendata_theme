@@ -1,0 +1,18 @@
+main_script:
+  output: opengov_custom_theme_resource/extension.js
+  filters: rjsmin
+  contents:
+    - vendor/spectrum/js/spectrum.js
+    - js/color_picker.js
+
+spectrum_style:
+  output: opengov_custom_theme_resource/spectrum.css
+  filters: cssrewrite
+  contents:
+    - vendor/spectrum/css/spectrum.css
+
+main_style:
+  output: opengov_custom_theme_resource/theme.css
+  filters: cssrewrite
+  contents:
+    - css/theme.css

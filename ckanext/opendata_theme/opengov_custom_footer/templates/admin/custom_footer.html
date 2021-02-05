@@ -3,20 +3,23 @@
 {% extends "admin/base.html" %}
 
 {% import 'macros/form.html' as form %}
-
-{% set custom_footer_action = h.url_for(
-  controller='ckanext.opendata_theme.opengov_custom_footer.controller:CustomFooterController',
-  action='custom_footer') %}
-
-{% set reset_custom_footer = h.url_for(
-  controller='ckanext.opendata_theme.opengov_custom_footer.controller:CustomFooterController',
-  action='reset_custom_footer') %}
-
 {% block styles %}
     {{ super() }}
-    {% resource 'opengov_custom_theme_resource/main' %}
-
+    {% set snippet_type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
+    {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
 {% endblock %}
+
+{% if h.ckan_version() < '2.9' %}
+    {% set custom_footer_action = h.url_for(
+      controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
+      action='custom_footer') %}
+    {% set reset_custom_footer = h.url_for(
+      controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
+      action='reset_custom_footer') %}
+{% else %}
+    {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer/') %}
+    {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer/') %}
+{% endif %}
 
 {% block primary_content_inner %}
     {{ form.errors(data.errors) }}
@@ -26,31 +29,30 @@
             <div class="controls">
                 <h3 >Footer Layout</h3>
                 <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="1"  {% if data.layout_type|int==1 or not data.layout_type %}checked {% endif %}>Default
+                    <input class="form-check-input" type="radio" name="layout_type" value="1"  {% if data['layout_type']|int==1 or not data['layout_type'] %}checked {% endif %}>Default
                 </label>
                 <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="2" {% if data.layout_type|int==2 %}checked {% endif %}>Column 2
+                    <input class="form-check-input" type="radio" name="layout_type" value="2" {% if data['layout_type']|int==2 %}checked {% endif %}>Column 2
                 </label>
                 <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="3" {% if data.layout_type|int==3 %}checked {% endif %}>Column 3
+                    <input class="form-check-input" type="radio" name="layout_type" value="3" {% if data['layout_type']|int==3 %}checked {% endif %}>Column 3
                 </label>
                 <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="4" {% if data.layout_type|int==4 %}checked {% endif %}>Column 4
+                    <input class="form-check-input" type="radio" name="layout_type" value="4" {% if data['layout_type']|int==4 %}checked {% endif %}>Column 4
                 </label>
             </div>
         </div>
         <div class="form-group ">
-            {% for index in range(data.layout_type|int) %}
+            {% for index in range(data['layout_type']|int) %}
                 <div class="control-group inline">
                     <label for="field-content-ck-{{ index }}" class="control-label">{{ _('Content') }}</label>
                 </div>
-                {% resource 'opengov_custom_footer_resource/main' %}
                 <textarea id="field-content-ck-{{ index }}"
                           name="content-{{ index }}"
                           placeholder="{{_('My HTML content')}}"
                           data-module="ckedit"
                           style="height:200px;"
-                          data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=true)) }}">{{ data['content_{}'.format(index)] }}</textarea>
+                          data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=True)) }}">{{ data['content_{}'.format(index)] }}</textarea>
 
             {% endfor %}
 
