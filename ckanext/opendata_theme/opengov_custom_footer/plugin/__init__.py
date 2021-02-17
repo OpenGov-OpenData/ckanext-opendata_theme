@@ -7,11 +7,10 @@ try:
 except CkanVersionException:
     from ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin import MixinPlugin
     from webhelpers.html import literal
-    from ckanext.opendata_theme.opengov_custom_footer.controller import CustomFooterController
 else:
     from ckanext.opendata_theme.opengov_custom_footer.plugin.flask_plugin import MixinPlugin
     from ckan.lib.helpers import literal
-    from ckanext.opendata_theme.opengov_custom_footer.common_controller import CustomFooterCommonController as CustomFooterController
+from ckanext.opendata_theme.opengov_custom_footer.common_controller import CustomFooterCommonController as CustomFooterController
 from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_SECTION
 
 
