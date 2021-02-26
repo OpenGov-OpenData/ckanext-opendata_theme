@@ -6,19 +6,19 @@
 
 {% if h.ckan_version() < '2.9' %}
     {% set custom_header_action = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
     action='custom_header') %}
 
     {% set reset_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
     action='reset_custom_header') %}
 
     {% set remove_link_from_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
     action='remove_link') %}
 
     {% set add_link_from_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
     action='add_link') %}
 {% else %}
     {% set custom_header_action = h.url_for('/ckan-admin/custom_header/') %}
@@ -27,11 +27,6 @@
     {% set add_link_from_custom_header = h.url_for('/ckan-admin/add_link_to_header/') %}
 {% endif %}
 
-
-{#{% block styles %}#}
-{#    {{ super() }}#}
-{#    {% resource 'opengov_custom_theme_resource/main' %}#}
-{#{% endblock %}#}
 
 {% block primary_content_inner %}
     {{ form.errors(errors) }}

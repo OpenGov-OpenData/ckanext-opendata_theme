@@ -143,10 +143,10 @@ class CustomHeaderController(BaseCompatibilityController):
         for item in data.get('links', []):
             links.append(item.to_dict())
         data_dict['links'] = links
-        super(CustomHeaderController, self).store_data(config_key, data_dict)
+        BaseCompatibilityController.store_data(config_key, data_dict)
 
     def get_data(self, config_key):
-        data_dict = super(CustomHeaderController, self).get_data(config_key)
+        data_dict = BaseCompatibilityController.get_data(config_key)
         links = []
         for item in data_dict.get('links', []):
             links.append(Header(**item))

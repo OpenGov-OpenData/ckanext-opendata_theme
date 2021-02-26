@@ -1,5 +1,4 @@
 # encoding: utf-8
-import ast
 from collections import OrderedDict
 from ckan.plugins.toolkit import render, request
 
@@ -15,7 +14,7 @@ class CustomCSSController(BaseCompatibilityController):
         extra_vars = {}
         if request.method == 'POST':
             data = self.get_form_data(request)
-            self.store_config(data)
+            extra_vars = self.store_config(data)
 
         css_metadata = self.get_data(CSS_METADATA)
 
@@ -44,6 +43,7 @@ class CustomCSSController(BaseCompatibilityController):
             css_metadata = self.sort_inputs_by_title(css_metadata)
             extra_vars.update(self.split_inputs_onto_two_columns(css_metadata))
             self.redirect_to(extra_vars=extra_vars)
+        return extra_vars
 
     def save_css_metadata(self, custom_css, css_metadata):
         self.store_data(RAW_CSS, custom_css)
@@ -52,8 +52,8 @@ class CustomCSSController(BaseCompatibilityController):
     @staticmethod
     def split_inputs_onto_two_columns(data):
         input_numbers = len(data)
-        part_1 = OrderedDict(list(data.items())[0:round(input_numbers / 2)])
-        part_2 = OrderedDict(list(data.items())[round(input_numbers / 2):])
+        part_1 = OrderedDict(list(data.items())[0:int(round(input_numbers / 2))])
+        part_2 = OrderedDict(list(data.items())[int(round(input_numbers / 2)):])
         return {"data_part_1": part_1, "data_part_2": part_2}
 
     @staticmethod
