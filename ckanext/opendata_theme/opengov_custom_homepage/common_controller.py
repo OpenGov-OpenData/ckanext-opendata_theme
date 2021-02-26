@@ -1,41 +1,30 @@
 # encoding: utf-8
-import ast
 from collections import OrderedDict
 
-import ckan.controllers.admin as admin
-import ckan.lib.navl.dictization_functions as dict_fns
-from ckan.logic import (
-    clean_dict,
-    tuplize_dict,
-    parse_params
-)
-from ckan.plugins.toolkit import (
-    get_action,
-    redirect_to,
-    render,
-    request
-)
+from ckan.plugins.toolkit import render, request
 
 from ckanext.opendata_theme.opengov_custom_homepage.constants import LAYOUTS
 from ckanext.opendata_theme.opengov_custom_homepage.processor import custom_naming_processor
+from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
+from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING, CUSTOM_STYLE
 
 
-class CustomCSSController(admin.AdminController):
+class CustomCSSController(BaseCompatibilityController):
+    redirect_to_action_kwargs = dict(endpoint='custom-homepage.custom_home_page')
+
     def custom_home_page(self):
         if request.method == 'POST':
-            data = clean_dict(dict_fns.unflatten(tuplize_dict(parse_params(request.POST))))
+            data = self.get_form_data(request)
             self.store_config(data)
         # Get last or default custom naming
-        custom_naming = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_naming"})
+        custom_naming = self.get_data(CUSTOM_NAMING)
         if not custom_naming:
             custom_naming = custom_naming_processor.get_custom_naming({})
-            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_naming": custom_naming})
-        else:
-            custom_naming = ast.literal_eval(custom_naming)
+            self.store_data(config_key=CUSTOM_NAMING, data=custom_naming)
         custom_naming = self.sort_inputs_by_title(custom_naming)
 
         # Get last or default layout
-        actual_layout = get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_homepage_style"})
+        actual_layout = self.get_data(CUSTOM_STYLE)
         if not actual_layout:
             actual_layout = 1
         return render(
@@ -50,34 +39,25 @@ class CustomCSSController(admin.AdminController):
     def reset_custom_naming(self):
         extra_vars = {}
         naming = custom_naming_processor.get_custom_naming({})
-        get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_naming": naming})
+        self.store_data(CUSTOM_NAMING, naming)
         naming = self.sort_inputs_by_title(naming)
         extra_vars["custom_naming"] = naming
-        redirect_to(
-            controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
-            action='custom_home_page',
-            extra_vars=extra_vars
-        )
+        self.redirect_to(extra_vars=extra_vars)
 
-    @staticmethod
-    def store_config(data):
+    def store_config(self, data):
         extra_vars = {}
         # Check and update home page layout style
         layout_style = data.get('custom_homepage_layout')
         if layout_style:
-            get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_homepage_style": layout_style})
+            self.store_data(CUSTOM_STYLE, layout_style)
         extra_vars["actual_layout"] = layout_style
 
         # Parse and save naming
         naming = custom_naming_processor.get_custom_naming(data)
         extra_vars["custom_naming"] = naming
-        get_action('config_option_update')({}, {"ckanext.opendata_theme.custom_naming": naming})
+        self.store_data(CUSTOM_NAMING, naming)
 
-        redirect_to(
-            controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
-            action='custom_home_page',
-            extra_vars=extra_vars
-        )
+        self.redirect_to(extra_vars=extra_vars)
 
     @staticmethod
     def sort_inputs_by_title(css_metadata):

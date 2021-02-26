@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% set custom_homepage_style = ( g['ckanext.opendata_theme.custom_homepage_style'] or '1' ) %}
+{% set custom_homepage_style = ( h.opendata_theme_get_data('ckanext.opendata_theme.custom_homepage_style') or '1' ) %}
 
 {% block subtitle %}{{ _("Welcome") }}{% endblock %}
 

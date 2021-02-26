@@ -2,18 +2,23 @@
 
 {% import 'macros/form.html' as form %}
 
+{% if h.ckan_version() < '2.9' %}
+    {% set custom_home_page_action = h.url_for(
+    controller='ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin:CSSController',
+    action='custom_home_page') %}
 
-{% set custom_home_page_action = h.url_for(
-  controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
-  action='custom_home_page') %}
+    {% set reset_custom_naming = h.url_for(
+    controller='ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin:CSSController',
+    action='reset_custom_naming') %}
+{% else %}
+    {% set custom_home_page_action = h.url_for('/ckan-admin/custom_home_page/') %}
+    {% set reset_custom_naming = h.url_for('/ckan-admin/reset_custom_naming/') %}
+{% endif %}
 
-{% set reset_custom_naming = h.url_for(
-  controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomCSSController',
-  action='reset_custom_naming') %}
 
 {% block primary_content_inner %}
     {{ form.errors(error_summary) }}
-    <form method='post' action={{ custom_home_page_action }} id="custom-homepage-layout-form"
+    <form method='post' id='custom-homepage-layout-form' action={{ custom_home_page_action }}
           enctype="multipart/form-data">
         {% block homepage_template_select %}
             {{ form.select('custom_homepage_layout', id='field-custom-homepage-layout',
@@ -26,7 +31,7 @@
         {% endblock %}
 
         <div class="control-group control-medium">
-            {% for name, field in custom_naming.iteritems() %}
+            {% for name, field in custom_naming.items() %}
                 <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
                 <input type="text" name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
             {% endfor %}

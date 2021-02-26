@@ -1,6 +1,13 @@
 import ast
+import logging
 
 from ckan.plugins import toolkit
+
+from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
+from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING
+
+
+logger = logging.getLogger(__name__)
 
 
 def dataset_count():
@@ -59,12 +66,12 @@ def get_package_metadata(package):
     try:
         result = toolkit.get_action('package_show')(None, {'id': package.get('name'), 'include_tracking': True})
     except Exception:
-        print "[og_theme] Error in retrieving dataset metadata for " + str(package)
+        logger.warning("[og_theme] Error in retrieving dataset metadata for " + str(package))
     return result
 
 
 def get_custom_name(key, default_name):
-    custom_naming = toolkit.get_action('config_option_show')({}, {"key": "ckanext.opendata_theme.custom_naming"})
+    custom_naming = toolkit.get_action('config_option_show')({}, {"key": CUSTOM_NAMING})
     if not custom_naming:
         return default_name
     custom_naming = ast.literal_eval(custom_naming)
@@ -75,3 +82,7 @@ def get_custom_name(key, default_name):
         return default_name
     else:
         return name['value']
+
+
+def get_data(key):
+    return BaseCompatibilityController.get_data(key)

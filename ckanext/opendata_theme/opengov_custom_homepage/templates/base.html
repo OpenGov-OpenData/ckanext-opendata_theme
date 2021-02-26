@@ -1,9 +1,8 @@
 {% ckan_extends %}
-
 {% block styles %}
-  {{ super() }}
+    {{ super() }}
     <style>
-        {% resource 'opendata_theme_resource/css/theme.css' %}
-        {{ g['ckanext.opendata_theme.custom_raw_css'] | safe }}
+    {% set _type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
+    {% snippet 'snippets/opendata_' ~ _type ~ '.html' %}
     </style>
 {% endblock %}
