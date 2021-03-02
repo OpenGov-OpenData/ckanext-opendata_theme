@@ -1,3 +1,9 @@
+ckedit_style:
+  output: opengov_custom_footer_resource/ckedit.css
+  filters: cssrewrite
+  contents:
+    - ckedit.css
+
 ckeditor_script:
   output: opengov_custom_footer_resource/ckeditor.js
   filters: rjsmin
@@ -5,7 +11,8 @@ ckeditor_script:
     - vendor/ckeditor/ckeditor.js
   extra:
     preload:
-      - opengov_custom_footer_resource/jquery_script
+      - opengov_custom_theme_resource/jquery_script
+      - opengov_custom_footer_resource/ckedit_style
 
 jquery_adapter_script:
   output: opengov_custom_footer_resource/jquery_adapter.js
@@ -22,9 +29,7 @@ ckedit_script:
   filters: rjsmin
   contents:
     - ckedit.js
+  extra:
+    preload:
+      - opengov_custom_footer_resource/jquery_adapter_script
 
-main_style:
-  output: opengov_custom_footer_resource/ckedit.css
-  filters: cssrewrite
-  contents:
-    - ckedit.css

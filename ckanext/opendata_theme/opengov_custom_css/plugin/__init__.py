@@ -22,7 +22,7 @@ class Opendata_ThemePlugin(MixinPlugin):
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, '../templates')
         toolkit.add_public_directory(ckan_config, '../static')
-        toolkit.add_resource('../../base/fanstatic', 'opengov_custom_css_resource')
+        toolkit.add_resource('../../base/fanstatic', 'opengov_custom_theme_resource')
 
         if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_css', 'Custom CSS')

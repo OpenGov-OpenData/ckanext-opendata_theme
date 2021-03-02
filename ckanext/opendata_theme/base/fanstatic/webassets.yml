@@ -1,9 +1,34 @@
-main_script:
-  output: opengov_custom_theme_resource/extension.js
+jquery_script:
+  output: opengov_custom_theme_resource/jquery.js
+  filters: rjsmin
+  contents:
+    - vendor/jquery/jquery-3.5.1.min.js
+
+spectrum_script:
+  output: opengov_custom_theme_resource/spectrum.js
   filters: rjsmin
   contents:
     - vendor/spectrum/js/spectrum.js
+  extra:
+    preload:
+      - opengov_custom_theme_resource/jquery_script
+color_picker_script:
+  output: opengov_custom_theme_resource/color_picker.js
+  filters: rjsmin
+  contents:
     - js/color_picker.js
+  extra:
+    preload:
+      - opengov_custom_theme_resource/spectrum_script
+main_script:
+  output: opengov_custom_theme_resource/color_picker.js
+  filters: rjsmin
+  contents:
+    - js/color_picker.js
+  extra:
+    preload:
+      - opengov_custom_theme_resource/spectrum_script
+      -
 
 spectrum_style:
   output: opengov_custom_theme_resource/spectrum.css
@@ -16,9 +41,3 @@ main_style:
   filters: cssrewrite
   contents:
     - css/theme.css
-
-jquery_script:
-  output: opengov_custom_footer_resource/jquery.js
-  filters: rjsmin
-  contents:
-    - vendor/jquery/jquery-3.5.1.min.js
