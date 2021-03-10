@@ -5,3 +5,9 @@
     {% set _type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
     {% snippet 'snippets/opendata_' ~ _type ~ '.html' %}
 {% endblock %}
+
+{%- block custom_styles %}
+    {%- if g['ckanext.opendata_theme.custom_raw_css'] -%}
+        <style>{{ g['ckanext.opendata_theme.custom_raw_css'] | safe }}</style>
+    {%- endif %}
+{% endblock %}

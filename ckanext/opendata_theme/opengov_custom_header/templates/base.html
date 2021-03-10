@@ -1,9 +1,0 @@
-{% ckan_extends %}
-
-{% block styles %}
-    {{ super() }}
-    <style>
-        {% set _type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
-        {% snippet 'snippets/opendata_' ~ _type ~ '.html' %}
-    </style>
-{% endblock %}

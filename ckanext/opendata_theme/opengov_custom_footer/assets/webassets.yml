@@ -1,0 +1,15 @@
+main-js:
+  filters: rjsmin
+  output: opengov_custom_footer_resource/%(version)s_main.js
+  extra:
+    preload:
+      - base/main
+  contents:
+    - vendor/ckeditor/adapters/jquery.js
+    - js/ckedit.js
+
+main-css:
+  output: opengov_custom_footer_resource/%(version)s_main.css
+  filters: cssrewrite
+  contents:
+    - css/ckedit.css

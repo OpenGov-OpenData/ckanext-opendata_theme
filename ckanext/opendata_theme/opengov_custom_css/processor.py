@@ -207,7 +207,7 @@ class CustomStyleProcessor:
             pr_2 = pair[1]
             if pr_1.value and pr_2.value:
                 contrast_value = get_contrast(pr_1.value, pr_2.value)
-                if not contrast.passes_AA(contrast_value):
+                if not contrast.passes_AA(contrast_value, large=True):
                     key = '{} and {}'.format(
                         pr_1.title,
                         pr_2.title)

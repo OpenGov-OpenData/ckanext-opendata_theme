@@ -1,4 +1,3 @@
-
 {% ckan_extends %}
 
 {% block header %}
@@ -7,17 +6,4 @@
     {% else %}
         {% include "header.html" %}
     {% endif %}
-{% endblock %}
-{% block primary %}
-  <div class="primary span9 main-responsive-panel">
-     {% block primary_content %}
-         {{ super() }}
-     {% endblock %}
-   </div>
-{% endblock %}
-{% block secondary %}
-  <aside class="secondary span3 aside-fixed-panel">
-    {% block secondary_content %}
-    {% endblock %}
-  </aside>
 {% endblock %}

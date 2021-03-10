@@ -3,66 +3,56 @@
 {% extends "admin/base.html" %}
 
 {% import 'macros/form.html' as form %}
-{% block styles %}
-    {{ super() }}
-    {% set snippet_type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
-    {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
-{% endblock %}
 
-{% if h.ckan_version() < '2.9' %}
+{% set ckan_29_or_higher = h.ckan_version().split('.')[0] | int >= 2 and h.ckan_version().split('.')[1] | int >= 9 %}
+
+{% if ckan_29_or_higher %}
+    {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer/') %}
+    {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer/') %}
+{% else %}
     {% set custom_footer_action = h.url_for(
       controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
       action='custom_footer') %}
     {% set reset_custom_footer = h.url_for(
       controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
       action='reset_custom_footer') %}
-{% else %}
-    {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer/') %}
-    {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer/') %}
 {% endif %}
 
 {% block primary_content_inner %}
     {{ form.errors(data.errors) }}
 
-    <form method="post" action="{{ custom_footer_action }}" id="custom-footer-form">
-        <div class="control-group">
-            <div class="controls">
-                <h3 >Footer Layout</h3>
-                <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="1"  {% if data['layout_type']|int==1 or not data['layout_type'] %}checked {% endif %}>Default
-                </label>
-                <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="2" {% if data['layout_type']|int==2 %}checked {% endif %}>Column 2
-                </label>
-                <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="3" {% if data['layout_type']|int==3 %}checked {% endif %}>Column 3
-                </label>
-                <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="4" {% if data['layout_type']|int==4 %}checked {% endif %}>Column 4
-                </label>
+    <h1>Customize Footer</h1>
+    <form class="dataset-form" method="post" action="{{ custom_footer_action }}" id="custom-footer-form">
+        <div class="control-group form-group">
+            <label for="footer-layout" class="control-label">{{ _('Footer Layout') }}</label>
+            <div class="controls control-medium">
+                <select id="footer-layout" class="form-control" name="layout_type">
+                    {% for option in [(1, _('Default')), (2, '2 Columns'), (3, '3 Columns') , (4, '4 Columns')] %}
+                        <option value="{{ option[0] }}" {% if option[0] == data.layout_type|int %}selected="selected"{% endif %}>{{ option[1] }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
-        <div class="form-group ">
-            {% for index in range(data['layout_type']|int) %}
-                <div class="control-group inline">
-                    <label for="field-content-ck-{{ index }}" class="control-label">{{ _('Content') }}</label>
-                </div>
+
+        {% set snippet_type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
+        {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
+        {% for index in range(data.layout_type|int) %}
+            <div class="control-group form-group">
+                <label for="field-content-ck-{{ index }}" class="control-label">{{ _('Column') }} {{index+1}}</label>
                 <textarea id="field-content-ck-{{ index }}"
                           name="content-{{ index }}"
                           placeholder="{{_('My HTML content')}}"
                           data-module="ckedit"
                           style="height:200px;"
                           data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=True)) }}">{{ data['content_{}'.format(index)] }}</textarea>
-
-            {% endfor %}
-
-        </div>
+            </div>
+        {% endfor %}
         <div class="form-actions">
-            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
             <a class="btn btn-danger pull-left" data-module="confirm-action"
                data-module-content="Do you really want to reset custom footer? All your changes will be lost."
                href="{{ reset_custom_footer }}">{{ _('Reset to Default') }}
             </a>
+            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update') }}</button>
         </div>
     </form>
 
@@ -82,4 +72,10 @@
             {% endblock %}
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+  {% if ckan_29_or_higher %}
+    <script src="/vendor/ckeditor/ckeditor.js"></script>
+  {% endif %}
 {% endblock %}

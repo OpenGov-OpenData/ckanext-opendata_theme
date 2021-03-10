@@ -25,22 +25,30 @@
             <div class="row">
                 <div class="col-sm-6 span6 col1">
                     {% for name, field in data_part_1.items() %}
-                        <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
-                        <input type="text" class="opendata-theme-color-picker"
-                               name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                        <div class="form-group">
+                            <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
+                            <div class="controls">
+                                <input type="text" class="opendata-theme-color-picker"
+                                       name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
                 <div class="col-sm-6 span6 col2">
                     {% for name, field in data_part_2.items() %}
-                        <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
-                        <input type="text" class="opendata-theme-color-picker"
-                               name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                        <div class="form-group">
+                            <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
+                            <div class="controls">
+                                <input type="text" class="opendata-theme-color-picker"
+                                       name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
         <div class="form-actions">
-            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
+            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update') }}</button>
             <a class="btn btn-danger pull-left" data-module="confirm-action"
                data-module-content="Do you really want to reset custom colors? All your changes will be lost."
                href="{{ reset_custom_css }}">{{ _('Reset to Default') }}

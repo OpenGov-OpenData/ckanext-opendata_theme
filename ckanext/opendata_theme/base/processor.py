@@ -1,5 +1,5 @@
 import abc
-
+from six import ensure_str
 
 class AbstractParser(object):
     __metaclass__ = abc.ABCMeta
@@ -18,7 +18,7 @@ class AbstractParser(object):
     def get_css_from_data(cls, data):
         cls.parse_form_data(data)
         if cls.value:
-            return {cls.location: cls.value.encode('utf-8')}
+            return {cls.location: ensure_str(cls.value)}
 
     @classmethod
     def parse_form_data(cls, data):
