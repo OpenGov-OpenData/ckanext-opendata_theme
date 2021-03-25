@@ -11,6 +11,7 @@ except CkanVersionException:
     from ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin import MixinPlugin
 else:
     from ckanext.opendata_theme.opengov_custom_homepage.plugin.flask_plugin import MixinPlugin
+from ckanext.opendata_theme.base.template_helpers import version_builder
 
 
 class Opendata_ThemePlugin(MixinPlugin):
@@ -52,4 +53,5 @@ class Opendata_ThemePlugin(MixinPlugin):
             'opendata_theme_get_package_metadata': helper.get_package_metadata,
             'opendata_theme_get_custom_name': helper.get_custom_name,
             'opendata_theme_get_data': helper.get_data,
+            'version': version_builder,
         }

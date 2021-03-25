@@ -39,10 +39,10 @@ class CustomCSSController(BaseCompatibilityController):
     def reset_custom_naming(self):
         extra_vars = {}
         naming = custom_naming_processor.get_custom_naming({})
-        self.store_data(CUSTOM_NAMING, naming)
         naming = self.sort_inputs_by_title(naming)
+        self.store_data(CUSTOM_NAMING, naming)
         extra_vars["custom_naming"] = naming
-        self.redirect_to(extra_vars=extra_vars)
+        return self.redirect_to()
 
     def store_config(self, data):
         extra_vars = {}
