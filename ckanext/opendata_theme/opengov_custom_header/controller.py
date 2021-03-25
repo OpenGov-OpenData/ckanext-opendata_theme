@@ -15,12 +15,11 @@ from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibili
 
 
 class Header(object):
-    def __init__(self, title, link, position, html='', active=False):
+    def __init__(self, title, link, position, active=False):
         self.title = six.text_type(title).lower()
         self.link = six.text_type(link)
         self.position = position
         self._html = None
-        self.html = six.text_type(html)
         self.active = active
 
     def __repr__(self):
@@ -31,7 +30,6 @@ class Header(object):
             'title': self.title,
             'link': self.link,
             'position': self.position,
-            'html': self._html,
             'active': self.active,
         }
 
@@ -41,10 +39,6 @@ class Header(object):
             self._html = literal('<li><a href="{}">{title}</a></li>'.format(
                 self.link, title=self.title))
         return literal(self._html)
-
-    @html.setter
-    def html(self, value):
-        self._html = value
 
 
 class CustomHeaderController(BaseCompatibilityController):
@@ -67,11 +61,11 @@ class CustomHeaderController(BaseCompatibilityController):
         if request.method == 'POST':
             header_data = self.get_custom_header_metadata()
             data = self.get_form_data(request)
-            header_data['links'].append(
+            header_data.get('links', []).append(
                 Header(
                     title=data.get('new_title'),
                     link=data.get('new_link'),
-                    position=len(header_data['links'])+1,
+                    position=len(header_data.get('links', [])),
                 ))
             error = self.save_header_metadata(header_data)
             header_data['errors'] = error

@@ -21,6 +21,8 @@ else:
     from ckanext.opendata_theme.opengov_custom_header.plugin.flask_plugin import MixinPlugin
     from ckan.lib.helpers import escape, literal
 
+from ckanext.opendata_theme.base.template_helpers import version_builder
+
 
 class Opendata_ThemePlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
@@ -56,6 +58,7 @@ class Opendata_ThemePlugin(MixinPlugin):
     def get_helpers(self):
         return {
             'build_nav_main': build_pages_nav_main,
+            'version': version_builder,
         }
 
 
@@ -82,13 +85,14 @@ def build_pages_nav_main(*args):
             base_links = build_nav_main(*args)
             expr = re.compile('(<li.*?</li>)', flags=re.DOTALL)
             default_header_links = expr.findall(base_links)
-
+            parse_link = re.compile('href="(.*)">(.*?)</a>', flags=re.DOTALL)
             for index, link in enumerate(args):
+                parsed_data = parse_link.findall(default_header_links[index])
+                parsed_data = parsed_data[0] if len(parsed_data) == 1 else ((), ())
                 data['links'].append(Header(
-                    title=link[1],
-                    link=link[0],
+                    title=parsed_data[1],
+                    link=parsed_data[0],
                     position=index,
-                    html=default_header_links[index]
                 ))
         controller.save_default_header_metadata(data)
 

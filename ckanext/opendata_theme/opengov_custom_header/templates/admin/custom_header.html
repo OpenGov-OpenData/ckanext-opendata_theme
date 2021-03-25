@@ -4,7 +4,7 @@
 
 {% import 'macros/form.html' as form %}
 
-{% if h.ckan_version() < '2.9' %}
+{% if h.version(h.ckan_version()) < h.version('2.9') %}
     {% set custom_header_action = h.url_for(
     controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
     action='custom_header') %}
@@ -66,7 +66,7 @@
             <div class="controls">
                 <h3 >Header Layout</h3>
                 <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="default"  {% if layout_type=='default' or not layout_type %}checked {% endif %}>Default
+                    <input class="form-check-input" type="radio" name="layout_type" value="default" {% if layout_type=='default' or not layout_type %}checked {% endif %}>Default
                 </label>
                 <label class="checkbox inline">
                     <input class="form-check-input" type="radio" name="layout_type" value="compressed" {% if layout_type=='compressed' %}checked {% endif %}>Compressed
