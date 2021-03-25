@@ -27,10 +27,10 @@ class CustomFooterCommonController(BaseCompatibilityController):
             data = self.get_form_data(request)
             custom_footer = {
                 'layout_type': int(data.get('layout_type', 1)),
-                'content_0': clean_html(data.get('content-0', '')),
-                'content_1': clean_html(data.get('content-1', '')),
-                'content_2': clean_html(data.get('content-2', '')),
-                'content_3': clean_html(data.get('content-3', '')),
+                'content_0': clean_html(data.get('content_0', '')),
+                'content_1': clean_html(data.get('content_1', '')),
+                'content_2': clean_html(data.get('content_2', '')),
+                'content_3': clean_html(data.get('content_3', '')),
             }
             error = self.save_footer_metadata(custom_footer)
             custom_footer['errors'] = error

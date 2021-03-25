@@ -4,12 +4,14 @@
 
 {% import 'macros/form.html' as form %}
 
-{% set ckan_29_or_higher = h.ckan_version().split('.')[0] | int >= 2 and h.ckan_version().split('.')[1] | int >= 9 %}
+{% set ckan_29_or_higher = h.version(h.ckan_version()) > h.version('2.9') %}
+{% block styles %}
+    {{ super() }}
+    {% set snippet_type = 'asset' if ckan_29_or_higher else 'resource'  %}
+    {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
+{% endblock %}
 
-{% if ckan_29_or_higher %}
-    {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer/') %}
-    {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer/') %}
-{% else %}
+{% if not ckan_29_or_higher %}
     {% set custom_footer_action = h.url_for(
       controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
       action='custom_footer') %}
@@ -34,13 +36,12 @@
             </div>
         </div>
 
-        {% set snippet_type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
-        {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
         {% for index in range(data.layout_type|int) %}
             <div class="control-group form-group">
-                <label for="field-content-ck-{{ index }}" class="control-label">{{ _('Column') }} {{index+1}}</label>
+                <label for="field-content-ck-{{ index }}" class="control-label">{{ _('Column') }} {{index + 1}}</label>
                 <textarea id="field-content-ck-{{ index }}"
-                          name="content-{{ index }}"
+                          class="control-medium"
+                          name="content_{{ index }}"
                           placeholder="{{_('My HTML content')}}"
                           data-module="ckedit"
                           style="height:200px;"
@@ -75,7 +76,8 @@
 {% endblock %}
 
 {% block scripts %}
-  {% if ckan_29_or_higher %}
+    {{ super() }}
+    {% if ckan_29_or_higher %}
     <script src="/vendor/ckeditor/ckeditor.js"></script>
   {% endif %}
 {% endblock %}

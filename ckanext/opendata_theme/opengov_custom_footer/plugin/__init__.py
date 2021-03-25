@@ -12,6 +12,7 @@ else:
     from ckan.lib.helpers import literal
 from ckanext.opendata_theme.opengov_custom_footer.common_controller import CustomFooterCommonController
 from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_SECTION
+from ckanext.opendata_theme.base.template_helpers import version_builder
 
 
 class Opendata_ThemePlugin(MixinPlugin):
@@ -42,6 +43,7 @@ class Opendata_ThemePlugin(MixinPlugin):
     def get_helpers(self):
         return {
             'get_footer_data': get_footer_data,
+            'version': version_builder,
         }
 
 
