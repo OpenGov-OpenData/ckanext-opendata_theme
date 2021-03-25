@@ -1,7 +1,7 @@
 import pytest
 from ckan.logic import NotAuthorized
 
-from opendata_theme.tests.helpers import do_get, do_post
+from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
 CUSTOM_HOMEPAGE_URL = "/ckan-admin/custom_home_page/"
 RESET_CUSTOM_HOMEPAGE_URL = "/ckan-admin/reset_custom_naming/"

@@ -1,7 +1,7 @@
 import pytest
 from ckan.logic import NotAuthorized
 
-from opendata_theme.tests.helpers import do_get, do_post
+from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
 CUSTOM_HEADER_URL = "/ckan-admin/custom_header/"
 RESET_CUSTOM_HEADER_URL = "/ckan-admin/reset_custom_header/"
