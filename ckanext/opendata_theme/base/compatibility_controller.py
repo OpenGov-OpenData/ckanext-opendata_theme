@@ -22,7 +22,7 @@ class BaseCompatibilityController:
         tuplize_dict(parse_params(form_data))))
         return data
 
-    def redirect_to(self, extra_vars):
+    def redirect_to(self, extra_vars={}):
         return redirect_to(extra_vars=extra_vars, **self.redirect_to_action_kwargs)
 
     @staticmethod
