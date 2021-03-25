@@ -2,12 +2,14 @@
 
 {% block styles %}
     {{ super() }}
-    {% set _type = 'asset' if h.ckan_version() > '2.9' else 'resource'  %}
+    {% set _type = 'asset' if h.version(h.ckan_version()) > h.version('2.9') else 'resource'  %}
     {% snippet 'snippets/opendata_' ~ _type ~ '.html' %}
 {% endblock %}
 
+{% set custom_css = h.get_custom_css() %}
 {%- block custom_styles %}
-    {%- if g['ckanext.opendata_theme.custom_raw_css'] -%}
-        <style>{{ g['ckanext.opendata_theme.custom_raw_css'] | safe }}</style>
+    {{ super() }}
+    {%- if custom_css -%}
+        <style>{{ custom_css | safe }}</style>
     {%- endif %}
 {% endblock %}

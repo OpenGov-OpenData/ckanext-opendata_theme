@@ -3,6 +3,7 @@ import ckan.plugins.toolkit as toolkit
 import six
 from ckan.exceptions import CkanVersionException
 
+from ckanext.opendata_theme.opengov_custom_css.controller import CustomCSSController
 from ckanext.opendata_theme.opengov_custom_css.constants import CSS_METADATA, RAW_CSS
 
 try:
@@ -11,6 +12,7 @@ except CkanVersionException:
     from ckanext.opendata_theme.opengov_custom_css.plugin.pylons_plugin import MixinPlugin
 else:
     from ckanext.opendata_theme.opengov_custom_css.plugin.flask_plugin import MixinPlugin
+from ckanext.opendata_theme.base.template_helpers import version_builder
 
 
 class Opendata_ThemePlugin(MixinPlugin):
@@ -41,5 +43,10 @@ class Opendata_ThemePlugin(MixinPlugin):
     # ITemplateHelpers
     def get_helpers(self):
         return {
-            'get_custom_css': lambda x: None
+            'get_custom_css': get_custom_raw_css,
+            'version': version_builder,
         }
+
+
+def get_custom_raw_css():
+    return CustomCSSController.get_raw_css()
