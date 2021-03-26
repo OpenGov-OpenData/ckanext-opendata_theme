@@ -77,8 +77,7 @@ def build_pages_nav_main(*args):
                 data['links'].append(Header(
                     title=link[2],
                     link=link[1],
-                    position=index,
-                    html=link[0]
+                    position=index
                 ))
         else:
             from ckan.lib.helpers import build_nav_main

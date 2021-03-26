@@ -1,4 +1,4 @@
-from packaging.version import Version, InvalidVersion
+from packaging.version import Version
 
 
 def version_builder(text_version):
