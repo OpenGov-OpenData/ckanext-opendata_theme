@@ -71,7 +71,7 @@ def get_package_metadata(package):
 
 
 def get_custom_name(key, default_name):
-    custom_naming = toolkit.get_action('config_option_show')({}, {"key": CUSTOM_NAMING})
+    custom_naming = toolkit.get_action('config_option_show')({'ignore_auth': True}, {"key": CUSTOM_NAMING})
     if not custom_naming:
         return default_name
     custom_naming = ast.literal_eval(custom_naming)

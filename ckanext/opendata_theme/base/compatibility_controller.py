@@ -31,7 +31,7 @@ class BaseCompatibilityController:
 
     @staticmethod
     def get_data(config_key):
-        data = get_action('config_option_show')({}, {"key": config_key})
+        data = get_action('config_option_show')({'ignore_auth': True}, {"key": config_key})
         if not data:
             return {}
         try:

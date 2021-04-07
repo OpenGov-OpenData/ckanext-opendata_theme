@@ -43,7 +43,7 @@ class CustomCSSController(BaseCompatibilityController):
 
     @staticmethod
     def get_raw_css():
-        return get_action('config_option_show')({}, {"key": RAW_CSS})
+        return get_action('config_option_show')({'ignore_auth': True}, {"key": RAW_CSS})
 
     @staticmethod
     def split_inputs_onto_two_columns(data):
