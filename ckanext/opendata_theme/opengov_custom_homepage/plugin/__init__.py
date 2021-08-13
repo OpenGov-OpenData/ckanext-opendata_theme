@@ -50,7 +50,7 @@ class Opendata_ThemePlugin(MixinPlugin):
             'opendata_theme_get_datasets_new': helper.new_datasets,
             'opendata_theme_get_datasets_popular': helper.popular_datasets,
             'opendata_theme_get_datasets_recent': helper.recent_datasets,
-            'opendata_theme_get_package_metadata': helper.get_package_metadata,
+            'opendata_theme_get_package_tracking_summary': helper.package_tracking_summary,
             'opendata_theme_get_custom_name': helper.get_custom_name,
             'opendata_theme_get_data': helper.get_data,
             'version': version_builder,
