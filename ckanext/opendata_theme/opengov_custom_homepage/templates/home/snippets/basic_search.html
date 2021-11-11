@@ -1,20 +1,20 @@
-{% set tags = h.get_facet_items_dict('tags', limit=10) %}
 {% set placeholder = _('Search Datasets') %}
 
 <div class="module module-search module-narrow module-shallow">
   <form class="search-form" method="get" action="{% url_for controller='dataset', action='search' %}">
-    <div class="search-input control-group">
-      <input type="text"
-             class="search"
+    <div class="search-input form-group search-giant">
+      <input aria-label="{% block header_site_search_label %}{{ _('Search datasets') }}{% endblock %}"
+             id="field-main-search"
+             type="text"
+             class="form-control"
              name="q"
              value=""
              autocomplete="off"
-             id="data-search-keyword-input-field"
              placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}"
-             title= "{{_('Type search term here')}}"/>
-      <button type="submit" title="Search">
+             title= "{{_('Type search term here')}}" />
+      <button type="submit" aria-labelledby="search-label">
         <i class="fa fa-search"></i>
-        <span>{{ _('Search') }}</span>
+        <span class="sr-only" id="search-label">{{ _('Search') }}</span>
       </button>
     </div>
   </form>

@@ -1,11 +1,15 @@
-<div class="main hero">
-    <div id="content" tabindex="-1" style="display:none"></div>
-    <div class="container">
-        <div class="module-content" style="margin:0px; padding:5px 20px 20px;">
-            <h1 class="hero-text-heading hero-text">{{ title }}</h1>
-            <div class="hero-text-description hero-text">
-                {{ h.render_markdown(g.site_intro_text) }}
-            </div>
+<div class="hero">
+  <div class="container">
+    <div class="col-md-12 span12 col1">
+      <div class="module-content box" style="margin: 25px 0;">
+        <h1 class="hero-text-heading hero-text">{{ g.site_title }}</h1>
+        <div class="hero-text-description hero-text">
+          {{ h.render_markdown(g.site_intro_text) }}
         </div>
+      {% block search %}
+        {% snippet 'home/snippets/basic_search.html' %}
+      {% endblock %}
+      </div>
     </div>
+  </div>
 </div>
