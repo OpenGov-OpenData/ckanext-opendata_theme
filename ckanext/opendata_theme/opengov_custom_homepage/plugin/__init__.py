@@ -2,7 +2,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckan.exceptions import CkanVersionException
 
-import ckanext.opendata_theme.opengov_custom_homepage.helpers as helper
+import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING, CUSTOM_STYLE
 
 try:
@@ -11,7 +11,7 @@ except CkanVersionException:
     from ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin import MixinPlugin
 else:
     from ckanext.opendata_theme.opengov_custom_homepage.plugin.flask_plugin import MixinPlugin
-from ckanext.opendata_theme.base.template_helpers import version_builder
+from ckanext.opendata_theme.base.utils import version_builder
 
 
 class Opendata_ThemePlugin(MixinPlugin):

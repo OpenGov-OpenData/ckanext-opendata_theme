@@ -2,12 +2,13 @@ import re
 import string
 from six.moves.urllib.parse import urlparse, quote
 
-from ckan.exceptions import CkanVersionException
-from ckan.logic.validators import Invalid
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckan.common import config
+from ckan.exceptions import CkanVersionException
+from ckan.logic.validators import Invalid
 
+import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Header
 from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION, DEFAULT_CONFIG_SECTION
 
@@ -16,12 +17,11 @@ try:
 except CkanVersionException:
     from ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin import MixinPlugin
     from webhelpers.html import escape, literal
-
 else:
     from ckanext.opendata_theme.opengov_custom_header.plugin.flask_plugin import MixinPlugin
     from ckan.lib.helpers import escape, literal
 
-from ckanext.opendata_theme.base.template_helpers import version_builder
+from ckanext.opendata_theme.base.utils import version_builder
 
 
 class Opendata_ThemePlugin(MixinPlugin):
@@ -58,6 +58,8 @@ class Opendata_ThemePlugin(MixinPlugin):
     def get_helpers(self):
         return {
             'build_nav_main': build_pages_nav_main,
+            'opendata_theme_group_alias': helper.get_group_alias,
+            'opendata_theme_organization_alias': helper.get_organization_alias,
             'version': version_builder,
         }
 

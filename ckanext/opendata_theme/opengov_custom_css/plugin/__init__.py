@@ -12,7 +12,7 @@ except CkanVersionException:
     from ckanext.opendata_theme.opengov_custom_css.plugin.pylons_plugin import MixinPlugin
 else:
     from ckanext.opendata_theme.opengov_custom_css.plugin.flask_plugin import MixinPlugin
-from ckanext.opendata_theme.base.template_helpers import version_builder
+from ckanext.opendata_theme.base.utils import version_builder
 
 
 class Opendata_ThemePlugin(MixinPlugin):

@@ -1,6 +1,6 @@
 import pytest
 
-from ckanext.opendata_theme.base.template_helpers import version_builder
+from ckanext.opendata_theme.base.utils import version_builder
 from packaging.version import InvalidVersion
 
 

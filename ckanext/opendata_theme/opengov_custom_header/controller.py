@@ -69,7 +69,7 @@ class CustomHeaderController(BaseCompatibilityController):
                 ))
             error = self.save_header_metadata(header_data)
             header_data['errors'] = error
-            return render('admin/custom_header.html',
+            return render('admin/custom_header_form.html',
                           extra_vars=header_data)
 
     def custom_header(self):
@@ -103,7 +103,7 @@ class CustomHeaderController(BaseCompatibilityController):
             error = self.save_header_metadata(custom_header)
             custom_header['errors'] = error
 
-        return render('admin/custom_header.html',
+        return render('admin/custom_header_form.html',
                       extra_vars=custom_header)
 
     def reset_custom_header(self):
