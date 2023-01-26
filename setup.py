@@ -21,11 +21,11 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/DenysVasilovOpenGov/ckanext-opendata_theme',
+    url='https://github.com/OpenGov-OpenData/ckanext-opendata_theme',
 
     # Author details
-    author='''Denys Vasilov''',
-    author_email='''dvasilov@opengov.com''',
+    author='''Jay Guo''',
+    author_email='''jguo@opengov.com''',
 
     # Choose your license
     license='AGPL',
@@ -36,7 +36,7 @@ setup(
         # 3 - Alpha
         # 4 - Beta
         # 5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
@@ -81,10 +81,11 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points='''
         [ckan.plugins]
-        opengov_custom_homepage=ckanext.opendata_theme.opengov_custom_homepage.plugin:Opendata_ThemePlugin
-        opengov_custom_css=ckanext.opendata_theme.opengov_custom_css.plugin:Opendata_ThemePlugin
-        opengov_custom_header=ckanext.opendata_theme.opengov_custom_header.plugin:Opendata_ThemePlugin
-        opengov_custom_footer=ckanext.opendata_theme.opengov_custom_footer.plugin:Opendata_ThemePlugin
+        opengov_custom_theme=ckanext.opendata_theme.opengov_custom_theme.plugin:OpenDataThemePlugin
+        opengov_custom_css=ckanext.opendata_theme.opengov_custom_css.plugin:OpenDataThemeCustomCSSPlugin
+        opengov_custom_homepage=ckanext.opendata_theme.opengov_custom_homepage.plugin:OpenDataThemeHomepagePlugin
+        opengov_custom_header=ckanext.opendata_theme.opengov_custom_header.plugin:OpenDataThemeHeaderPlugin
+        opengov_custom_footer=ckanext.opendata_theme.opengov_custom_footer.plugin:OpenDataThemeFooterPlugin
 
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan

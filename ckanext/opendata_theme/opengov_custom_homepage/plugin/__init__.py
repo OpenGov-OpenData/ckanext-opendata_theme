@@ -1,24 +1,16 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckan.exceptions import CkanVersionException
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING, CUSTOM_STYLE
 
-try:
-    toolkit.requires_ckan_version("2.9")
-except CkanVersionException:
-    from ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin import MixinPlugin
-else:
+if toolkit.check_ckan_version(min_version='2.9.0'):
     from ckanext.opendata_theme.opengov_custom_homepage.plugin.flask_plugin import MixinPlugin
-from ckanext.opendata_theme.base.utils import version_builder
+else:
+    from ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin import MixinPlugin
 
 
-class Opendata_ThemePlugin(MixinPlugin):
-    plugins.implements(plugins.IConfigurable, inherit=True)
-    plugins.implements(plugins.IConfigurer)
-    plugins.implements(plugins.ITemplateHelpers)
-
+class OpenDataThemeHomepagePlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
@@ -53,5 +45,5 @@ class Opendata_ThemePlugin(MixinPlugin):
             'opendata_theme_get_package_tracking_summary': helper.package_tracking_summary,
             'opendata_theme_get_custom_name': helper.get_custom_name,
             'opendata_theme_get_data': helper.get_data,
-            'version': version_builder,
+            'version': helper.version_builder,
         }

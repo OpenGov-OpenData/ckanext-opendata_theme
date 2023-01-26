@@ -1,21 +1,19 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckan.exceptions import CkanVersionException
 
-try:
-    toolkit.requires_ckan_version("2.9")
-except CkanVersionException:
-    from ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin import MixinPlugin
-    from webhelpers.html import literal
-else:
-    from ckanext.opendata_theme.opengov_custom_footer.plugin.flask_plugin import MixinPlugin
-    from ckan.lib.helpers import literal
+import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_footer.common_controller import CustomFooterCommonController
 from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_SECTION
-from ckanext.opendata_theme.base.utils import version_builder
+
+if toolkit.check_ckan_version(min_version='2.9.0'):
+    from ckanext.opendata_theme.opengov_custom_footer.plugin.flask_plugin import MixinPlugin
+    from ckan.lib.helpers import literal
+else:
+    from ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin import MixinPlugin
+    from webhelpers.html import literal
 
 
-class Opendata_ThemePlugin(MixinPlugin):
+class OpenDataThemeFooterPlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
@@ -43,7 +41,7 @@ class Opendata_ThemePlugin(MixinPlugin):
     def get_helpers(self):
         return {
             'get_footer_data': get_footer_data,
-            'version': version_builder,
+            'version': helper.version_builder,
         }
 
 

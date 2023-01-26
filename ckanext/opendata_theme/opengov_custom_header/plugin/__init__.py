@@ -4,36 +4,25 @@ from six.moves.urllib.parse import urlparse, quote
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckan.common import config
-from ckan.exceptions import CkanVersionException
-from ckan.logic.validators import Invalid
+from ckan.plugins.toolkit import config, Invalid
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Header
 from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION, DEFAULT_CONFIG_SECTION
 
-try:
-    toolkit.requires_ckan_version("2.9")
-except CkanVersionException:
-    from ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin import MixinPlugin
-    from webhelpers.html import escape, literal
-else:
+if toolkit.check_ckan_version(min_version='2.9.0'):
     from ckanext.opendata_theme.opengov_custom_header.plugin.flask_plugin import MixinPlugin
     from ckan.lib.helpers import escape, literal
+else:
+    from ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin import MixinPlugin
+    from webhelpers.html import escape, literal
 
-from ckanext.opendata_theme.base.utils import version_builder
 
-
-class Opendata_ThemePlugin(MixinPlugin):
+class OpenDataThemeHeaderPlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IValidators)
-
-    def get_validators(self):
-        return {
-            u'custom_header_url_validator': custom_header_url_validator,
-        }
 
     # IConfigurer
     def update_config(self, ckan_config):
@@ -60,7 +49,13 @@ class Opendata_ThemePlugin(MixinPlugin):
             'build_nav_main': build_pages_nav_main,
             'opendata_theme_group_alias': helper.get_group_alias,
             'opendata_theme_organization_alias': helper.get_organization_alias,
-            'version': version_builder,
+            'version': helper.version_builder,
+        }
+
+    # IValidators
+    def get_validators(self):
+        return {
+            u'custom_header_url_validator': custom_header_url_validator,
         }
 
 

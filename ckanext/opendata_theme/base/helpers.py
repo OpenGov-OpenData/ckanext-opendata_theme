@@ -3,6 +3,7 @@ import logging
 
 from ckan.plugins import toolkit
 from ckan.plugins.toolkit import config
+from packaging.version import Version
 
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING
@@ -122,3 +123,7 @@ def get_custom_name(key, default_name):
 
 def get_data(key):
     return BaseCompatibilityController.get_data(key)
+
+
+def version_builder(text_version):
+    return Version(text_version)

@@ -1,11 +1,11 @@
 {% extends "header.html" %}
 
 {% set org_alias = h.opendata_theme_organization_alias() %}
-{% set org_alias_pural = org_alias + 's' %}
 {% set group_alias = h.opendata_theme_group_alias() %}
+{% set org_alias_pural = org_alias + 's' %}
 {% set group_alias_pural = group_alias + 's' %}
 
-{% if h.version(h.ckan_version()) > h.version('2.9') %}
+{% if h.version(h.ckan_version()) >= h.version('2.9') %}
   {% set search_route = 'dataset.search' %}
   {% set organizations_index_route = 'organization.index' %}
   {% set group_index_route = 'group.index' %}

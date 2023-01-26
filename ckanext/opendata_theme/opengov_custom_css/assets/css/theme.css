@@ -30,7 +30,7 @@
   background-color: transparent;
 }
 .masthead {
-  padding: 10px 0;
+  box-shadow: 0 2px 4px 0 rgb(19 21 23 / 10%);
 }
 .masthead .logo img {
   max-height: 60px;
@@ -41,48 +41,19 @@
 .masthead .navigation {
   margin-right: 5px;
 }
+.nav-pills > li + li {
+  margin-left: 5px;
+}
 .masthead .nav > li > a {
   font-weight: bold;
   text-transform: uppercase;
   padding: 10px 15px;
 }
-.masthead .site-search input {
-  color: #ffffff;
-  background-color: transparent;
-  padding: 2px 20px 2px 5px;
-  width: 125px;
-  border: 0;
-  box-shadow: none;
-  -webkit-border-radius: 0;
-}
-
-/* Hide search bar placeholder in header */
-.masthead input[type="text"]::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-  color: transparent;
-}
-.masthead input[type="text"]:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  color: transparent;
-}
-.masthead input[type="text"]::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color: transparent;
-}
-.masthead input[type="text"]:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: transparent;
-}
-.masthead input[type="text"]::-ms-input-placeholder { /* Microsoft Edge */
-  color: transparent;
-}
-.masthead input[type="text"]::placeholder { /* Most modern browsers support this now. */
-  color: transparent;
-}
 
 .masthead .site-search.simple-input {
-  border-bottom: 2px solid #ffffff;
+  display: none;
 }
-.simple-input .field .btn-search {
-  color: #ffffff;
-  right: 0;
-}
+
 .search-form .search-input.search-giant button {
   margin-top: -15px;
 }
@@ -286,6 +257,9 @@ form.form-inline.form-select.lang-select {
 @media (max-width: 767px) {
   .toolbar {
     margin-top: 10px;
+  }
+  .toolbar .breadcrumb a {
+    color: #505050;
   }
   .module-heading {
     background: inherit !important;

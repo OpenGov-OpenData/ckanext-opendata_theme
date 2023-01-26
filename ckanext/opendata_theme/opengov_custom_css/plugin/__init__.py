@@ -1,21 +1,18 @@
+import six
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-import six
-from ckan.exceptions import CkanVersionException
 
+import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_css.controller import CustomCSSController
 from ckanext.opendata_theme.opengov_custom_css.constants import CSS_METADATA, RAW_CSS
 
-try:
-    toolkit.requires_ckan_version("2.9")
-except CkanVersionException:
-    from ckanext.opendata_theme.opengov_custom_css.plugin.pylons_plugin import MixinPlugin
-else:
+if toolkit.check_ckan_version(min_version='2.9.0'):
     from ckanext.opendata_theme.opengov_custom_css.plugin.flask_plugin import MixinPlugin
-from ckanext.opendata_theme.base.utils import version_builder
+else:
+    from ckanext.opendata_theme.opengov_custom_css.plugin.pylons_plugin import MixinPlugin
 
 
-class Opendata_ThemePlugin(MixinPlugin):
+class OpenDataThemeCustomCSSPlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
@@ -44,7 +41,7 @@ class Opendata_ThemePlugin(MixinPlugin):
     def get_helpers(self):
         return {
             'get_custom_css': get_custom_raw_css,
-            'version': version_builder,
+            'version': helper.version_builder,
         }
 
 
