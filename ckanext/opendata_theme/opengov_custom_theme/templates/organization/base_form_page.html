@@ -10,5 +10,7 @@
 {% endif %}
 
 {% block breadcrumb_content %}
-  <li class="active">{% link_for _('%s'|format(org_alias_pural)), named_route=organization_index_route %}</li>
+  <li class="active">{% link_for _('{Organizations}'.format(Organizations=org_alias_pural)), named_route=organization_index_route %}</li>
 {% endblock %}
+
+{% block page_heading %}{{ _('{Organization} Form'.format(Organization=org_alias)) }}{% endblock %}

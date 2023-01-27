@@ -4,8 +4,8 @@
 
 {% block save_text %}
   {%- if action == "edit" -%}
-    {{ _('Update %s'|format(org_alias)) }}
+    {{ _('Update {Organization}'.format(Organization=org_alias)) }}
   {%- else -%}
-    {{ _('Create %s'|format(org_alias)) }}
+    {{ _('Create {Organization}'.format(Organization=org_alias)) }}
   {%- endif -%}
 {% endblock %}

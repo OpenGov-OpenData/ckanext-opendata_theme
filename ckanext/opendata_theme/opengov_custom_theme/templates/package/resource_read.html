@@ -1,0 +1,14 @@
+{% ckan_extends %}
+
+{% if h.version(h.ckan_version()) < h.version('2.9') %}
+  {% set package = c.package %}
+{% endif %}
+
+{% block head_extras -%}
+  {{ super() }}
+  {% set description = h.markdown_extract(h.get_translated(res, 'description'), extract_length=200) if res.description else h.markdown_extract(h.get_translated(package, 'notes'), extract_length=200) %}
+  <meta property="og:url" content="{{ h.full_current_url() }}">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ h.dataset_display_name(package) }} - {{ h.resource_display_name(res) }} - {{ g.site_title }}" />
+  <meta name="twitter:description" content="{{ description|forceescape|trim }}" />
+{% endblock -%}

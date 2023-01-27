@@ -1,0 +1,20 @@
+{% ckan_extends %}
+
+{% set group_alias = h.opendata_theme_group_alias() %}
+
+{% if h.version(h.ckan_version()) >= h.version('2.9') %}
+  {% set group_delete_action = {{ url_for group_type+'.delete', id=group_dict.name }} %}
+{% else %}
+  {% set group_dict = c.group_dict %}
+  {% set group_delete_action = {{ url_for controller='group', action='delete', id=group_dict.name }} %}
+{% endif %}
+
+      {% block form %}
+        <p>{{ _('Are you sure you want to delete {group} - {name}?').format(group=group_alias, name=group_dict.name) }}</p>
+        <p class="form-actions">
+          <form id="group-confirm-delete-form" action="{{ group_delete_action }}" method="post">
+            <button class="btn btn-danger" type="submit" name="cancel" >{{ _('Cancel') }}</button>
+            <button class="btn btn-primary" type="submit" name="delete" >{{ _('Confirm Delete') }}</button>
+          </form>
+        </p>
+      {% endblock %}

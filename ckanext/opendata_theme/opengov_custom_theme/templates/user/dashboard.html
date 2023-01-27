@@ -27,8 +27,8 @@
       <ul class="nav nav-tabs">
         {{ h.build_nav_icon(dashboard_index_route, _('News feed')) }}
         {{ h.build_nav_icon(dashboard_datasets_route, _('My Datasets')) }}
-        {{ h.build_nav_icon(dashboard_organizations_route, _('My {}'.format(org_alias_pural))) }}
-        {{ h.build_nav_icon(dashboard_groups_route, _('My {}'.format(group_alias_pural))) }}
+        {{ h.build_nav_icon(dashboard_organizations_route, _('My {Organizations}'.format(Organizations=org_alias_pural))) }}
+        {{ h.build_nav_icon(dashboard_groups_route, _('My {Groups}'.format(Groups=group_alias_pural))) }}
       </ul>
      </header>
 {% endblock %}

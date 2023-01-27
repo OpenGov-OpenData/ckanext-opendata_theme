@@ -5,7 +5,7 @@
 {% block info %}
   <div class="module module-narrow module-shallow context-info">
     {% if has_context_title %}
-      <h2 class="module-heading"><i class="fa fa-building-o"></i> {{ org_alias }}</h2>
+      <h2 class="module-heading"><i class="fa fa-building-o"></i> {{ _('{Organization}'.format(Organization=org_alias)) }}</h2>
     {% endif %}
     <section class="module-content">
       {% block inner %}

@@ -11,10 +11,10 @@
 
 {% if organization and h.check_access('organization_update', {'id':organization.id }) %}
   <section class="module module-narrow package-info">
-    <h2 class="module-heading"><i class="fa fa-sitemap"></i> {{ _("Edit %s"|format(org_alias)) }}</h2>
+    <h2 class="module-heading"><i class="fa fa-sitemap"></i> {{ _("Edit {Organization}".format(Organization=org_alias)) }}</h2>
     <ul class="list-unstyled unstyled nav nav-simple">
       <li class="nav-item{% if action == 'edit' %} active{% endif %}">
-        {% link_for _("Edit %s"|format(org_alias)), named_route=organization_edit_route, id=organization.name %}
+        {% link_for _("Edit {Organization}".format(Organization=org_alias)), named_route=organization_edit_route, id=organization.name %}
       </li>
     </ul>
   </section>

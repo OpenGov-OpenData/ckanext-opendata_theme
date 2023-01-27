@@ -20,7 +20,7 @@
     {% set dataset = h.dataset_display_name(pkg) %}
     {% if pkg.organization %}
       {% set organization = h.get_translated(pkg.organization, 'title') or pkg.organization.name %}
-      <li>{% link_for _('%s'|format(org_alias_pural)), named_route=organization_index_route %}</li>
+      <li>{% link_for _('{Organizations}'.format(Organizations=org_alias_pural)), named_route=organization_index_route %}</li>
       <li>{% link_for organization|truncate(30), named_route=organization_read_route, id=pkg.organization.name %}</li>
     {% else %}
       <li>{% link_for _('Datasets'), named_route=dataset_search_route %}</li>
