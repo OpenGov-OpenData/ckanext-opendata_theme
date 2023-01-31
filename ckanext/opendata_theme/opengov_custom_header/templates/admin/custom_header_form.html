@@ -41,8 +41,8 @@
                     </div>
                     <div class="col-sm-6 span6">
                         <div class="input-group">
-                            <label class="input-group-addon" for="new_link">URL</label>
-                            <input class="form-control" type="text" id="new_link" name="new_link"/>
+                            <label class="input-group-addon" for="new_url">URL</label>
+                            <input class="form-control" type="text" id="new_url" name="new_url"/>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
             <div class="controls">
                 <select class="form-control" name="to_remove">
                     {% for link in links %}
-                        <option value="{{ link.title }}">{{ link.title }} ( {{ link.link }} )</option>
+                        <option value="{{ link.title }}">{{ link.title }} ( {{ link.url }} )</option>
                     {% endfor %}
                 </select>
                 <button class="btn btn-default btn-primary" name="remove" type="submit">{{ _('Remove') }}</button>
@@ -73,7 +73,7 @@
                 </select>
             </div>
         </div>
-        <h3 >Navigation Link</h3>
+        <h3>Current Navigation Links</h3>
         {% for link in links %}
             <div class="form-group control-group">
                 <div class="row" id="{{ link.position }}">
@@ -83,16 +83,16 @@
                         <input type="text" class="form-control" name="position" value="{{ link.position }}"/>
                         </div>
                     </div>
-                    <div class="col-md-3 span3">
+                    <div class="col-md-4 span4">
                         <div class="input-group">
                         <label class="input-group-addon" for="{{ link.title }}">Title</label>
                         <input type="text" class="form-control" name="title" value="{{ link.title }}"/>
                         </div>
                     </div>
-                    <div class="col-md-7 span7">
+                    <div class="col-md-6 span6">
                         <div class="input-group">
-                        <label class="input-group-addon" for="{{ link.link }}">URL</label>
-                        <input type="text" class="form-control" name="link" value="{{ link.link }}"/>
+                        <label class="input-group-addon" for="{{ link.url }}">URL</label>
+                        <input type="text" class="form-control" name="url" value="{{ link.url }}"/>
                         </div>
                     </div>
                 </div>

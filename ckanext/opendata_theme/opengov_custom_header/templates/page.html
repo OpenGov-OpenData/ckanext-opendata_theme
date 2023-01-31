@@ -1,6 +1,6 @@
 {% ckan_extends %}
 
-{% set layout_type = h.opendata_theme_get_custom_header().get('layout_type') %}
+{% set layout_type = h.opendata_theme_get_header_layout() %}
 
 {% block header %}
     {% if layout_type=='compressed' %}

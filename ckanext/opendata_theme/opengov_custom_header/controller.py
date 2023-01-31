@@ -15,11 +15,10 @@ from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibili
 
 
 class Header(object):
-    def __init__(self, title, link, position, active=False):
+    def __init__(self, title, url, position, active=False):
         self.title = six.text_type(title)
-        self.link = six.text_type(link)
+        self.url = six.text_type(url)
         self.position = position
-        self._html = None
         self.active = active
 
     def __repr__(self):
@@ -28,17 +27,10 @@ class Header(object):
     def to_dict(self):
         return {
             'title': self.title,
-            'link': self.link,
+            'url': self.url,
             'position': self.position,
             'active': self.active,
         }
-
-    @property
-    def html(self):
-        if not self._html:
-            self._html = literal('<li><a href="{}">{title}</a></li>'.format(
-                self.link, title=self.title))
-        return literal(self._html)
 
 
 class CustomHeaderController(BaseCompatibilityController):
@@ -64,7 +56,7 @@ class CustomHeaderController(BaseCompatibilityController):
             header_data.get('links', []).append(
                 Header(
                     title=data.get('new_title'),
-                    link=data.get('new_link'),
+                    url=data.get('new_url'),
                     position=len(header_data.get('links', [])),
                 ))
             error = self.save_header_metadata(header_data)
@@ -87,28 +79,37 @@ class CustomHeaderController(BaseCompatibilityController):
                 'links': [],
                 'layout_type': data.get('layout_type', 'default')
             }
-            if isinstance(data.get('link'), list):
-                for index in range(len(data.get('link'))):
-                    custom_header['links'].append(Header(
-                        title=data['title'][index],
-                        link=data['link'][index],
-                        position=data['position'][index],
-                    ))
+            if isinstance(data.get('url'), list):
+                for index in range(len(data.get('url'))):
+                    custom_header['links'].append(
+                        Header(
+                            title=data['title'][index],
+                            url=data['url'][index],
+                            position=data['position'][index]
+                        )
+                    )
             else:
-                custom_header['links'].append(Header(
-                    title=data['title'],
-                    link=data['link'],
-                    position=data['position'],
-                ))
+                custom_header['links'].append(
+                    Header(
+                        title=data['title'],
+                        url=data['url'],
+                        position=data['position']
+                    )
+                )
             error = self.save_header_metadata(custom_header)
             custom_header['errors'] = error
-
         return render('admin/custom_header_form.html',
                       extra_vars=custom_header)
 
     def reset_custom_header(self):
         custom_header = {}
         self.save_header_metadata(custom_header)
+
+        default_header = {
+            'layout_type': 'default'
+        }
+        self.save_default_header_metadata(default_header)
+
         return self.redirect_to(custom_header)
 
     def save_header_metadata(self, custom_header):
@@ -143,7 +144,9 @@ class CustomHeaderController(BaseCompatibilityController):
         data_dict = BaseCompatibilityController.get_data(config_key)
         links = []
         for item in data_dict.get('links', []):
-            links.append(Header(**item))
+            if isinstance(item, dict):
+                item = Header(**item)
+            links.append(item)
         if links:
             data_dict['links'] = links
         return data_dict

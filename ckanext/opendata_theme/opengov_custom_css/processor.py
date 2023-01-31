@@ -43,11 +43,7 @@ class NavigationHeaderBackGroundColor(AbstractParser):
 class NavigationHeaderTextColor(AbstractParser):
     class_name = ('.navbar .nav>li>a,'
                   '.masthead .nav>li>a,'
-                  '.masthead .nav>li>a:focus,'
-                  '.masthead .nav>li>a:hover,'
-                  '.masthead .nav>.active>a,'
-                  '.masthead .nav>.active>a:hover,'
-                  '.masthead .nav>.active>a:focus')
+                  '.masthead .nav>.active>a')
     form_name = 'custom-css-header-text-color'
     title = 'Navigation Header Text color'
     location = 'color'
