@@ -38,7 +38,7 @@
         <nav class="section navigation">
           <ul class="nav nav-pills">
             {% block header_site_navigation_tabs %}
-              {{ h.build_nav_main(
+              {{ h.opendata_theme_build_nav_main(
                 (search_route, _('Datasets')),
                 (organizations_index_route, _(org_alias_pural)),
                 (group_index_route, _(group_alias_pural))
