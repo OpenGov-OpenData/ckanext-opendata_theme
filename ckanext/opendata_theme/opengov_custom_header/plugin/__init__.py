@@ -35,7 +35,6 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
-        custom_header_url_validator = toolkit.get_validator('custom_header_url_validator')
         schema.update({
             # This is a custom configuration option
             CONFIG_SECTION: [ignore_missing, custom_header_url_validator],
@@ -47,6 +46,7 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
     def get_helpers(self):
         return {
             'build_nav_main': build_pages_nav_main,
+            'opendata_theme_get_custom_header': get_custom_header,
             'opendata_theme_group_alias': helper.get_group_alias,
             'opendata_theme_organization_alias': helper.get_organization_alias,
             'version': helper.version_builder,
@@ -107,14 +107,19 @@ def custom_header_url_validator(value):
     for item in value.get('links', []):
         link = item.get('link', '')
         if len(link) > 2000:
-            raise Invalid('Url is too long. Only 2000 characters allowed for "{}"'.format(link))
+            raise Invalid('URL is too long. Only 2000 characters allowed for "{}"'.format(link))
         pieces = urlparse(link)
         if pieces.scheme and pieces.scheme != 'https':
-            raise Invalid('Only HTTPS urls supported "{}"'.format(link))
+            raise Invalid('Only HTTPS URLs supported "{}"'.format(link))
         elif not pieces.path and not all([pieces.scheme, pieces.netloc]):
             raise Invalid('Empty relative path in relative url {}'.format(link))
         elif pieces.path and not all([pieces.scheme, pieces.netloc]) and check_characters(pieces.path):
             raise Invalid('Relative path contains invalid characters {}'.format(link))
         elif pieces.netloc and check_characters(pieces.netloc):
-            raise Invalid('Url contains invalid characters "{}"'.format(link))
+            raise Invalid('URL contains invalid characters "{}"'.format(link))
     return value
+
+
+def get_custom_header():
+    custom_header = CustomHeaderController().get_custom_header_metadata()
+    return custom_header

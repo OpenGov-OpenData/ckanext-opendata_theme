@@ -1,5 +1,3 @@
-{# The site to config site styles, accessibile to sysadmins#}
-
 {% extends "admin/base.html" %}
 
 {% import 'macros/form.html' as form %}
@@ -32,67 +30,74 @@
     {{ form.errors(errors) }}
     <form method="post" action="{{ add_link_from_custom_header }}">
         <h3>Add Navigation Link</h3>
-            <div class="form-inline row">
-                <div class="form-group col-sm-4 span4">
-                    <div class="input-group">
-                        <label for="new_title"> Title </label>
-                        <input type="text" class="form-control" id="new_title" name="new_title"/>
+        <div class="form-group control-group control-custom">
+            <div class="controls editor">
+                <div class="row">
+                    <div class="col-sm-6 span6">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="new_title">Title</label>
+                            <input class="form-control" type="text" id="new_title" name="new_title"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 span6">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="new_link">URL</label>
+                            <input class="form-control" type="text" id="new_link" name="new_link"/>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group col-sm-5 span5">
-                    <div class="input-group">
-                        <label for="new_link"> Link </label>
-                        <input type="text" class="form-control" id="new_link" name="new_link"/>
-                    </div>
-                </div>
+                <button class="btn btn-default btn-primary" name="add" type="submit">{{ _('Add') }}</button>
             </div>
-        <button class="btn-default" name="add" type="submit">{{ _('Add') }}</button>
+        </div>
     </form>
     <form method="post" action="{{ remove_link_from_custom_header }}">
         <h3>Remove Navigation Link</h3>
-        <div class="form-group form-inline">
-            <select class="col-md-6 span6" name="to_remove">
-                {% for link in links %}
-                    <option value="{{ link.title }}">{{ link.title }} ({{ link.link }})</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="form-group form-inline">
-            <button class="btn-default" name="remove" type="submit">{{ _('Remove') }}</button>
+        <div class="form-group control-group control-medium">
+            <div class="controls">
+                <select class="form-control" name="to_remove">
+                    {% for link in links %}
+                        <option value="{{ link.title }}">{{ link.title }} ( {{ link.link }} )</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-default btn-primary" name="remove" type="submit">{{ _('Remove') }}</button>
+            </div>
         </div>
     </form>
     <form method="post" action="{{ custom_header_action }}" id="custom-header-form">
-        <div class="control-group">
+        <h3 >Header Layout</h3>
+        <div class="form-group control-group control-medium">
             <div class="controls">
-                <h3 >Header Layout</h3>
-                <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="default" {% if layout_type=='default' or not layout_type %}checked {% endif %}>Default
-                </label>
-                <label class="checkbox inline">
-                    <input class="form-check-input" type="radio" name="layout_type" value="compressed" {% if layout_type=='compressed' %}checked {% endif %}>Compressed
-                </label>
+                <select class="form-control" name="layout_type">
+                    <option value="default" {% if layout_type == 'default' or not layout_type %}selected="selected"{% endif %}>Default</option>
+                    <option value="compressed" {% if layout_type == 'compressed' %}selected="selected"{% endif %}>Compressed</option>
+                </select>
             </div>
         </div>
-        <div class="form-group ">
-            <h3 >Navigation Link</h3>
-            {% for link in links %}
+        <h3 >Navigation Link</h3>
+        {% for link in links %}
+            <div class="form-group control-group">
                 <div class="row" id="{{ link.position }}">
                     <div class="col-md-2 span2">
-                        <label for="{{ link.position }}"> Position </label>
+                        <div class="input-group">
+                        <label class="input-group-addon" for="{{ link.position }}">Position</label>
                         <input type="text" class="form-control" name="position" value="{{ link.position }}"/>
+                        </div>
                     </div>
                     <div class="col-md-3 span3">
-                        <label for="{{ link.title }}"> Title </label>
+                        <div class="input-group">
+                        <label class="input-group-addon" for="{{ link.title }}">Title</label>
                         <input type="text" class="form-control" name="title" value="{{ link.title }}"/>
+                        </div>
                     </div>
                     <div class="col-md-7 span7">
-                        <label for="{{ link.link }}"> Link </label>
+                        <div class="input-group">
+                        <label class="input-group-addon" for="{{ link.link }}">URL</label>
                         <input type="text" class="form-control" name="link" value="{{ link.link }}"/>
+                        </div>
                     </div>
                 </div>
-            {% endfor %}
-
-        </div>
+            </div>
+        {% endfor %}
         <div class="form-actions">
             <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
             <a class="btn btn-danger pull-left" data-module="confirm-action"
@@ -101,7 +106,6 @@
             </a>
         </div>
     </form>
-
 {% endblock %}
 
 {% block secondary_content %}

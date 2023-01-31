@@ -1,9 +1,9 @@
 # encoding: utf-8
 import six
-from ckan.logic import ValidationError
 from ckan.plugins.toolkit import (
     render,
-    request
+    request,
+    ValidationError
 )
 try:
     from webhelpers.html import literal
@@ -16,7 +16,7 @@ from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibili
 
 class Header(object):
     def __init__(self, title, link, position, active=False):
-        self.title = six.text_type(title).lower()
+        self.title = six.text_type(title)
         self.link = six.text_type(link)
         self.position = position
         self._html = None

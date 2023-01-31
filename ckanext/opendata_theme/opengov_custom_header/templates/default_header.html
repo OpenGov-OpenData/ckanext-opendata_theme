@@ -53,11 +53,11 @@
             {% endblock %}
             {# "About" tab is separated from h.build_nav_main() so that "About" tab is always right aligned #}
             <li>
-                <a href="{{ h.url_for('/about') }}" title="{{ _('About') }}">{{ _('About') }}</a>
+              <a href="{{ h.url_for('/about') }}" title="{{ _('About') }}">{{ _('About') }}</a>
             </li>
-          {% endblock %}
         </ul>
       </nav>
+      {% endblock %}
       {% block header_site_search %}
         {{ super() }}
       {% endblock %}

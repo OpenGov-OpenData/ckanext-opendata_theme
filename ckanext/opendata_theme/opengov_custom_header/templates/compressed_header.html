@@ -16,22 +16,24 @@
 {% endif %}
 
 {% block header_wrapper %}
-<header class="navbar navbar-static-top masthead">
+<header class="navbar navbar-static-top masthead compressed">
   {% block header_debug %}
     {{ super() }}
   {% endblock %}
   <div class="container">
-    <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
-      <span class="fa fa-bars"></span>
-    </button>
+    <div class="navbar-right">
+      <button data-target="#main-navigation-toggle" data-toggle="collapse" class="navbar-toggle collapsed" type="button" aria-label="expand or collapse" aria-expanded="false">
+        <span class="sr-only">{{ _('Toggle navigation') }}</span>
+        <span class="fa fa-bars"></span>
+      </button>
+    </div>
     <hgroup class="{{ g.header_class }} pull-left">
       {% block header_logo %}
         {{ super() }}
       {% endblock %}
     </hgroup>
 
-    <div class="nav-collapse collapse container">
-
+    <div class="collapse navbar-collapse" id="main-navigation-toggle">
       {% block header_site_navigation %}
         <nav class="section navigation">
           <ul class="nav nav-pills">
@@ -44,25 +46,25 @@
             {% endblock %}
             {# "About" tab is separated from h.build_nav_main() so that "About" tab is always right aligned #}
             <li>
-                <a href="{{ h.url_for('/about') }}" title="{{ _('About') }}">{{ _('About') }}</a>
+              <a href="{{ h.url_for('/about') }}" title="{{ _('About') }}">{{ _('About') }}</a>
             </li>
           </ul>
         </nav>
       {% endblock %}
       {% block header_account %}
-      <div class="account-masthead">
+        <div class="account-masthead">
           {% block header_account_container_content %}
             {% if c.userobj %}
               <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
-                <ul class="unstyled">
+                <ul class="list-unstyled unstyled">
                   {% block header_account_logged %}
                     {{ super() }}
                   {% endblock %}
                 </ul>
               </div>
             {% else %}
-              <nav class="account not-authed">
-                <ul class="unstyled">
+              <nav class="account not-authed" aria-label="{{ _('Account') }}">
+                <ul class="list-unstyled unstyled">
                   {% block header_account_notlogged %}
                     {{ super() }}
                   {% endblock %}
@@ -70,7 +72,7 @@
               </nav>
             {% endif %}
           {% endblock %}
-      </div>
+        </div>
       {% endblock %}
 
     </div>

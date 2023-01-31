@@ -31,15 +31,17 @@
 }
 .masthead {
   box-shadow: 0 2px 4px 0 rgb(19 21 23 / 10%);
+  padding: 0;
 }
 .masthead .logo img {
-  max-height: 60px;
+  max-height: 80px;
 }
-.masthead .nav-collapse {
-  padding: 10px 0;
+.masthead .navbar-collapse {
+  margin-top: 10px;
+  padding: 0;
 }
 .masthead .navigation {
-  margin-right: 5px;
+  padding: 10px 0;
 }
 .nav-pills > li + li {
   margin-left: 5px;
@@ -49,11 +51,23 @@
   text-transform: uppercase;
   padding: 10px 15px;
 }
-
+.compressed.masthead .navbar-collapse {
+  float: none;
+}
+.compressed.masthead .navigation {
+  float: left;
+  margin-left: 10px;
+}
+.compressed.masthead .account-masthead {
+  float: right;
+  margin-top: 10px;
+}
+.compressed.masthead .account-masthead .account ul li a {
+  padding: 5px 10px;
+}
 .masthead .site-search.simple-input {
   display: none;
 }
-
 .search-form .search-input.search-giant button {
   margin-top: -15px;
 }
