@@ -14,7 +14,7 @@ from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTIO
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 
 
-class Header(object):
+class Link(object):
     def __init__(self, title, url, position, active=False):
         self.title = six.text_type(title)
         self.url = six.text_type(url)
@@ -54,7 +54,7 @@ class CustomHeaderController(BaseCompatibilityController):
             header_data = self.get_custom_header_metadata()
             data = self.get_form_data(request)
             header_data.get('links', []).append(
-                Header(
+                Link(
                     title=data.get('new_title'),
                     url=data.get('new_url'),
                     position=len(header_data.get('links', [])),
@@ -82,7 +82,7 @@ class CustomHeaderController(BaseCompatibilityController):
             if isinstance(data.get('url'), list):
                 for index in range(len(data.get('url'))):
                     custom_header['links'].append(
-                        Header(
+                        Link(
                             title=data['title'][index],
                             url=data['url'][index],
                             position=data['position'][index]
@@ -90,7 +90,7 @@ class CustomHeaderController(BaseCompatibilityController):
                     )
             else:
                 custom_header['links'].append(
-                    Header(
+                    Link(
                         title=data['title'],
                         url=data['url'],
                         position=data['position']
@@ -145,7 +145,7 @@ class CustomHeaderController(BaseCompatibilityController):
         links = []
         for item in data_dict.get('links', []):
             if isinstance(item, dict):
-                item = Header(**item)
+                item = Link(**item)
             links.append(item)
         if links:
             data_dict['links'] = links

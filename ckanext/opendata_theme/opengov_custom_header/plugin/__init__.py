@@ -79,7 +79,7 @@ def build_nav_main(*args):
         header_links = expr.findall(output)
         for index, link in enumerate(header_links):
             data['links'].append(
-                Header(
+                Link(
                     title=link[2],
                     url=link[1],
                     position=index
