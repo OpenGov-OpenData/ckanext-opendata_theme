@@ -26,7 +26,7 @@
  {% endif %}
 {% endblock -%}
 
-{% block subtitle %}{{ group_dict.display_name }} - {{ _('{Groups}'.format(group_alias)) }}{% endblock %}
+{% block subtitle %}{{ group_dict.display_name }} - {{ _('{Groups}'.format(Groups=group_alias)) }}{% endblock %}
 
 {% block breadcrumb_content %}
   <li>{% link_for _('{Groups}'.format(Groups=group_alias_pural)), named_route=group_index_route %}</li>

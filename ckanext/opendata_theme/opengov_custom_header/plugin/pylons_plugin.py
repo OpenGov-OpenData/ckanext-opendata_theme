@@ -39,10 +39,3 @@ class MixinPlugin(p.SingletonPlugin):
             action='remove_link', controller=CONTROLLER
         )
         return m
-
-
-class HeaderController(admin.AdminController, CustomHeaderController):
-    redirect_to_action_kwargs = dict(
-        controller=CONTROLLER,
-        action='custom_header',
-    )

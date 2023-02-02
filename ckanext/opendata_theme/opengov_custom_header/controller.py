@@ -1,10 +1,8 @@
 # encoding: utf-8
 import six
-from ckan.plugins.toolkit import (
-    render,
-    request,
-    ValidationError
-)
+import ckan.plugins.toolkit as tk
+from ckan import model
+
 try:
     from webhelpers.html import literal
 except ModuleNotFoundError:
@@ -34,37 +32,13 @@ class Link(object):
 
 
 class CustomHeaderController(BaseCompatibilityController):
-    redirect_to_action_kwargs = dict(endpoint='custom-header.custom_header')
-
-    def remove_link(self):
-        if request.method == 'POST':
-            header_data = self.get_custom_header_metadata()
-            data = self.get_form_data(request)
-            item = [link for link in header_data['links'] if link.title == data['to_remove']]
-            try:
-                header_data['links'].remove(item[0])
-                error = self.save_header_metadata(header_data)
-                header_data['errors'] = error
-            except IndexError:
-                header_data['errors'] = "Impossible to remove link."
-            return self.redirect_to(header_data)
-
-    def add_link(self):
-        if request.method == 'POST':
-            header_data = self.get_custom_header_metadata()
-            data = self.get_form_data(request)
-            header_data.get('links', []).append(
-                Link(
-                    title=data.get('new_title'),
-                    url=data.get('new_url'),
-                    position=len(header_data.get('links', [])),
-                ))
-            error = self.save_header_metadata(header_data)
-            header_data['errors'] = error
-            return render('admin/custom_header_form.html',
-                          extra_vars=header_data)
-
     def custom_header(self):
+        try:
+            context = {'model': model, 'user': tk.c.user}
+            tk.check_access('sysadmin', context, {})
+        except tk.NotAuthorized:
+            tk.abort(403, tk._('Need to be system administrator to administer'))
+
         custom_header = self.get_custom_header_metadata()
         if not custom_header:
             # this block is required for base initialization
@@ -73,8 +47,9 @@ class CustomHeaderController(BaseCompatibilityController):
             # during the page rendering.
             # reset_custom_header is able to render the page in the background for setting default metadata.
             self.reset_custom_header()
-        if request.method == 'POST':
-            data = self.get_form_data(request)
+
+        if tk.request.method == 'POST':
+            data = self.get_form_data(tk.request)
             custom_header = {
                 'links': [],
                 'layout_type': data.get('layout_type', 'default')
@@ -98,24 +73,83 @@ class CustomHeaderController(BaseCompatibilityController):
                 )
             error = self.save_header_metadata(custom_header)
             custom_header['errors'] = error
-        return render('admin/custom_header_form.html',
-                      extra_vars=custom_header)
+        return tk.render('admin/custom_header_form.html',
+                         extra_vars=custom_header)
+
+    def add_link(self):
+        try:
+            context = {'model': model, 'user': tk.c.user}
+            tk.check_access('sysadmin', context, {})
+        except tk.NotAuthorized:
+            tk.abort(403, tk._('Need to be system administrator to administer'))
+
+        if tk.check_ckan_version(min_version='2.9.0'):
+            custom_header_route = 'custom-header.custom_header'
+        else:
+            custom_header_route = 'custom_header'
+
+        if tk.request.method == 'POST':
+            header_data = self.get_custom_header_metadata()
+            data = self.get_form_data(tk.request)
+            header_data.get('links', []).append(
+                Link(
+                    title=data.get('new_title'),
+                    url=data.get('new_url'),
+                    position=len(header_data.get('links', [])),
+                ))
+            error = self.save_header_metadata(header_data)
+            header_data['errors'] = error
+            return tk.redirect_to(custom_header_route)
+
+    def remove_link(self):
+        try:
+            context = {'model': model, 'user': tk.c.user}
+            tk.check_access('sysadmin', context, {})
+        except tk.NotAuthorized:
+            tk.abort(403, tk._('Need to be system administrator to administer'))
+
+        if tk.check_ckan_version(min_version='2.9.0'):
+            custom_header_route = 'custom-header.custom_header'
+        else:
+            custom_header_route = 'custom_header'
+
+        if tk.request.method == 'POST':
+            header_data = self.get_custom_header_metadata()
+            data = self.get_form_data(tk.request)
+            item = [link for link in header_data['links'] if link.title == data['to_remove']]
+            try:
+                header_data['links'].remove(item[0])
+                error = self.save_header_metadata(header_data)
+                header_data['errors'] = error
+            except IndexError:
+                header_data['errors'] = "Impossible to remove link."
+            return tk.redirect_to(custom_header_route)
 
     def reset_custom_header(self):
+        try:
+            context = {'model': model, 'user': tk.c.user}
+            tk.check_access('sysadmin', context, {})
+        except tk.NotAuthorized:
+            tk.abort(403, tk._('Need to be system administrator to administer'))
+
+        if tk.check_ckan_version(min_version='2.9.0'):
+            custom_header_route = 'custom-header.custom_header'
+        else:
+            custom_header_route = 'custom_header'
+
         custom_header = {}
         self.save_header_metadata(custom_header)
-
         default_header = {
             'layout_type': 'default'
         }
         self.save_default_header_metadata(default_header)
 
-        return self.redirect_to(custom_header)
+        return tk.redirect_to(custom_header_route)
 
     def save_header_metadata(self, custom_header):
         try:
             self.store_data(CONFIG_SECTION, custom_header)
-        except ValidationError as ex:
+        except tk.ValidationError as ex:
             return ex.error_summary
 
     def get_custom_header_metadata(self):

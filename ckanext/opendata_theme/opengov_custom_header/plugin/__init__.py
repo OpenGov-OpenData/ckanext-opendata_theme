@@ -7,7 +7,7 @@ import ckan.plugins.toolkit as toolkit
 from ckan.plugins.toolkit import config, Invalid
 
 import ckanext.opendata_theme.base.helpers as helper
-from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Header
+from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Link
 from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION, DEFAULT_CONFIG_SECTION
 
 try:
@@ -34,9 +34,9 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
         toolkit.add_template_directory(ckan_config, '../templates')
 
         if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom_header', 'Custom Header')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom_header', 'Header Layout')
         elif toolkit.check_ckan_version(min_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom-header.custom_header', 'Custom Header')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom-header.custom_header', 'Header Layout')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')

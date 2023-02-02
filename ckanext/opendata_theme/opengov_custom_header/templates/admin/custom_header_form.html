@@ -28,43 +28,8 @@
 
 {% block primary_content_inner %}
     {{ form.errors(errors) }}
-    <form method="post" action="{{ add_link_from_custom_header }}">
-        <h3>Add Navigation Link</h3>
-        <div class="form-group control-group control-custom">
-            <div class="controls editor">
-                <div class="row">
-                    <div class="col-sm-6 span6">
-                        <div class="input-group">
-                            <label class="input-group-addon" for="new_title">Title</label>
-                            <input class="form-control" type="text" id="new_title" name="new_title"/>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 span6">
-                        <div class="input-group">
-                            <label class="input-group-addon" for="new_url">URL</label>
-                            <input class="form-control" type="text" id="new_url" name="new_url"/>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-default btn-primary" name="add" type="submit">{{ _('Add') }}</button>
-            </div>
-        </div>
-    </form>
-    <form method="post" action="{{ remove_link_from_custom_header }}">
-        <h3>Remove Navigation Link</h3>
-        <div class="form-group control-group control-medium">
-            <div class="controls">
-                <select class="form-control" name="to_remove">
-                    {% for link in links %}
-                        <option value="{{ link.title }}">{{ link.title }} ( {{ link.url }} )</option>
-                    {% endfor %}
-                </select>
-                <button class="btn btn-default btn-primary" name="remove" type="submit">{{ _('Remove') }}</button>
-            </div>
-        </div>
-    </form>
     <form method="post" action="{{ custom_header_action }}" id="custom-header-form">
-        <h3 >Header Layout</h3>
+        <h3>Header Layout:</h3>
         <div class="form-group control-group control-medium">
             <div class="controls">
                 <select class="form-control" name="layout_type">
@@ -73,23 +38,22 @@
                 </select>
             </div>
         </div>
-        <h3>Current Navigation Links</h3>
+        <h3>Current Navigation Links:</h3>
         {% for link in links %}
             <div class="form-group control-group">
                 <div class="row" id="{{ link.position }}">
-                    <div class="col-md-2 span2">
+                    <div class="col-md-1 span1" style="width:75px;">
                         <div class="input-group">
-                        <label class="input-group-addon" for="{{ link.position }}">Position</label>
                         <input type="text" class="form-control" name="position" value="{{ link.position }}"/>
                         </div>
                     </div>
-                    <div class="col-md-4 span4">
+                    <div class="col-md-5 span5">
                         <div class="input-group">
                         <label class="input-group-addon" for="{{ link.title }}">Title</label>
                         <input type="text" class="form-control" name="title" value="{{ link.title }}"/>
                         </div>
                     </div>
-                    <div class="col-md-6 span6">
+                    <div class="col-md-5 span5">
                         <div class="input-group">
                         <label class="input-group-addon" for="{{ link.url }}">URL</label>
                         <input type="text" class="form-control" name="url" value="{{ link.url }}"/>
@@ -98,14 +62,59 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="form-actions">
-            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
-            <a class="btn btn-danger pull-left" data-module="confirm-action"
-               data-module-content="Do you really want to reset custom header? All your changes will be lost."
-               href="{{ reset_custom_header }}">{{ _('Reset to Default') }}
-            </a>
+    </form>
+    <hr>
+    <form method="post" action="{{ add_link_from_custom_header }}">
+        <h3>Add Navigation Link:</h3>
+        <div class="form-group control-group control-custom">
+            <div class="controls editor">
+                <div class="row">
+                    <div class="col-sm-5 span5">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="new_title">Title</label>
+                            <input class="form-control" type="text" id="new_title" name="new_title"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 span5">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="new_url">URL</label>
+                            <input class="form-control" type="text" id="new_url" name="new_url"/>
+                        </div>
+                    </div>
+                    <button class="btn btn-default" name="add" type="submit">{{ _('Add') }}</button>
+                </div>
+            </div>
         </div>
     </form>
+    <hr>
+    <form method="post" action="{{ remove_link_from_custom_header }}">
+        <h3>Remove Navigation Link:</h3>
+        <div class="form-group control-group control-custom">
+            <div class="controls editor">
+                <div class="row">
+                    <div class="col-sm-5 span5">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="to_remove">Title (URL)</label>
+                            <select class="form-control" name="to_remove">
+                                {% for link in links %}
+                                    <option value="{{ link.title }}">{{ link.title }} ( {{ link.url }} )</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-default" name="remove" type="submit">{{ _('Remove') }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="form-actions">
+        <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
+        <a class="btn btn-danger pull-left" data-module="confirm-action"
+           data-module-content="Do you really want to reset custom header? All your changes will be lost."
+           href="{{ reset_custom_header }}">{{ _('Reset to Default') }}
+        </a>
+    </div>
 {% endblock %}
 
 {% block secondary_content %}
