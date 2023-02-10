@@ -1,0 +1,25 @@
+{% extends "footer.html" %}
+
+{% block footer_content %}
+  <div class="row">
+    {% for index in range(2) %}
+      <div class="col-md-4 span4 footer-links">
+        {{ h.opendata_theme_get_footer_data('content_{}'.format(index)) }}
+      </div>
+    {% endfor %}
+    <div class="attribution og-attribution">
+      {% block footer_attribution %}
+        <strong>{{ _('Powered by') }}</strong>
+        <div class="og-links">
+          <a class="pull-left" target="_blank" href="https://opengov.com/?utm_campaign=Footer-Product-OpenData&utm_source=OpenGov&utm_medium=product&utm_term=PO-OGOV-1274&utm_content=logo">
+            <img src="/img/OpenGov_Logo.png" alt="OpenGov" height="25">
+          </a>
+          <a class="hide-text ckan-footer-logo pull-right" href="https://ckan.org">CKAN</a>
+        </div>
+      {% endblock %}
+      {% block footer_lang %}
+        {% snippet "snippets/language_selector.html" %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

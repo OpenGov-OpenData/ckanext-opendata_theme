@@ -1,42 +1,47 @@
-{# The site to config site styles, accessibile to sysadmins#}
-
 {% extends "admin/base.html" %}
 
 {% import 'macros/form.html' as form %}
 
-{% set ckan_29_or_higher = h.version(h.ckan_version()) > h.version('2.9') %}
+{% set ckan_29_or_higher = h.version(h.ckan_version()) >= h.version('2.9') %}
 {% block styles %}
     {{ super() }}
     {% set snippet_type = 'asset' if ckan_29_or_higher else 'resource'  %}
     {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
 {% endblock %}
 
-{% if not ckan_29_or_higher %}
+{% if ckan_29_or_higher %}
+    {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer/') %}
+    {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer/') %}
+{% else %}
     {% set custom_footer_action = h.url_for(
-      controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
-      action='custom_footer') %}
+    controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
+    action='custom_footer') %}
+
     {% set reset_custom_footer = h.url_for(
-      controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
-      action='reset_custom_footer') %}
+    controller='ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController',
+    action='reset_custom_footer') %}
 {% endif %}
 
-{% block primary_content_inner %}
-    {{ form.errors(data.errors) }}
+{% block scripts %}
+    {{ super() }}
+    {% if ckan_29_or_higher %}
+        <script src="/vendor/ckeditor/ckeditor.js"></script>
+    {% endif %}
+{% endblock %}
 
-    <h1>Customize Footer</h1>
-    <form class="dataset-form" method="post" action="{{ custom_footer_action }}" id="custom-footer-form">
-        <div class="control-group form-group">
-            <label for="footer-layout" class="control-label">{{ _('Footer Layout') }}</label>
-            <div class="controls control-medium">
+{% block primary_content_inner %}
+    {{ form.errors(errors) }}
+    <form method="post" action="{{ custom_footer_action }}" id="custom-footer-form">
+        <h3>Footer Layout</h3>
+        <div class="form-group control-group control-medium">
+            <div class="controls">
                 <select id="footer-layout" class="form-control" name="layout_type">
-                    {% for option in [(1, _('Default')), (2, '2 Columns'), (3, '3 Columns') , (4, '4 Columns')] %}
-                        <option value="{{ option[0] }}" {% if option[0] == data.layout_type|int %}selected="selected"{% endif %}>{{ option[1] }}</option>
-                    {% endfor %}
+                    <option value="default" {% if data.layout_type == 'default' or not layout_type %}selected="selected"{% endif %}>Default</option>
+                    <option value="custom" {% if data.layout_type == 'custom' %}selected="selected"{% endif %}>Custom</option>
                 </select>
             </div>
         </div>
-
-        {% for index in range(data.layout_type|int) %}
+        {% for index in range(2) %}
             <div class="control-group form-group">
                 <label for="field-content-ck-{{ index }}" class="control-label">{{ _('Column') }} {{index + 1}}</label>
                 <textarea id="field-content-ck-{{ index }}"
@@ -44,16 +49,15 @@
                           name="content_{{ index }}"
                           placeholder="{{_('My HTML content')}}"
                           data-module="ckedit"
-                          style="height:200px;"
                           data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=True)) }}">{{ data['content_{}'.format(index)] }}</textarea>
             </div>
         {% endfor %}
         <div class="form-actions">
+            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update') }}</button>
             <a class="btn btn-danger pull-left" data-module="confirm-action"
                data-module-content="Do you really want to reset custom footer? All your changes will be lost."
                href="{{ reset_custom_footer }}">{{ _('Reset to Default') }}
             </a>
-            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update') }}</button>
         </div>
     </form>
 
@@ -73,11 +77,4 @@
             {% endblock %}
         </div>
     </div>
-{% endblock %}
-
-{% block scripts %}
-    {{ super() }}
-    {% if ckan_29_or_higher %}
-    <script src="/vendor/ckeditor/ckeditor.js"></script>
-  {% endif %}
 {% endblock %}

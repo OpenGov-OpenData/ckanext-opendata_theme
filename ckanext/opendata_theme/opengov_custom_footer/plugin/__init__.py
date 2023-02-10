@@ -1,9 +1,10 @@
+import json
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_footer.common_controller import CustomFooterCommonController
-from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_SECTION
+from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_KEY
 
 if toolkit.check_ckan_version(min_version='2.9.0'):
     from ckanext.opendata_theme.opengov_custom_footer.plugin.flask_plugin import MixinPlugin
@@ -25,26 +26,25 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
         toolkit.add_resource('../assets', 'opengov_custom_footer_resource')
 
         if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom_footer', 'Custom Footer')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom_footer', 'Footer Layout')
         elif toolkit.check_ckan_version(min_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom-footer.custom_footer', 'Custom Footer')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom-footer.custom_footer', 'Footer Layout')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
         schema.update({
             # This is a custom configuration option
-            CONFIG_SECTION: [ignore_missing, dict],
+            CONFIG_KEY: [ignore_missing, dict],
         })
         return schema
 
     # ITemplateHelpers
     def get_helpers(self):
         return {
-            'get_footer_data': get_footer_data,
+            'opendata_theme_get_footer_data': get_footer_data,
             'version': helper.version_builder,
         }
 
-
 def get_footer_data(section):
-    data = CustomFooterCommonController.get_custom_footer_metadata()
-    return literal(data.get(section))
+    data_dict = CustomFooterCommonController.get_custom_footer_metadata()
+    return literal(data_dict.get(section))

@@ -51,8 +51,8 @@ class CustomHeaderController(BaseCompatibilityController):
         if tk.request.method == 'POST':
             data = self.get_form_data(tk.request)
             custom_header = {
-                'links': [],
-                'layout_type': data.get('layout_type', 'default')
+                'layout_type': data.get('layout_type', 'default'),
+                'links': []
             }
             if isinstance(data.get('url'), list):
                 for index in range(len(data.get('url'))):

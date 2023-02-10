@@ -29,16 +29,16 @@
 {% block primary_content_inner %}
     {{ form.errors(errors) }}
     <form method="post" action="{{ custom_header_action }}" id="custom-header-form">
-        <h3>Header Layout:</h3>
+        <h3>Header Layout</h3>
         <div class="form-group control-group control-medium">
             <div class="controls">
-                <select class="form-control" name="layout_type">
+                <select id="header-layout" class="form-control" name="layout_type">
                     <option value="default" {% if layout_type == 'default' or not layout_type %}selected="selected"{% endif %}>Default</option>
                     <option value="compressed" {% if layout_type == 'compressed' %}selected="selected"{% endif %}>Compressed</option>
                 </select>
             </div>
         </div>
-        <h3>Current Navigation Links:</h3>
+        <h3>Current Navigation Links</h3>
         {% for link in links %}
             <div class="form-group control-group">
                 <div class="row" id="{{ link.position }}">
@@ -65,7 +65,7 @@
     </form>
     <hr>
     <form method="post" action="{{ add_link_from_custom_header }}">
-        <h3>Add Navigation Link:</h3>
+        <h3>Add Navigation Link</h3>
         <div class="form-group control-group control-custom">
             <div class="controls editor">
                 <div class="row">
@@ -88,7 +88,7 @@
     </form>
     <hr>
     <form method="post" action="{{ remove_link_from_custom_header }}">
-        <h3>Remove Navigation Link:</h3>
+        <h3>Remove Navigation Link</h3>
         <div class="form-group control-group control-custom">
             <div class="controls editor">
                 <div class="row">

@@ -13,5 +13,7 @@ class MixinPlugin(p.SingletonPlugin):
 
 
 api = Blueprint('custom-footer', __name__, url_prefix='/ckan-admin')
-api.add_url_rule('/custom_footer/', methods=['GET', 'POST'], view_func=CustomFooterCommonController().custom_footer)
-api.add_url_rule('/reset_custom_footer/', methods=['GET', 'POST'], view_func=CustomFooterCommonController().reset_custom_footer)
+api.add_url_rule('/custom_footer/', methods=['GET', 'POST'],
+    view_func=CustomFooterCommonController().custom_footer)
+api.add_url_rule('/reset_custom_footer/', methods=['GET', 'POST'],
+    view_func=CustomFooterCommonController().reset_custom_footer)

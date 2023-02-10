@@ -3,7 +3,6 @@
 import ckan.controllers.admin as admin
 import ckan.plugins as p
 
-from ckanext.opendata_theme.opengov_custom_footer.common_controller import CustomFooterCommonController
 from ckanext.opendata_theme.opengov_custom_footer.constants import CONTROLLER
 
 
@@ -29,10 +28,3 @@ class MixinPlugin(p.SingletonPlugin):
             action='reset_custom_footer', controller=CONTROLLER
         )
         return m
-
-
-class CustomFooterController(admin.AdminController, CustomFooterCommonController):
-    redirect_to_action_kwargs = dict(
-        controller=CONTROLLER,
-        action='custom_footer',
-    )

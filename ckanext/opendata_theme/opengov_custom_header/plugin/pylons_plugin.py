@@ -3,7 +3,6 @@
 import ckan.controllers.admin as admin
 import ckan.plugins as p
 
-from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController
 from ckanext.opendata_theme.opengov_custom_header.constants import CONTROLLER
 
 

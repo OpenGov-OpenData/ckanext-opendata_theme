@@ -378,3 +378,18 @@ form.form-inline.form-select.lang-select {
     width: 380px;
   }
 }
+
+.site-footer .og-attribution {
+  display: inline-block;
+  float: right;
+  padding-right: 15px;
+}
+
+.site-footer .og-links {
+  margin-top: 3px;
+  margin-bottom: 30px;
+}
+
+.site-footer .ckan-footer-logo {
+  margin-left: 20px;
+}
