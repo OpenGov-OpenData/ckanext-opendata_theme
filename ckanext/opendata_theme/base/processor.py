@@ -1,6 +1,7 @@
 import abc
 from six import ensure_str
 
+
 class AbstractParser(object):
     __metaclass__ = abc.ABCMeta
     class_name = ''

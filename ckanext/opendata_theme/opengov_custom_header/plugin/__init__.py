@@ -1,10 +1,10 @@
 import re
 import string
-from six.moves.urllib.parse import urlparse, quote
+from six.moves.urllib.parse import urlparse
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckan.plugins.toolkit import config, Invalid
+from ckan.plugins.toolkit import Invalid
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Link
@@ -13,14 +13,14 @@ from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTIO
 try:
     from html import escape as html_escape
 except ImportError:
-    from cgi import escape as html_escape
+    from cgi import escape as html_escape  # noqa: F401
 
 if toolkit.check_ckan_version(min_version='2.9.0'):
     from ckanext.opendata_theme.opengov_custom_header.plugin.flask_plugin import MixinPlugin
-    from ckan.lib.helpers import escape, literal
+    from ckan.lib.helpers import literal
 else:
-    from ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin import MixinPlugin
-    from webhelpers.html import escape, literal
+    from ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin import MixinPlugin  # noqa: F401
+    from webhelpers.html import literal  # noqa: F401
 
 
 class OpenDataThemeHeaderPlugin(MixinPlugin):
@@ -72,7 +72,7 @@ def build_nav_main(*args):
         try:
             from ckanext.pages.plugin import build_pages_nav_main
             output = build_pages_nav_main(*args)
-        except:
+        except Exception:
             from ckan.lib.helpers import build_nav_main
             output = build_nav_main(*args)
         expr = re.compile('(<li><a href="(.*?)">(.*?)</a></li>)', flags=re.DOTALL)

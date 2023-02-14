@@ -4,7 +4,7 @@ CONTROLLER = 'ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:
 
 ALLOWED_HTML_TAGS = {
     'a', 'abbr', 'acronym', 'b', 'br', 'div', 'em',
-    'i', 'img', 'li','ol', 'p', 'strong', 'ul'
+    'i', 'img', 'li', 'ol', 'p', 'strong', 'ul'
 }
 
 ALLOWED_ATTRIBUTES = {

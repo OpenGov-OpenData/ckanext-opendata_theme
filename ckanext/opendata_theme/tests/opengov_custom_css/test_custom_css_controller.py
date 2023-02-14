@@ -23,17 +23,18 @@ DEFAULT_DATA = {
 }
 
 DEFAULT_CUSTOM_CSS = (
+    'a {color: #131517}',
+    'a:hover {color: #165cab}',
     '.account-masthead {background: #044187}',
     '.account-masthead .account ul li a,.account-masthead .account ul li a:hover {color: #ffffff}',
     '.account-masthead .account ul li a:hover {background: #1f76d8}',
     '.masthead {background: #1f76d8}',
-    '.navbar .nav>li>a,.masthead .nav>li>a,.masthead .nav>li>a:focus,.masthead .nav>li>a:hover,.masthead .nav>.active>a,.masthead .nav>.active>a:hover,.masthead .nav>.active>a:focus {color: #ffffff}',
+    '.masthead .nav>li>a,.masthead .nav>li>a:focus,.masthead .nav>li>a:hover,'
+    + '.masthead .nav>.active>a,.masthead .nav>.active>a:hover,.masthead .nav>.active>a:focus {color: #ffffff}',
     '.masthead .navigation .nav-pills li a:hover,.masthead .navigation .nav-pills li.active a {background-color: #044187}',
     '.module-heading {background: #1f76d8; color: #ffffff}',
     'body, .site-footer {background: #383b3d}',
     '.site-footer,.site-footer label,.site-footer small {color: #ffffff}',
-    'a {color: #131517}',
-    'a:hover {color: #165cab}',
     '.site-footer a,.site-footer a:hover {color: #ffffff}',
 )
 

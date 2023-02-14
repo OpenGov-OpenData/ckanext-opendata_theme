@@ -1,4 +1,3 @@
-import json
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
@@ -44,6 +43,7 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
             'opendata_theme_get_footer_data': get_footer_data,
             'version': helper.version_builder,
         }
+
 
 def get_footer_data(section):
     data_dict = CustomFooterCommonController.get_custom_footer_metadata()

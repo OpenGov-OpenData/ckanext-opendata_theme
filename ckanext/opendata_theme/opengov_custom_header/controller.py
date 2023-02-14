@@ -6,7 +6,7 @@ from ckan import model
 try:
     from webhelpers.html import literal
 except ModuleNotFoundError:
-    from ckan.lib.helpers import literal
+    from ckan.lib.helpers import literal  # noqa: F401
 
 from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION, DEFAULT_CONFIG_SECTION
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController

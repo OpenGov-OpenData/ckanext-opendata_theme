@@ -9,11 +9,12 @@ class MixinPlugin(p.SingletonPlugin):
 
     # IBlueprint
     def get_blueprint(self):
-        return api
+        return og_footer
 
 
-api = Blueprint('custom-footer', __name__, url_prefix='/ckan-admin')
-api.add_url_rule('/custom_footer/', methods=['GET', 'POST'],
-    view_func=CustomFooterCommonController().custom_footer)
-api.add_url_rule('/reset_custom_footer/', methods=['GET', 'POST'],
-    view_func=CustomFooterCommonController().reset_custom_footer)
+og_footer = Blueprint('custom-footer', __name__, url_prefix='/ckan-admin')
+
+og_footer.add_url_rule('/custom_footer/', methods=['GET', 'POST'],
+                       view_func=CustomFooterCommonController().custom_footer)
+og_footer.add_url_rule('/reset_custom_footer/', methods=['GET', 'POST'],
+                       view_func=CustomFooterCommonController().reset_custom_footer)

@@ -1,8 +1,6 @@
-import os
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-import ckanext.opendata_theme.opengov_custom_theme
 import ckanext.opendata_theme.base.helpers as helper
 
 

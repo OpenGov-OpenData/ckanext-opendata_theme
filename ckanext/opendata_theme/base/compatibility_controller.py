@@ -18,8 +18,13 @@ class BaseCompatibilityController:
         except AttributeError:
             # CKAN < 2.9
             form_data = request.POST
-        data = clean_dict(dict_fns.unflatten(
-        tuplize_dict(parse_params(form_data))))
+        data = clean_dict(
+            dict_fns.unflatten(
+                tuplize_dict(
+                    parse_params(form_data)
+                )
+            )
+        )
         return data
 
     def redirect_to(self, extra_vars={}):
