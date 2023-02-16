@@ -1,4 +1,5 @@
-bleach>=5.0.0
-tinycss2>=1.2.1
-wcag_contrast_ratio==0.9
-webcolors==1.12
+bleach>=5.0.1
+six>=1.12.0
+tinycss2>=1.1.1
+wcag_contrast_ratio>=0.9
+webcolors>=1.12

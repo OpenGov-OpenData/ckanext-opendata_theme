@@ -3,8 +3,8 @@ import string
 from six.moves.urllib.parse import urlparse
 
 import ckan.plugins as plugins
-import ckan.plugins.toolkit as toolkit
-from ckan.plugins.toolkit import Invalid
+import ckan.plugins.toolkit as tk
+from ckan import model
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Link
@@ -15,7 +15,7 @@ try:
 except ImportError:
     from cgi import escape as html_escape  # noqa: F401
 
-if toolkit.check_ckan_version(min_version='2.9.0'):
+if tk.check_ckan_version(min_version='2.9.0'):
     from ckanext.opendata_theme.opengov_custom_header.plugin.flask_plugin import MixinPlugin
     from ckan.lib.helpers import literal
 else:
@@ -31,15 +31,15 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
 
     # IConfigurer
     def update_config(self, ckan_config):
-        toolkit.add_template_directory(ckan_config, '../templates')
+        tk.add_template_directory(ckan_config, '../templates')
 
-        if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom_header', 'Header Layout')
-        elif toolkit.check_ckan_version(min_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom-header.custom_header', 'Header Layout')
+        if tk.check_ckan_version(min_version='2.4', max_version='2.9'):
+            tk.add_ckan_admin_tab(ckan_config, 'custom_header', 'Header Layout')
+        elif tk.check_ckan_version(min_version='2.9'):
+            tk.add_ckan_admin_tab(ckan_config, 'custom-header.custom_header', 'Header Layout')
 
     def update_config_schema(self, schema):
-        ignore_missing = toolkit.get_validator('ignore_missing')
+        ignore_missing = tk.get_validator('ignore_missing')
         schema.update({
             # This is a custom configuration option
             CONFIG_SECTION: [ignore_missing, custom_header_url_validator],
@@ -67,25 +67,33 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
 def build_nav_main(*args):
     controller = CustomHeaderController()
     default_metadata = controller.get_default_custom_header_metadata()
-    if not default_metadata.get('links'):
-        data = {'links': []}
-        try:
-            from ckanext.pages.plugin import build_pages_nav_main
-            output = build_pages_nav_main(*args)
-        except Exception:
-            from ckan.lib.helpers import build_nav_main
-            output = build_nav_main(*args)
-        expr = re.compile('(<li><a href="(.*?)">(.*?)</a></li>)', flags=re.DOTALL)
-        header_links = expr.findall(output)
-        for index, link in enumerate(header_links):
-            data['links'].append(
-                Link(
-                    title=link[2],
-                    url=link[1],
-                    position=index
+    try:
+        context = {'model': model, 'user': tk.c.user}
+        tk.check_access('sysadmin', context, {})
+        if not default_metadata.get('links'):
+            data = {
+                'layout_type': 'default',
+                'links': []
+            }
+            try:
+                from ckanext.pages.plugin import build_pages_nav_main
+                output = build_pages_nav_main(*args)
+            except Exception:
+                from ckan.lib.helpers import build_nav_main
+                output = build_nav_main(*args)
+            expr = re.compile('(<li><a href="(.*?)">(.*?)</a></li>)', flags=re.DOTALL)
+            header_links = expr.findall(output)
+            for index, link in enumerate(header_links):
+                data['links'].append(
+                    Link(
+                        title=link[2],
+                        url=link[1],
+                        position=index
+                    )
                 )
-            )
-        controller.save_default_header_metadata(data)
+            controller.save_default_header_metadata(data)
+    except tk.NotAuthorized:
+        pass
 
     nav_output = ''
     custom_header = controller.get_custom_header_metadata()
@@ -93,8 +101,8 @@ def build_nav_main(*args):
     final_header_links.sort(key=lambda x: int(x.position))
     for nav_link in final_header_links:
         title = html_escape(nav_link.title)
-        link = toolkit.literal(u'<a href="{}">{}</a>'.format(nav_link.url, title))
-        li = toolkit.literal('<li>') + link + toolkit.literal('</li>')
+        link = tk.literal(u'<a href="{}">{}</a>'.format(nav_link.url, title))
+        li = tk.literal('<li>') + link + tk.literal('</li>')
         nav_output = nav_output + li
     return nav_output
 
@@ -114,14 +122,14 @@ def custom_header_url_validator(value):
     for item in value.get('links', []):
         url = item.get('url', '')
         if len(url) > 2000:
-            raise Invalid('URL is too long. Only 2000 characters allowed for "{}"'.format(url))
+            raise tk.Invalid('URL is too long. Only 2000 characters allowed for "{}"'.format(url))
         pieces = urlparse(url)
         if pieces.scheme and pieces.scheme != 'https':
-            raise Invalid('Only HTTPS URLs supported "{}"'.format(url))
+            raise tk.Invalid('Only HTTPS URLs supported "{}"'.format(url))
         elif not pieces.path and not all([pieces.scheme, pieces.netloc]):
-            raise Invalid('Empty relative path in relative url {}'.format(url))
+            raise tk.Invalid('Empty relative path in relative url {}'.format(url))
         elif pieces.path and not all([pieces.scheme, pieces.netloc]) and check_characters(pieces.path):
-            raise Invalid('Relative path contains invalid characters {}'.format(url))
+            raise tk.Invalid('Relative path contains invalid characters {}'.format(url))
         elif pieces.netloc and check_characters(pieces.netloc):
-            raise Invalid('URL contains invalid characters "{}"'.format(url))
+            raise tk.Invalid('URL contains invalid characters "{}"'.format(url))
     return value

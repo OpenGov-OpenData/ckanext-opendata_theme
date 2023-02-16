@@ -99,7 +99,9 @@ class CustomHeaderController(BaseCompatibilityController):
                 ))
             error = self.save_header_metadata(header_data)
             header_data['errors'] = error
-            return tk.redirect_to(custom_header_route)
+            return tk.render('admin/custom_header_form.html',
+                             extra_vars=header_data)
+        return tk.redirect_to(custom_header_route)
 
     def remove_link(self):
         try:
@@ -122,8 +124,10 @@ class CustomHeaderController(BaseCompatibilityController):
                 error = self.save_header_metadata(header_data)
                 header_data['errors'] = error
             except IndexError:
-                header_data['errors'] = "Impossible to remove link."
-            return tk.redirect_to(custom_header_route)
+                header_data['errors'] = "Unable to remove link."
+            return tk.render('admin/custom_header_form.html',
+                             extra_vars=header_data)
+        return tk.redirect_to(custom_header_route)
 
     def reset_custom_header(self):
         try:
@@ -140,7 +144,8 @@ class CustomHeaderController(BaseCompatibilityController):
         custom_header = {}
         self.save_header_metadata(custom_header)
         default_header = {
-            'layout_type': 'default'
+            'layout_type': 'default',
+            'links': []
         }
         self.save_default_header_metadata(default_header)
 

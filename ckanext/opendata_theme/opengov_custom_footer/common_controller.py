@@ -1,23 +1,25 @@
 # encoding: utf-8
 import bleach
 import ckan.plugins.toolkit as tk
-from bleach.css_sanitizer import CSSSanitizer
 from ckan import model
 
 from ckanext.opendata_theme.opengov_custom_footer.constants import (
     CONFIG_KEY,
-    ALLOWED_HTML_TAGS,
+    ALLOWED_TAGS_SET,
+    ALLOWED_TAGS_LIST,
     ALLOWED_ATTRIBUTES,
     ALLOWED_CSS_PROPERTIES
 )
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 
 
-CSS_Sanitizer = CSSSanitizer(allowed_css_properties=ALLOWED_CSS_PROPERTIES)
-
-
 def clean_html(text):
-    return bleach.clean(text, tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_ATTRIBUTES, css_sanitizer=CSS_Sanitizer)
+    try:
+        from bleach.css_sanitizer import CSSSanitizer
+        CSS_Sanitizer = CSSSanitizer(allowed_css_properties=ALLOWED_CSS_PROPERTIES)
+        return bleach.clean(text, tags=ALLOWED_TAGS_SET, attributes=ALLOWED_ATTRIBUTES, css_sanitizer=CSS_Sanitizer)
+    except ImportError:
+        return bleach.clean(text, tags=ALLOWED_TAGS_LIST, attributes=ALLOWED_ATTRIBUTES)
 
 
 class CustomFooterCommonController(BaseCompatibilityController):

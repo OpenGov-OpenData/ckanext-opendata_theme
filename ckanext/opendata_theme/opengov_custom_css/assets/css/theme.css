@@ -37,7 +37,9 @@
   padding: 0;
 }
 .masthead .logo img {
-  max-height: 80px;
+  max-height: 75px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 .masthead .navbar-collapse {
   margin-top: 10px;

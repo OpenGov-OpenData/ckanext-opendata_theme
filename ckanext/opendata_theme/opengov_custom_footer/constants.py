@@ -2,10 +2,15 @@ CONFIG_KEY = 'ckanext.opendata_theme.custom_footer.data'
 
 CONTROLLER = 'ckanext.opendata_theme.opengov_custom_footer.plugin.pylons_plugin:CustomFooterController'
 
-ALLOWED_HTML_TAGS = {
+ALLOWED_TAGS_SET = {
     'a', 'abbr', 'acronym', 'b', 'br', 'div', 'em',
     'i', 'img', 'li', 'ol', 'p', 'strong', 'ul'
 }
+
+ALLOWED_TAGS_LIST = [
+    'a', 'abbr', 'acronym', 'b', 'br', 'div', 'em',
+    'i', 'img', 'li', 'ol', 'p', 'strong', 'ul'
+]
 
 ALLOWED_ATTRIBUTES = {
     '*': ['class'],
