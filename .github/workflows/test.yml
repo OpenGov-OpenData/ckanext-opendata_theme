@@ -64,4 +64,4 @@ jobs:
       run: |
         pip install -r requirements-py2.txt
     - name: Run tests
-      run: pytest --ckan-ini=test.ini --cov=ckanext.opendata_theme --disable-warnings ckanext/opendata_theme/tests
+      run: pytest --ckan-ini=test.ini --cov=ckanext.opendata_theme --disable-warnings --cov-fail-under=${CODE_COVERAGE_THRESHOLD_REQUIRED} ckanext/opendata_theme/tests
