@@ -20,10 +20,10 @@ ALLOWED_ATTRIBUTES = {
 
 ALLOWED_CSS_PROPERTIES = [
     'background-color', 'border-bottom-color', 'border-collapse',
-    'border-color', 'border-left-color', 'border-right-color',
-    'border-top-color', 'clear', 'color', 'cursor', 'direction', 'display',
-    'float', 'font', 'font-family', 'font-size', 'font-style', 'font-variant',
-    'font-weight', 'height', 'letter-spacing', 'line-height', 'overflow',
-    'text-align', 'text-decoration', 'text-indent', 'vertical-align',
-    'white-space', 'width'
+    'border-color', 'border-left-color', 'border-right-color', 'border-top-color',
+    'clear', 'color', 'cursor', 'direction', 'display', 'float', 'font',
+    'font-family', 'font-size', 'font-style', 'font-variant', 'font-weight',
+    'height', 'letter-spacing', 'line-height', 'max-height', 'max-width',
+    'overflow', 'text-align', 'text-decoration', 'text-indent',
+    'vertical-align', 'white-space', 'width'
 ]

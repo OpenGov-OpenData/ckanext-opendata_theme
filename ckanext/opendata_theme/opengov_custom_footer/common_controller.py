@@ -19,7 +19,7 @@ def clean_html(text):
         CSS_Sanitizer = CSSSanitizer(allowed_css_properties=ALLOWED_CSS_PROPERTIES)
         return bleach.clean(text, tags=ALLOWED_TAGS_SET, attributes=ALLOWED_ATTRIBUTES, css_sanitizer=CSS_Sanitizer)
     except ImportError:
-        return bleach.clean(text, tags=ALLOWED_TAGS_LIST, attributes=ALLOWED_ATTRIBUTES)
+        return bleach.clean(text, tags=ALLOWED_TAGS_LIST, attributes=ALLOWED_ATTRIBUTES, styles=ALLOWED_CSS_PROPERTIES)
 
 
 class CustomFooterCommonController(BaseCompatibilityController):
