@@ -1,0 +1,53 @@
+<div role="main">
+  {% if 'heroslideradmin' in g.plugins %}
+    {% snippet 'home/snippets/half_hero_slider.html' %}
+  {% else %}
+    {% snippet 'home/snippets/hero_title.html' %}
+  {% endif %}
+  <div class="search-block">
+    <div class="container">
+      <div class="row">
+        <div class="search-hint col-md-3 span3">
+          <div class="module-content box">
+            <span>Get started by searching from <b>{{ h.opendata_theme_get_dataset_count() }}</b></span>
+            <br>
+            <span>datasets and maps</span>
+          </div>
+        </div>
+        <div class="col-md-6 span6">
+          {% block search %}
+            {% snippet 'home/snippets/search.html' %}
+          {% endblock %}
+        </div>
+        <div class="search-hint search-doc col-md-3 span3">
+          <div class="module-content box">
+            <span>Try <a href="/pages/advanced-search-documentation"><u>Advanced Search Terms</u></a></span>
+            <br>
+            <span>for more specific results</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  {% block opendata_theme_groups %}
+    {% if h.opendata_theme_get_groups() %}
+      {% snippet 'home/snippets/groups.html' %}
+    {% endif %}
+  {% endblock %}
+
+
+  {% block opendata_theme_showcases %}
+    {% if 'showcase' in g.plugins %}
+      {% if h.opendata_theme_get_showcases() %}
+        {% snippet 'home/snippets/opendata_theme_showcase.html' %}
+      {% endif %}
+    {% endif %}
+  {% endblock %}
+
+
+  {% block opendata_theme_datasets %}
+    {% snippet 'home/snippets/datasets.html' %}
+  {% endblock %}
+</div>

@@ -1,0 +1,226 @@
+/*the following styles specific to homepage layout1*/
+
+/*layout1 homepage search start*/
+.homepage .module-search {
+  opacity: 1;
+  margin:0;
+}
+.homepage .search-form {
+  border-bottom: none;
+  margin: 0;
+  padding: 0;
+}
+.homepage-search p {
+  margin-left: 0px;
+  text-align:center;
+}
+.homepage-search p span {
+  padding-left: 20px;
+}
+
+.homepage .module-search .search-giant {
+  margin-bottom: 0;
+}
+.homepage-search.container {
+  padding: 24px 10px;
+}
+/*layout1 homepage search end*/
+
+/*layout1 homepage blocks strip effect*/
+.homepage [class^="main-"]:nth-child(2n) {
+  background-color: #fff
+}
+.homepage [class^="main-"]:nth-child(2n+1) {
+  background-color: #f3f3f3
+}
+
+
+/*homepage-layout1-style*/
+.data-vault-heading{
+  font-size: 16px;
+  text-align: left;
+}
+.vault-link{
+  text-decoration: underline;
+}
+.vault-link:hover{
+  color: #FB8A52!important;
+}
+
+.account-masthead .fa-home{
+  padding-top: 4px;
+}
+.fa-stack .fa{
+  color: #ffffff;
+}
+.fa-stack .fa.fa-square{
+  color: #ffffff;
+  opacity: 0.0;
+}
+.fa-stack:hover .fa.fa-square{
+  opacity: 1.0;
+}
+.fa-stack:hover .fa-facebook-square{
+  color: #3B5998;
+}
+.fa-stack:hover .fa-twitter-square{
+  color: #00aced;
+}
+.fa-stack:hover .fa-youtube-square{
+  color: #cc181e;
+}
+.account-masthead .account ul li{
+  min-height: 38px;
+}
+.account-masthead .account ul li a.social-link{
+  padding: 0 5px;
+}
+
+ /******* Homepage Background ********/
+.hero-text-heading, .hero-text-description{
+  text-align: center;
+}
+.main-homepage{
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.intro{
+  margin: 15px;
+}
+.intro-block{
+  background: #121f32;
+  margin: 15px;
+  padding: 10px 30px 15px !important;
+  opacity: 0.85;
+}
+ .showcase-section{
+  background: #d5d6d8;
+  margin: 15px;
+  padding: 10px 30px 15px !important;
+  opacity: 0.95;
+}
+.showcase-container {
+    margin-left: 20px;
+}
+ .masthead .btn-navbar, .masthead .btn-navbar:hover, .masthead .btn-navbar:focus, .masthead .btn-navbar:active, .masthead .btn-navbar.active, .masthead .btn-navbar.disabled, .masthead .btn-navbar[disabled]{
+  background-color: #fb8a52;
+  margin-top: 20px;
+}
+ .hr-primary-color{
+  border-color: #FB8A52;
+}
+
+.ckanext-showcase-image {
+  max-height: 400px;
+}
+
+
+/*customize changes for Oklahoma start*/
+.logo {
+  top: 0;
+}
+
+.header-image .logo img {
+  max-width: 300px;
+}
+
+
+.navbar .nav>li>a, .masthead {
+  color: #445562
+}
+
+.masthead {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.masthead .nav-collapse {
+  padding-top: 5px;
+}
+
+.masthead .btn-navbar,
+.masthead .btn-navbar:hover,
+.masthead .btn-navbar:focus,
+.masthead .btn-navbar:active,
+.masthead .btn-navbar.active,
+.masthead .btn-navbar.disabled,
+.masthead .btn-navbar[disabled] {
+  background-color: #445562;
+  margin-top: 15px;
+}
+
+@media (max-width: 1366px) {
+  .cd-header .module-content.box {
+    padding-top: 50px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cd-header .module-content.box {
+    padding-top: 20px !important;
+  }
+}
+
+/* responsively change homepage showcases grid start*/
+.story-tile {
+  padding-left: 15px;
+  padding-right: 0;
+}
+
+a.browse-group img {
+  height: 175px;
+}
+
+@media (min-width: 1200px) {
+  a.browse-group {
+    width: 29.89%;
+  }
+}
+
+@media (max-width: 1200px) {
+  a.browse-group {
+    width: 29%;
+    height: auto;
+  }
+  a.browse-group img {
+    height: 200px;
+  }
+}
+
+@media (max-width: 979px) {
+  a.browse-group {
+    width: 45.89%;
+  }
+}
+
+@media (max-width: 639px) {
+  a.browse-group {
+    width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .story-tile {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  a.browse-group {
+    width: 99%;
+  }
+}
+/*responsively change homepage story showcases grid end*/
+
+/*customize changes for Oklahoma end*/
+.simple-input .field .btn-search {
+  color: #333333;
+}
+
+.site-search.simple-input {
+  border-bottom: 2px solid #333333;
+}
+
+.masthead input[type="text"] {
+  color: #333333;
+}

@@ -1,0 +1,124 @@
+/*the following styles specific to homepage layout2*/
+
+/*home hero styles start*/
+.homepage [role=main] {
+  min-height: 360px;
+  position: relative;
+  padding: 0;
+}
+
+.homepage .tint-wrapper {
+  position: relative;
+}
+
+.homepage .tint {
+  background-color: rgba(0, 104, 169, 0.2);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 10000;
+}
+
+@media only screen and (min-width: 767px) {
+  .homepage .tint {
+    width: 50%;
+  }
+  .homepage .hero-text-description.hero-text {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+  }
+}
+
+/*layout2 homepage hero text styles left align begin*/
+@media (min-width: 768px) {
+  .cd-header {
+    width: 50%;
+    text-align: left;
+  }
+}
+
+.cd-header .module-search {
+  display:none;
+}
+
+.cd-header .container, .cd-header .span12 {
+  width: 85%
+}
+
+/*layout2 homepage hero text styles left align end*/
+/*layout2 homepage hero styles end*/
+
+/*layout2 homepage search start*/
+.homepage .module-search {
+  background-color: #fff;
+  opacity: 1;
+  margin: 0;
+}
+.homepage .search-form {
+  border-bottom: none;
+  margin: 0;
+  padding: 0;
+}
+.homepage-search p {
+  margin-left: 0px;
+  text-align:center;
+}
+.homepage-search p span {
+  padding-left: 20px;
+}
+.homepage .module-search .search-giant {
+  margin-bottom: 0;
+}
+.homepage-search.container {
+  padding: 24px 10px;
+}
+/*layout2 homepage search end*/
+
+/*layout2 homepage blocks strip effect*/
+.homepage [class^="main-"]:nth-child(2n) {
+  background-color: #fff
+}
+.homepage [class^="main-"]:nth-child(2n+1) {
+  background-color: #f3f3f3
+}
+
+/* start of style for one-line header */
+.logo {
+  top: 2px;
+}
+.masthead .btn-navbar, .masthead .btn-navbar:hover, .masthead .btn-navbar:focus, .masthead .btn-navbar:active, .masthead .btn-navbar.active, .masthead .btn-navbar.disabled, .masthead .btn-navbar[disabled]{
+  margin-top: 5px;
+}
+@media (min-width: 980px){
+  .masthead .nav-collapse {
+    margin-left: 160px;
+    float: none;
+  }
+  .homepage-search p{
+    text-align:left;
+  }
+}
+
+.masthead {
+  padding: 18px 0 8px 0;
+}
+
+.account-masthead {
+  background: none;
+}
+
+.masthead .conatiner{
+  padding: 10px 0;
+}
+
+.masthead .navigation {
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+.account-masthead .account{
+  margin-top: 10px;
+}
+/* end of style for one line header*/
