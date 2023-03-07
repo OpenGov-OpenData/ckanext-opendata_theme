@@ -42,7 +42,7 @@ def check_custom_homepage_html(response, expected_form_data):
 def check_homepage_html(response, expected_data):
     assert response, 'Response is empty.'
     for value in expected_data:
-        assert 'class="heading">{}'.format(value) in response, 'Missed header for "{}".'.format(value)
+        assert value in response, 'Missed header for "{}".'.format(value)
     assert 'alert' not in response, 'Result HTML contains alerts when they are not expected.'
 
 

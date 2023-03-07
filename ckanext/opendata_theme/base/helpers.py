@@ -1,5 +1,6 @@
 import ast
 import logging
+import re
 
 from ckan.plugins import toolkit
 from ckan.plugins.toolkit import config

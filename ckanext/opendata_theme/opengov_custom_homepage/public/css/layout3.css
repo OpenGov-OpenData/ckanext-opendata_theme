@@ -1,60 +1,9 @@
-/*the following styles specific to homepage layout2*/
+/*the following styles specific to homepage layout1*/
 
-/*home hero styles start*/
-.homepage [role=main] {
-  min-height: 360px;
-  position: relative;
-  padding: 0;
-}
-
-.homepage .tint-wrapper {
-  position: relative;
-}
-
-.homepage .tint {
-  background-color: rgba(0, 104, 169, 0.2);
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  z-index: 10000;
-}
-
-@media only screen and (min-width: 767px) {
-  .homepage .tint {
-    width: 50%;
-  }
-  .homepage .hero-text-description.hero-text {
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    text-align: left;
-  }
-}
-
-/*layout2 homepage hero text styles left align begin*/
-@media (min-width: 768px) {
-  .cd-header {
-    width: 50%;
-    text-align: left;
-  }
-}
-
-.cd-header .module-search {
-  display:none;
-}
-
-.cd-header .container, .cd-header .span12 {
-  width: 85%
-}
-
-/*layout2 homepage hero text styles left align end*/
-/*layout2 homepage hero styles end*/
-
-/*layout2 homepage search start*/
+/*layout1 homepage search start*/
 .homepage .module-search {
-  background-color: #fff;
   opacity: 1;
-  margin: 0;
+  margin:0;
 }
 .homepage .search-form {
   border-bottom: none;
@@ -68,15 +17,16 @@
 .homepage-search p span {
   padding-left: 20px;
 }
+
 .homepage .module-search .search-giant {
   margin-bottom: 0;
 }
 .homepage-search.container {
   padding: 24px 10px;
 }
-/*layout2 homepage search end*/
+/*layout1 homepage search end*/
 
-/*layout2 homepage blocks strip effect*/
+/*layout1 homepage blocks strip effect*/
 .homepage [class^="main-"]:nth-child(2n) {
   background-color: #fff
 }
@@ -84,41 +34,193 @@
   background-color: #f3f3f3
 }
 
-/* start of style for one-line header */
+
+/*homepage-layout1-style*/
+.data-vault-heading{
+  font-size: 16px;
+  text-align: left;
+}
+.vault-link{
+  text-decoration: underline;
+}
+.vault-link:hover{
+  color: #FB8A52!important;
+}
+
+.account-masthead .fa-home{
+  padding-top: 4px;
+}
+.fa-stack .fa{
+  color: #ffffff;
+}
+.fa-stack .fa.fa-square{
+  color: #ffffff;
+  opacity: 0.0;
+}
+.fa-stack:hover .fa.fa-square{
+  opacity: 1.0;
+}
+.fa-stack:hover .fa-facebook-square{
+  color: #3B5998;
+}
+.fa-stack:hover .fa-twitter-square{
+  color: #00aced;
+}
+.fa-stack:hover .fa-youtube-square{
+  color: #cc181e;
+}
+.account-masthead .account ul li{
+  min-height: 38px;
+}
+.account-masthead .account ul li a.social-link{
+  padding: 0 5px;
+}
+
+ /******* Homepage Background ********/
+.hero-text-heading, .hero-text-description{
+  text-align: center;
+}
+.main-homepage{
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.intro{
+  margin: 15px;
+}
+.intro-block{
+  background: #121f32;
+  margin: 15px;
+  padding: 10px 30px 15px !important;
+  opacity: 0.85;
+}
+ .showcase-section{
+  background: #d5d6d8;
+  margin: 15px;
+  padding: 10px 30px 15px !important;
+  opacity: 0.95;
+}
+.showcase-container {
+    margin-left: 20px;
+}
+ .masthead .btn-navbar, .masthead .btn-navbar:hover, .masthead .btn-navbar:focus, .masthead .btn-navbar:active, .masthead .btn-navbar.active, .masthead .btn-navbar.disabled, .masthead .btn-navbar[disabled]{
+  background-color: #fb8a52;
+  margin-top: 20px;
+}
+ .hr-primary-color{
+  border-color: #FB8A52;
+}
+
+.ckanext-showcase-image {
+  max-height: 400px;
+}
+
+
+/*customize changes for Oklahoma start*/
 .logo {
-  top: 2px;
+  top: 0;
 }
-.masthead .btn-navbar, .masthead .btn-navbar:hover, .masthead .btn-navbar:focus, .masthead .btn-navbar:active, .masthead .btn-navbar.active, .masthead .btn-navbar.disabled, .masthead .btn-navbar[disabled]{
-  margin-top: 5px;
+
+.header-image .logo img {
+  max-width: 300px;
 }
-@media (min-width: 980px){
-  .masthead .nav-collapse {
-    margin-left: 160px;
-    float: none;
-  }
-  .homepage-search p{
-    text-align:left;
-  }
+
+
+.navbar .nav>li>a, .masthead {
+  color: #445562
 }
 
 .masthead {
-  padding: 18px 0 8px 0;
+  background: #fff;
+  border-bottom: 1px solid #eee;
 }
 
-.account-masthead {
-  background: none;
+.masthead .nav-collapse {
+  padding-top: 5px;
 }
 
-.masthead .conatiner{
-  padding: 10px 0;
+.masthead .btn-navbar,
+.masthead .btn-navbar:hover,
+.masthead .btn-navbar:focus,
+.masthead .btn-navbar:active,
+.masthead .btn-navbar.active,
+.masthead .btn-navbar.disabled,
+.masthead .btn-navbar[disabled] {
+  background-color: #445562;
+  margin-top: 15px;
 }
 
-.masthead .navigation {
-  margin-left: 20px;
-  margin-right: 0;
+@media (max-width: 1366px) {
+  .cd-header .module-content.box {
+    padding-top: 50px !important;
+  }
 }
 
-.account-masthead .account{
-  margin-top: 10px;
+@media (max-width: 480px) {
+  .cd-header .module-content.box {
+    padding-top: 20px !important;
+  }
 }
-/* end of style for one line header*/
+
+/* responsively change homepage showcases grid start*/
+.story-tile {
+  padding-left: 15px;
+  padding-right: 0;
+}
+
+a.browse-group img {
+  height: 175px;
+}
+
+@media (min-width: 1200px) {
+  a.browse-group {
+    width: 29.89%;
+  }
+}
+
+@media (max-width: 1200px) {
+  a.browse-group {
+    width: 29%;
+    height: auto;
+  }
+  a.browse-group img {
+    height: 200px;
+  }
+}
+
+@media (max-width: 979px) {
+  a.browse-group {
+    width: 45.89%;
+  }
+}
+
+@media (max-width: 639px) {
+  a.browse-group {
+    width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .story-tile {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  a.browse-group {
+    width: 99%;
+  }
+}
+/*responsively change homepage story showcases grid end*/
+
+/*customize changes for Oklahoma end*/
+.simple-input .field .btn-search {
+  color: #333333;
+}
+
+.site-search.simple-input {
+  border-bottom: 2px solid #333333;
+}
+
+.masthead input[type="text"] {
+  color: #333333;
+}
