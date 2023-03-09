@@ -8,7 +8,8 @@ try:
 except ModuleNotFoundError:
     from ckan.lib.helpers import literal  # noqa: F401
 
-from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION, DEFAULT_CONFIG_SECTION
+import ckanext.opendata_theme.base.helpers as helper
+from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 
 
@@ -24,10 +25,9 @@ class Link(object):
 
     def to_dict(self):
         return {
-            'title': self.title,
-            'url': self.url,
             'position': self.position,
-            'active': self.active,
+            'title': self.title,
+            'url': self.url
         }
 
 
@@ -71,7 +71,7 @@ class CustomHeaderController(BaseCompatibilityController):
                         position=data['position']
                     )
                 )
-            error = self.save_header_metadata(custom_header)
+            error = self.save_custom_header_metadata(custom_header)
             custom_header['errors'] = error
         return tk.render('admin/custom_header_form.html',
                          extra_vars=custom_header)
@@ -89,15 +89,15 @@ class CustomHeaderController(BaseCompatibilityController):
             custom_header_route = 'custom_header'
 
         if tk.request.method == 'POST':
-            header_data = self.get_custom_header_metadata()
             data = self.get_form_data(tk.request)
+            header_data = self.get_custom_header_metadata()
             header_data.get('links', []).append(
                 Link(
                     title=data.get('new_title'),
                     url=data.get('new_url'),
                     position=len(header_data.get('links', [])),
                 ))
-            error = self.save_header_metadata(header_data)
+            error = self.save_custom_header_metadata(header_data)
             header_data['errors'] = error
             return tk.render('admin/custom_header_form.html',
                              extra_vars=header_data)
@@ -116,12 +116,12 @@ class CustomHeaderController(BaseCompatibilityController):
             custom_header_route = 'custom_header'
 
         if tk.request.method == 'POST':
-            header_data = self.get_custom_header_metadata()
             data = self.get_form_data(tk.request)
+            header_data = self.get_custom_header_metadata()
             item = [link for link in header_data['links'] if link.title == data['to_remove']]
             try:
                 header_data['links'].remove(item[0])
-                error = self.save_header_metadata(header_data)
+                error = self.save_custom_header_metadata(header_data)
                 header_data['errors'] = error
             except IndexError:
                 header_data['errors'] = "Unable to remove link."
@@ -141,46 +141,32 @@ class CustomHeaderController(BaseCompatibilityController):
         else:
             custom_header_route = 'custom_header'
 
-        custom_header = {}
-        self.save_header_metadata(custom_header)
         default_header = {
             'layout_type': 'default',
-            'links': []
+            'links': [
+                {'position': 0, 'title': 'Datasets', 'url': '/dataset'},
+                {'position': 1, 'title': helper.get_organization_alias(), 'url': '/organization/'},
+                {'position': 2, 'title': helper.get_group_alias(), 'url': '/group/'},
+                {'position': 3, 'title': 'About', 'url': '/about'}
+            ]
         }
-        self.save_default_header_metadata(default_header)
+        self.save_custom_header_metadata(default_header)
 
         return tk.redirect_to(custom_header_route)
 
-    def save_header_metadata(self, custom_header):
+    def save_custom_header_metadata(self, custom_header):
         try:
-            self.store_data(CONFIG_SECTION, custom_header)
+            data_dict = custom_header.copy()
+            links = []
+            for item in custom_header.get('links', []):
+                links.append(item.to_dict())
+            data_dict['links'] = links
+            BaseCompatibilityController.store_data(CONFIG_SECTION, data_dict)
         except tk.ValidationError as ex:
             return ex.error_summary
 
     def get_custom_header_metadata(self):
-        data = self.get_data(CONFIG_SECTION)
-        default_data = self.get_default_custom_header_metadata()
-        if not data.get('links'):
-            for h in default_data.get('links', []):
-                data.get('links', []).append(h)
-        return data
-
-    def save_default_header_metadata(self, custom_header):
-        self.store_data(DEFAULT_CONFIG_SECTION, custom_header)
-
-    def get_default_custom_header_metadata(self):
-        return self.get_data(DEFAULT_CONFIG_SECTION)
-
-    def store_data(self, config_key, data):
-        data_dict = data.copy()
-        links = []
-        for item in data.get('links', []):
-            links.append(item.to_dict())
-        data_dict['links'] = links
-        BaseCompatibilityController.store_data(config_key, data_dict)
-
-    def get_data(self, config_key):
-        data_dict = BaseCompatibilityController.get_data(config_key)
+        data_dict = BaseCompatibilityController.get_data(CONFIG_SECTION)
         links = []
         for item in data_dict.get('links', []):
             if isinstance(item, dict):

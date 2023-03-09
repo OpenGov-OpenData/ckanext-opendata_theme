@@ -1,14 +1,16 @@
 import re
 import string
-from six.moves.urllib.parse import urlparse
+from six.moves.urllib.parse import quote, urlparse
+
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
 from ckan import model
+from ckan.lib.helpers import build_nav_main as core_build_nav_main
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Link
-from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION, DEFAULT_CONFIG_SECTION
+from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION
 
 try:
     from html import escape as html_escape
@@ -41,9 +43,7 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
     def update_config_schema(self, schema):
         ignore_missing = tk.get_validator('ignore_missing')
         schema.update({
-            # This is a custom configuration option
-            CONFIG_SECTION: [ignore_missing, custom_header_url_validator],
-            DEFAULT_CONFIG_SECTION: [ignore_missing, dict],
+            CONFIG_SECTION: [ignore_missing, custom_header_url_validator, dict]
         })
         return schema
 
@@ -66,42 +66,18 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
 
 def build_nav_main(*args):
     controller = CustomHeaderController()
-    default_metadata = controller.get_default_custom_header_metadata()
-    try:
-        context = {'model': model, 'user': tk.c.user}
-        tk.check_access('sysadmin', context, {})
-        if not default_metadata.get('links'):
-            data = {
-                'layout_type': 'default',
-                'links': []
-            }
-            try:
-                from ckanext.pages.plugin import build_pages_nav_main
-                output = build_pages_nav_main(*args)
-            except Exception:
-                from ckan.lib.helpers import build_nav_main
-                output = build_nav_main(*args)
-            expr = re.compile('(<li><a href="(.*?)">(.*?)</a></li>)', flags=re.DOTALL)
-            header_links = expr.findall(output)
-            for index, link in enumerate(header_links):
-                data['links'].append(
-                    Link(
-                        title=link[2],
-                        url=link[1],
-                        position=index
-                    )
-                )
-            controller.save_default_header_metadata(data)
-    except tk.NotAuthorized:
-        pass
+    custom_header = controller.get_custom_header_metadata()
+    header_links = [item for item in custom_header.get('links', [])]
+    header_links.sort(key=lambda x: int(x.position))
+
+    if not header_links:
+        return core_build_nav_main(*args)
 
     nav_output = ''
-    custom_header = controller.get_custom_header_metadata()
-    final_header_links = [item for item in custom_header.get('links', [])]
-    final_header_links.sort(key=lambda x: int(x.position))
-    for nav_link in final_header_links:
+    for nav_link in header_links:
+        url = quote(nav_link.url)
         title = html_escape(nav_link.title)
-        link = tk.literal(u'<a href="{}">{}</a>'.format(nav_link.url, title))
+        link = tk.literal(u'<a href="{}">{}</a>'.format(url, title))
         li = tk.literal('<li>') + link + tk.literal('</li>')
         nav_output = nav_output + li
     return nav_output
