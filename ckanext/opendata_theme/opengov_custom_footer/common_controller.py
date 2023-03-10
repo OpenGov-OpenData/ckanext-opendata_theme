@@ -23,7 +23,7 @@ def clean_html(text):
 
 
 class CustomFooterCommonController(BaseCompatibilityController):
-    default_data = {'layout_type': 'default'}
+    default_footer = {'layout_type': 'default'}
 
     def custom_footer(self):
         try:
@@ -59,7 +59,7 @@ class CustomFooterCommonController(BaseCompatibilityController):
         else:
             custom_footer_route = 'custom_footer'
 
-        self.save_footer_metadata({})
+        self.save_footer_metadata(CustomFooterCommonController.default_footer)
         return tk.redirect_to(custom_footer_route)
 
     @staticmethod
@@ -73,5 +73,5 @@ class CustomFooterCommonController(BaseCompatibilityController):
     def get_custom_footer_metadata():
         data = CustomFooterCommonController.get_data(CONFIG_KEY)
         if not data:
-            data = CustomFooterCommonController.default_data.copy()
+            data = CustomFooterCommonController.default_footer.copy()
         return data

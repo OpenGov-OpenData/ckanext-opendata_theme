@@ -1,37 +1,23 @@
 # encoding: utf-8
-import six
 import ckan.plugins.toolkit as tk
 from ckan import model
-
-try:
-    from webhelpers.html import literal
-except ModuleNotFoundError:
-    from ckan.lib.helpers import literal  # noqa: F401
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 
 
-class Link(object):
-    def __init__(self, title, url, position, active=False):
-        self.title = six.text_type(title)
-        self.url = six.text_type(url)
-        self.position = position
-        self.active = active
-
-    def __repr__(self):
-        return '{}:{}'.format(self.position, self.title)
-
-    def to_dict(self):
-        return {
-            'position': self.position,
-            'title': self.title,
-            'url': self.url
-        }
-
-
 class CustomHeaderController(BaseCompatibilityController):
+    default_header = {
+        'layout_type': 'default',
+        'links': [
+            {'position': 0, 'title': 'Datasets', 'url': '/dataset'},
+            {'position': 1, 'title': '{}s'.format(helper.get_organization_alias()), 'url': '/organization'},
+            {'position': 2, 'title': '{}s'.format(helper.get_group_alias()), 'url': '/group'},
+            {'position': 3, 'title': 'About', 'url': '/about'}
+        ]
+    }
+
     def custom_header(self):
         try:
             context = {'model': model, 'user': tk.c.user}
@@ -40,13 +26,6 @@ class CustomHeaderController(BaseCompatibilityController):
             tk.abort(403, tk._('Need to be system administrator to administer'))
 
         custom_header = self.get_custom_header_metadata()
-        if not custom_header:
-            # this block is required for base initialization
-            # it happens only once when default custom header metadata is not set
-            # because it is set in build_pages_nav_main helper function which is called
-            # during the page rendering.
-            # reset_custom_header is able to render the page in the background for setting default metadata.
-            self.reset_custom_header()
 
         if tk.request.method == 'POST':
             data = self.get_form_data(tk.request)
@@ -57,19 +36,19 @@ class CustomHeaderController(BaseCompatibilityController):
             if isinstance(data.get('url'), list):
                 for index in range(len(data.get('url'))):
                     custom_header['links'].append(
-                        Link(
-                            title=data['title'][index],
-                            url=data['url'][index],
-                            position=data['position'][index]
-                        )
+                        {
+                            'position': data['position'][index],
+                            'title': data['title'][index],
+                            'url': data['url'][index]
+                        }
                     )
             else:
                 custom_header['links'].append(
-                    Link(
-                        title=data['title'],
-                        url=data['url'],
-                        position=data['position']
-                    )
+                    {
+                        'position': data['position'],
+                        'title': data['title'],
+                        'url': data['url']
+                    }
                 )
             error = self.save_custom_header_metadata(custom_header)
             custom_header['errors'] = error
@@ -92,11 +71,12 @@ class CustomHeaderController(BaseCompatibilityController):
             data = self.get_form_data(tk.request)
             header_data = self.get_custom_header_metadata()
             header_data.get('links', []).append(
-                Link(
-                    title=data.get('new_title'),
-                    url=data.get('new_url'),
-                    position=len(header_data.get('links', [])),
-                ))
+                {
+                    'position': len(header_data.get('links', [])),
+                    'title': data.get('new_title'),
+                    'url': data.get('new_url')
+                }
+            )
             error = self.save_custom_header_metadata(header_data)
             header_data['errors'] = error
             return tk.render('admin/custom_header_form.html',
@@ -118,7 +98,7 @@ class CustomHeaderController(BaseCompatibilityController):
         if tk.request.method == 'POST':
             data = self.get_form_data(tk.request)
             header_data = self.get_custom_header_metadata()
-            item = [link for link in header_data['links'] if link.title == data['to_remove']]
+            item = [link for link in header_data['links'] if link.get('title') == data['to_remove']]
             try:
                 header_data['links'].remove(item[0])
                 error = self.save_custom_header_metadata(header_data)
@@ -141,37 +121,17 @@ class CustomHeaderController(BaseCompatibilityController):
         else:
             custom_header_route = 'custom_header'
 
-        default_header = {
-            'layout_type': 'default',
-            'links': [
-                {'position': 0, 'title': 'Datasets', 'url': '/dataset'},
-                {'position': 1, 'title': helper.get_organization_alias(), 'url': '/organization/'},
-                {'position': 2, 'title': helper.get_group_alias(), 'url': '/group/'},
-                {'position': 3, 'title': 'About', 'url': '/about'}
-            ]
-        }
-        self.save_custom_header_metadata(default_header)
-
+        self.save_custom_header_metadata(CustomHeaderController.default_header)
         return tk.redirect_to(custom_header_route)
 
     def save_custom_header_metadata(self, custom_header):
         try:
-            data_dict = custom_header.copy()
-            links = []
-            for item in custom_header.get('links', []):
-                links.append(item.to_dict())
-            data_dict['links'] = links
-            BaseCompatibilityController.store_data(CONFIG_SECTION, data_dict)
+            CustomHeaderController.store_data(CONFIG_SECTION, custom_header)
         except tk.ValidationError as ex:
             return ex.error_summary
 
     def get_custom_header_metadata(self):
-        data_dict = BaseCompatibilityController.get_data(CONFIG_SECTION)
-        links = []
-        for item in data_dict.get('links', []):
-            if isinstance(item, dict):
-                item = Link(**item)
-            links.append(item)
-        if links:
-            data_dict['links'] = links
+        data_dict = CustomHeaderController.get_data(CONFIG_SECTION)
+        if not data_dict:
+            data_dict = CustomHeaderController.default_header.copy()
         return data_dict

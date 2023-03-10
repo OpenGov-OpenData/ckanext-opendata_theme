@@ -1,15 +1,11 @@
-import re
 import string
-from six.moves.urllib.parse import quote, urlparse
-
+from six.moves.urllib.parse import urlparse
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
-from ckan import model
-from ckan.lib.helpers import build_nav_main as core_build_nav_main
 
 import ckanext.opendata_theme.base.helpers as helper
-from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController, Link
+from ckanext.opendata_theme.opengov_custom_header.controller import CustomHeaderController
 from ckanext.opendata_theme.opengov_custom_header.constants import CONFIG_SECTION
 
 try:
@@ -68,15 +64,12 @@ def build_nav_main(*args):
     controller = CustomHeaderController()
     custom_header = controller.get_custom_header_metadata()
     header_links = [item for item in custom_header.get('links', [])]
-    header_links.sort(key=lambda x: int(x.position))
-
-    if not header_links:
-        return core_build_nav_main(*args)
+    header_links.sort(key=lambda x: int(x.get('position', 0)))
 
     nav_output = ''
     for nav_link in header_links:
-        url = quote(nav_link.url)
-        title = html_escape(nav_link.title)
+        url = nav_link.get('url', '')
+        title = html_escape(nav_link.get('title', ''))
         link = tk.literal(u'<a href="{}">{}</a>'.format(url, title))
         li = tk.literal('<li>') + link + tk.literal('</li>')
         nav_output = nav_output + li
@@ -97,8 +90,10 @@ def custom_header_url_validator(value):
         return True
     for item in value.get('links', []):
         url = item.get('url', '')
+        if not url:
+            raise tk.Invalid('Missing URL')
         if len(url) > 2000:
-            raise tk.Invalid('URL is too long. Only 2000 characters allowed for "{}"'.format(url))
+            raise tk.Invalid('URL is too long. Maximum 2000 characters allowed for "{}"'.format(url))
         pieces = urlparse(url)
         if pieces.scheme and pieces.scheme != 'https':
             raise tk.Invalid('Only HTTPS URLs supported "{}"'.format(url))
