@@ -1,0 +1,125 @@
+{% extends "admin/base.html" %}
+
+{% import 'macros/form.html' as form %}
+
+{% if h.version(h.ckan_version()) < h.version('2.9') %}
+    {% set custom_css_action = h.url_for(
+    controller='ckanext.opendata_theme.opengov_custom_css.plugin.pylons_plugin:CSSController',
+    action='custom_css') %}
+
+    {% set reset_custom_css = h.url_for(
+    controller='ckanext.opendata_theme.opengov_custom_css.plugin.pylons_plugin:CSSController',
+    action='reset_custom_css') %}
+{% else %}
+    {% set custom_css_action = h.url_for('/ckan-admin/custom_css/') %}
+    {% set reset_custom_css = h.url_for('/ckan-admin/reset_custom_css/') %}
+{% endif %}
+
+
+{% block primary_content_inner %}
+
+    {% block errors %}{{ form.errors(errors) }}{% endblock %}
+
+    <form method="post" action="{{ custom_css_action }}" id="custom-css-form">
+        <h3>Header</h3>
+        <div class="control-group form-group">
+            <div class="row">
+                {% for name, field in account_header_fields.items() %}
+                    <div class="col-sm-4 span4 col1">
+                        <div class="form-group">
+                            <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
+                            <div class="controls">
+                                <input type="text" class="opendata-theme-color-picker"
+                                       name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                {% for name, field in navigation_header_fields.items() %}
+                    <div class="col-sm-4 span4 col1">
+                        <div class="form-group">
+                            <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
+                            <div class="controls">
+                                <input type="text" class="opendata-theme-color-picker"
+                                       name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <h3>Footer</h3>
+        <div class="control-group form-group">
+            <div class="row">
+                {% for name, field in footer_fields.items() %}
+                    <div class="col-sm-4 span4 col1">
+                        <div class="form-group">
+                            <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
+                            <div class="controls">
+                                <input type="text" class="opendata-theme-color-picker"
+                                       name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <h3>Side Menu</h3>
+        <div class="control-group form-group">
+            <div class="row">
+                {% for name, field in module_header_fields.items() %}
+                    <div class="col-sm-4 span4 col1">
+                        <div class="form-group">
+                            <label class="control-label" for={{ name }}> {{ field["title"] }}</label>
+                            <div class="controls">
+                                <input type="text" class="opendata-theme-color-picker"
+                                       name="{{ name }}" id="{{ name }}" value="{{ field["value"] }}"/>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% block site_custom_css_form %}
+            {{ form.textarea('ckan.site_custom_css', id='field-ckan-site-custom-css', label=_('Custom CSS'), value=data['ckan.site_custom_css'], error=error, placeholder=_(
+'Customizable CSS that changes site style, e.g.
+/*change colors of links*/
+a {
+    color : red;
+}'
+            )) }}
+        {% endblock %}
+
+        {% block form_actions %}
+            <div class="form-actions">
+                <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update') }}</button>
+                <a class="btn btn-danger pull-left" data-module="confirm-action"
+                   data-module-content="Do you really want to reset custom colors? All your changes will be lost."
+                   href="{{ reset_custom_css }}">{{ _('Reset to Default') }}
+                </a>
+            </div>
+        {% endblock %}
+    </form>
+
+{% endblock %}
+
+{% block secondary_content %}
+    <div class="module module-narrow module-shallow">
+        <h2 class="module-heading">
+            <i class="fa fa-info-circle"></i>
+            {{ _('Config Options Guide') }}
+        </h2>
+        <div class="module-content">
+            {% block admin_form_help %}
+                {% trans %}
+                    <p><strong>Custom CSS:</strong> Customize colors of different elements</p>
+                {% endtrans %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

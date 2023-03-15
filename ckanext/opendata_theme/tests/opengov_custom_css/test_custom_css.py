@@ -8,7 +8,7 @@ RESET_CUSTOM_CSS_URL = "/ckan-admin/reset_custom_css/"
 
 DEFAULT_DATA = {
     'custom-css-account-header-background-color': '#044187',
-    'custom-css-account-header-color': '#ffffff',
+    'custom-css-account-header-text-color': '#ffffff',
     'custom-css-account-hover-background-color': '#1f76d8',
     'custom-css-account-hover-navigation-button-background-color': '#044187',
     'custom-css-footer-background-color': '#383b3d',

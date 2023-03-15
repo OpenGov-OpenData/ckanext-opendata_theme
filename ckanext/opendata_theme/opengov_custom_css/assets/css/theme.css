@@ -26,11 +26,8 @@
 .account-masthead .account ul li {
   border-left: none;
 }
-.account-masthead .account ul li a {
-  color: #ffffff;
-}
 .account-masthead .account ul li a:hover {
-  background-color: transparent;
+  color: #FFFFFF;
 }
 .masthead {
   box-shadow: 0 2px 4px 0 rgb(19 21 23 / 10%);
@@ -99,7 +96,7 @@
   margin-top: 50px;
 }
 .main-browse, .main-updates {
-  background: #ffffff;
+  background: #FFFFFF;
 }
 .main-featured {
   background: #EFF2F5;
