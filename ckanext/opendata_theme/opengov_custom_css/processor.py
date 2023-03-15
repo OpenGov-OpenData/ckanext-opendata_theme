@@ -16,20 +16,20 @@ class AccountHeaderBackGroundColor(AbstractParser):
     _default_value = '#044187'
 
 
-class AccountHeaderTextColor(AbstractParser):
-    class_name = '.account-masthead .account ul li a'
-    form_name = 'account-header-text-color'
-    title = 'Account Header Text Color'
-    location = 'color'
-    _default_value = '#ffffff'
-
-
 class AccountHeaderHoverBackgroundColor(AbstractParser):
     class_name = '.account-masthead .account ul li a:hover'
     form_name = 'account-header-hover-background-color'
     title = 'Account Header Hover Background Color'
     location = 'background'
     _default_value = '#1f76d8'
+
+
+class AccountHeaderTextColor(AbstractParser):
+    class_name = '.account-masthead .account ul li a'
+    form_name = 'account-header-text-color'
+    title = 'Account Header Text Color'
+    location = 'color'
+    _default_value = '#ffffff'
 
 
 class NavigationHeaderBackGroundColor(AbstractParser):
@@ -40,15 +40,6 @@ class NavigationHeaderBackGroundColor(AbstractParser):
     _default_value = '#1f76d8'
 
 
-class NavigationHeaderTextColor(AbstractParser):
-    class_name = ('.navbar .nav>li>a,'
-                  '.masthead .nav>li>a')
-    form_name = 'nav-header-text-color'
-    title = 'Navigation Header Text Color'
-    location = 'color'
-    _default_value = '#ffffff'
-
-
 class NavigationHeaderHoverBackgroundColor(AbstractParser):
     class_name = ('.masthead .navigation .nav-pills li a:hover,'
                   '.masthead .navigation .nav-pills li.active a')
@@ -56,6 +47,15 @@ class NavigationHeaderHoverBackgroundColor(AbstractParser):
     title = 'Navigation Header Hover Background Color'
     location = 'background-color'
     _default_value = '#044187'
+
+
+class NavigationHeaderTextColor(AbstractParser):
+    class_name = ('.navbar .nav>li>a,'
+                  '.masthead .nav>li>a')
+    form_name = 'nav-header-text-color'
+    title = 'Navigation Header Text Color'
+    location = 'color'
+    _default_value = '#ffffff'
 
 
 class ModuleHeaderBackgroundColor(AbstractParser):
@@ -82,21 +82,21 @@ class FooterBackGroundColor(AbstractParser):
     _default_value = '#383b3d'
 
 
+class FooterLinkColor(AbstractParser):
+    class_name = ('.site-footer a,'
+                  '.site-footer a:hover')
+    form_name = 'footer-link-text-color'
+    title = 'Footer Link Color'
+    location = 'color'
+    _default_value = '#ffffff'
+
+
 class FooterTextColor(AbstractParser):
     class_name = ('.site-footer,'
                   '.site-footer label,'
                   '.site-footer small')
     form_name = 'footer-text-color'
     title = 'Footer Text Color'
-    location = 'color'
-    _default_value = '#ffffff'
-
-
-class FooterLinkColor(AbstractParser):
-    class_name = ('.site-footer a,'
-                  '.site-footer a:hover')
-    form_name = 'footer-link-text-color'
-    title = 'Footer Link Color'
     location = 'color'
     _default_value = '#ffffff'
 

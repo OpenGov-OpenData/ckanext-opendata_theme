@@ -1,5 +1,4 @@
 import pytest
-from ckan.logic import NotAuthorized
 
 from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
@@ -7,34 +6,30 @@ CUSTOM_CSS_URL = "/ckan-admin/custom_css/"
 RESET_CUSTOM_CSS_URL = "/ckan-admin/reset_custom_css/"
 
 DEFAULT_DATA = {
-    'custom-css-account-header-background-color': '#044187',
-    'custom-css-account-header-text-color': '#ffffff',
-    'custom-css-account-hover-background-color': '#1f76d8',
-    'custom-css-account-hover-navigation-button-background-color': '#044187',
-    'custom-css-footer-background-color': '#383b3d',
-    'custom-css-footer-color': '#ffffff',
-    'custom-css-footer-link-color': '#ffffff',
-    'custom-css-header-background-color': '#1f76d8',
-    'custom-css-header-text-color': '#ffffff',
-    'custom-css-link-color': '#131517',
-    'custom-css-link-hover-color': '#165cab',
-    'custom-css-module-header-background-color': '#1f76d8',
-    'custom-css-module-header-color': '#ffffff',
+    'account-header-background-color': '#044187',
+    'account-header-hover-background-color': '#1f76d8',
+    'account-header-text-color': '#ffffff',
+    'nav-header-background-color': '#1f76d8',
+    'nav-header-hover-background-color': '#044187',
+    'nav-header-text-color': '#ffffff',
+    'module-header-background-color': '#1f76d8',
+    'module-header-text-color': '#ffffff',
+    'footer-background-color': '#383b3d',
+    'footer-link-text-color': '#ffffff',
+    'footer-text-color': '#ffffff'
 }
 
 DEFAULT_CUSTOM_CSS = (
     '.account-masthead {background: #044187}',
-    '.account-masthead .account ul li a,.account-masthead .account ul li a:hover {color: #ffffff}',
     '.account-masthead .account ul li a:hover {background: #1f76d8}',
+    '.account-masthead .account ul li a {color: #ffffff}',
     '.masthead {background: #1f76d8}',
-    '.navbar .nav>li>a,.masthead .nav>li>a,.masthead .nav>.active>a {color: #ffffff}',
     '.masthead .navigation .nav-pills li a:hover,.masthead .navigation .nav-pills li.active a {background-color: #044187}',
+    '.navbar .nav>li>a,.masthead .nav>li>a {color: #ffffff}',
     '.module-heading {background: #1f76d8; color: #ffffff}',
     'body, .site-footer {background: #383b3d}',
-    '.site-footer,.site-footer label,.site-footer small {color: #ffffff}',
-    'a {color: #131517}',
-    'a:hover {color: #165cab}',
     '.site-footer a,.site-footer a:hover {color: #ffffff}',
+    '.site-footer,.site-footer label,.site-footer small {color: #ffffff}'
 )
 
 
@@ -55,21 +50,20 @@ def check_custom_css_page_html(response, expected_form_data, expected_css_data, 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_get_custom_css_page_with_not_sysadmin_user(app):
-    with pytest.raises(NotAuthorized):
-        do_get(app, CUSTOM_CSS_URL, is_sysadmin=False)
+    response = do_get(app, CUSTOM_CSS_URL, is_sysadmin=False)
+    assert '<h1>403 Forbidden</h1>' in response
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_get_custom_css_page_with_default_data(app):
     response = do_get(app, CUSTOM_CSS_URL, is_sysadmin=True)
-
     check_custom_css_page_html(response, expected_form_data=DEFAULT_DATA.copy(), expected_css_data=DEFAULT_CUSTOM_CSS)
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_post_custom_css_page_with_changed_color(app):
     data = DEFAULT_DATA.copy()
-    data['custom-css-account-header-background-color'] = '#044189'
+    data['account-header-background-color'] = '#044189'
     unexpected_custom_css = '.account-masthead {background: #044187}'
     expected_custom_css = list(DEFAULT_CUSTOM_CSS)
     expected_custom_css.remove(unexpected_custom_css)
@@ -83,7 +77,7 @@ def test_post_custom_css_page_with_changed_color(app):
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_post_custom_css_page_with_changed_color_respond_with_contrast_connected_message(app):
     data = DEFAULT_DATA.copy()
-    data['custom-css-account-header-background-color'] = '#ffffff'
+    data['account-header-background-color'] = '#ffffff'
 
     unexpected_custom_css = '.account-masthead {background: #ffffff}'
 
@@ -101,7 +95,7 @@ def test_post_custom_css_page_with_changed_color_respond_with_contrast_connected
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_reset_changed_custom_css(app):
     data = DEFAULT_DATA.copy()
-    data['custom-css-account-header-background-color'] = '#044189'
+    data['account-header-background-color'] = '#044189'
     unexpected_custom_css = '.account-masthead {background: #044187}'
     expected_custom_css = list(DEFAULT_CUSTOM_CSS)
     expected_custom_css.remove(unexpected_custom_css)
