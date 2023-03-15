@@ -120,20 +120,19 @@ class CustomStyleProcessor:
 
         self.processors = (
             self.processor_account_header_background_color,
-            self.processor_account_header_text_color,
             self.processor_account_header_hover_background_color,
+            self.processor_account_header_text_color,
 
             self.processor_navigation_header_background_color,
-            self.processor_navigation_header_text_color,
             self.processor_navigation_header_hover_background_color,
+            self.processor_navigation_header_text_color,
 
             self.processor_module_header_background_color,
             self.processor_module_header_text_color,
 
             self.processor_footer_background_color,
-            self.processor_footer_text_color,
-
-            self.processor_footer_link_color
+            self.processor_footer_link_color,
+            self.processor_footer_text_color
         )
 
     def get_custom_css(self, data):
@@ -179,5 +178,6 @@ class CustomStyleProcessor:
                     errors[key] = 'Contrast ratio is not high enough.'
         if errors:
             raise ValidationError(errors)
+
 
 custom_style_processor = CustomStyleProcessor()

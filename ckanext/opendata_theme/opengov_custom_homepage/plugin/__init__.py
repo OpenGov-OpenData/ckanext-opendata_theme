@@ -20,9 +20,9 @@ class OpenDataThemeHomepagePlugin(MixinPlugin):
         toolkit.add_template_directory(ckan_config, '../templates')
 
         if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom_home_page', 'Home Page Layout')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom_home_page', 'Home Page Layout', icon='file-code-o')
         elif toolkit.check_ckan_version(min_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom-homepage.custom_home_page', 'Home Page Layout')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom-homepage.custom_home_page', 'Home Page Layout', icon='file-code-o')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')

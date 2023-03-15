@@ -3,7 +3,6 @@ from collections import OrderedDict
 
 import ckan.plugins.toolkit as tk
 from ckan import model
-from ckan.plugins.toolkit import config, get_action, render, request, ValidationError
 
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 from ckanext.opendata_theme.opengov_custom_css.processor import custom_style_processor
@@ -18,38 +17,43 @@ class CustomCSSController(BaseCompatibilityController):
     redirect_to_action_kwargs = dict(endpoint='custom-css.custom_css')
 
     def custom_css(self):
-        context = {'model': model, 'user': tk.c.user}
+        try:
+            context = {'model': model, 'user': tk.c.user}
+            tk.check_access('sysadmin', context, {})
+        except tk.NotAuthorized:
+            tk.abort(403, tk._('Need to be system administrator to administer'))
+
         css_metadata = self.get_data(CSS_METADATA)
         if not css_metadata:
             # This case can happen only during the cold start on empty DB.
             default_raw_css, css_metadata = custom_style_processor.get_custom_css({})
             self.save_css_metadata(default_raw_css, css_metadata)
 
-        if request.method == 'POST':
-            form_data = self.get_form_data(request)
+        if tk.request.method == 'POST':
+            form_data = self.get_form_data(tk.request)
             custom_css, css_metadata = custom_style_processor.get_custom_css(form_data)
 
             try:
                 custom_style_processor.check_contrast()
                 self.save_css_metadata(custom_css, css_metadata)
 
-                get_action('config_option_update')(context,
-                    {'ckan.site_custom_css': form_data.get('ckan.site_custom_css')}
-                )
-            except ValidationError as e:
+                tk.get_action('config_option_update')(context, {
+                    'ckan.site_custom_css': form_data.get('ckan.site_custom_css')
+                })
+            except tk.ValidationError as e:
                 errors = e.error_dict
                 extra_vars = {'data': form_data, 'errors': errors}
                 extra_vars.update(self.get_form_fields(css_metadata))
-                return render('admin/custom_css_form.html', extra_vars=extra_vars)
+                return tk.render('admin/custom_css_form.html', extra_vars=extra_vars)
 
-        site_custom_css = get_action('config_option_show')(context,
-            {'key':'ckan.site_custom_css'}
-        )
+        site_custom_css = tk.get_action('config_option_show')(context, {
+            'key': 'ckan.site_custom_css'
+        })
 
         data = {'ckan.site_custom_css': site_custom_css}
         extra_vars = {'data': data, 'errors': {}}
         extra_vars.update(self.get_form_fields(css_metadata))
-        return render('admin/custom_css_form.html', extra_vars=extra_vars)
+        return tk.render('admin/custom_css_form.html', extra_vars=extra_vars)
 
     def reset_custom_css(self):
         default_raw_css, default_css_metadata = custom_style_processor.get_custom_css({})
@@ -63,14 +67,13 @@ class CustomCSSController(BaseCompatibilityController):
 
     @staticmethod
     def get_raw_css():
-        return get_action('config_option_show')({'ignore_auth': True}, {'key': RAW_CSS})
+        return tk.get_action('config_option_show')({'ignore_auth': True}, {'key': RAW_CSS})
 
     @staticmethod
     def get_form_fields(css_metadata):
         account_header_fields = OrderedDict()
         navigation_header_fields = OrderedDict()
         module_header_fields = OrderedDict()
-        link_fields = OrderedDict()
         footer_fields = OrderedDict()
         for key, value in css_metadata.items():
             if key in ACCOUNT_HEADER_FIELDS:
@@ -90,6 +93,6 @@ class CustomCSSController(BaseCompatibilityController):
 
     @staticmethod
     def sort_inputs_by_title(css_metadata):
-        list_for_sort = [(key, value) for key, value in css_metadata.items()]
-        list_for_sort = sorted(list_for_sort, key=lambda x: x[1].get('title', ''))
-        return OrderedDict(list_for_sort)
+        sorted_list = [(key, value) for key, value in css_metadata.items()]
+        sorted_list = sorted(sorted_list, key=lambda x: x[1].get('title', ''))
+        return OrderedDict(sorted_list)

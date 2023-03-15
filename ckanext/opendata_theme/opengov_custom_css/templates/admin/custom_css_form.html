@@ -21,7 +21,6 @@
     {% block errors %}{{ form.errors(errors) }}{% endblock %}
 
     <form method="post" action="{{ custom_css_action }}" id="custom-css-form">
-        <h3>Header</h3>
         <div class="control-group form-group">
             <div class="row">
                 {% for name, field in account_header_fields.items() %}
@@ -51,7 +50,6 @@
             </div>
         </div>
         <hr>
-        <h3>Footer</h3>
         <div class="control-group form-group">
             <div class="row">
                 {% for name, field in footer_fields.items() %}
@@ -68,7 +66,6 @@
             </div>
         </div>
         <hr>
-        <h3>Side Menu</h3>
         <div class="control-group form-group">
             <div class="row">
                 {% for name, field in module_header_fields.items() %}
@@ -84,7 +81,7 @@
                 {% endfor %}
             </div>
         </div>
-
+        <hr>
         {% block site_custom_css_form %}
             {{ form.textarea('ckan.site_custom_css', id='field-ckan-site-custom-css', label=_('Custom CSS'), value=data['ckan.site_custom_css'], error=error, placeholder=_(
 'Customizable CSS that changes site style, e.g.
@@ -112,13 +109,18 @@ a {
     <div class="module module-narrow module-shallow">
         <h2 class="module-heading">
             <i class="fa fa-info-circle"></i>
-            {{ _('Config Options Guide') }}
+            {{ _('CSS Config Options') }}
         </h2>
         <div class="module-content">
             {% block admin_form_help %}
-                {% trans %}
-                    <p><strong>Custom CSS:</strong> Customize colors of different elements</p>
-                {% endtrans %}
+                <p><strong>Account Header:</strong> This is part of the header that shows
+                    the login/logout link and links for a user's account.</p>
+                <p><strong>Navigation Header:</strong> This is part of the header that shows
+                    navigation links like Dataset.</p>
+                <p><strong>Footer:</strong> The footer appears at the bottom of the page.</p>
+                <p><strong>Side Menu:</strong> The side menu appears on the left side of the page.</p>
+                <p><strong>Custom CSS:</strong> This is a block of CSS that appears in the
+                    <code>&lt;head&gt;</code> tag of every page.
             {% endblock %}
         </div>
     </div>

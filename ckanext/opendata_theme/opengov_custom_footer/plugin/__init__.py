@@ -25,9 +25,9 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
         toolkit.add_resource('../assets', 'opengov_custom_footer_resource')
 
         if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom_footer', 'Footer Layout')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom_footer', 'Footer Layout', icon='file-code-o')
         elif toolkit.check_ckan_version(min_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom-footer.custom_footer', 'Footer Layout')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom-footer.custom_footer', 'Footer Layout', icon='file-code-o')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')

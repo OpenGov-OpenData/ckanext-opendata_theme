@@ -21,7 +21,7 @@ class MixinPlugin(p.SingletonPlugin):
         m.connect(
             'custom_css',
             '/ckan-admin/custom_css',
-            action='custom_css', controller=CONTROLLER, ckan_icon='paint-brush',
+            action='custom_css', controller=CONTROLLER, ckan_icon='file-code',
         )
         m.connect(
             'reset_custom_css',
