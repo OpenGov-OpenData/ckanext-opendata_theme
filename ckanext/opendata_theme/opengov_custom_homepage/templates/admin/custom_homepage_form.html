@@ -4,20 +4,21 @@
 
 {% if h.version(h.ckan_version()) < h.version('2.9') %}
     {% set custom_home_page_action = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin:CSSController',
-    action='custom_home_page') %}
+    controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController',
+    action='custom_homepage') %}
 
-    {% set reset_custom_naming = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_homepage.plugin.pylons_plugin:CSSController',
-    action='reset_custom_naming') %}
+    {% set reset_custom_homepage = h.url_for(
+    controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController',
+    action='reset_custom_homepage') %}
 {% else %}
-    {% set custom_home_page_action = h.url_for('/ckan-admin/custom_home_page/') %}
-    {% set reset_custom_naming = h.url_for('/ckan-admin/reset_custom_naming/') %}
+    {% set custom_home_page_action = h.url_for('/ckan-admin/custom_homepage/') %}
+    {% set reset_custom_homepage = h.url_for('/ckan-admin/reset_custom_homepage/') %}
 {% endif %}
 
 
 {% block primary_content_inner %}
     {{ form.errors(error_summary) }}
+    <h3>Homepage Configuration</h3>
     <form method='post' id='custom-homepage-layout-form' action={{ custom_home_page_action }}
             enctype="multipart/form-data">
         <div class="control-group form-group control-medium">
@@ -29,6 +30,10 @@
                     selected=actual_layout,
                     error=error) }}
             {% endblock %}
+        </div>
+        <hr>
+        <h4>Homepage Section Titles</h4>
+        <div class="control-group form-group control-medium">
             {% for name, field in custom_naming.items() %}
                 <div class="form-group form-group">
                     <label class="control-label" for={{ name }}> {{ field["title"] }}</label><br>
@@ -39,9 +44,25 @@
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" name="save">{{ _('Update Config') }}</button>
             <a class="btn btn-danger pull-left" data-module="confirm-action"
-               data-module-content="Do you really want to reset custom names? All your changes will be lost."
-               href="{{ reset_custom_css }}">{{ _('Reset to Default') }}
+               data-module-content="Do you really want to reset the homepage? All your changes will be lost."
+               href="{{ reset_custom_homepage }}">{{ _('Reset to Default') }}
             </a>
         </div>
     </form>
+{% endblock %}
+
+{% block secondary_content %}
+    <div class="module module-narrow module-shallow">
+        <h2 class="module-heading">
+            <i class="fa fa-info-circle"></i>
+            {{ _('Homepage Config Options') }}
+        </h2>
+        <div class="module-content">
+            {% block admin_form_help %}
+                {% trans %}
+                    <p><strong>Homepage Layout:</strong> Select from different layouts.</p>
+                {% endtrans %}
+            {% endblock %}
+        </div>
+    </div>
 {% endblock %}

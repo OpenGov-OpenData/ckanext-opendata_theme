@@ -182,3 +182,15 @@ def get_value_from_extras(extras, key):
         if item.get('key') == key:
             value = item.get('value')
     return value
+
+
+def search_document_page_exists(page_id):
+    try:
+        if not page_id:
+            return False
+        search_doc = toolkit.get_action('ckanext_pages_show')({}, {'page': page_id})
+        if search_doc.get('content') and not search_doc.get('private'):
+            return True
+    except Exception:
+        logger.debug("[opendata_theme] Error in retrieving page")
+    return False

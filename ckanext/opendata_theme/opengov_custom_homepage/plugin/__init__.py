@@ -21,9 +21,9 @@ class OpenDataThemeHomepagePlugin(MixinPlugin):
         toolkit.add_public_directory(ckan_config, '../public')
 
         if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom_home_page', 'Home Page Layout')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom_homepage', 'Homepage Layout')
         elif toolkit.check_ckan_version(min_version='2.9'):
-            toolkit.add_ckan_admin_tab(ckan_config, 'custom-homepage.custom_home_page', 'Home Page Layout')
+            toolkit.add_ckan_admin_tab(ckan_config, 'custom-homepage.custom_homepage', 'Homepage Layout')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
@@ -48,5 +48,6 @@ class OpenDataThemeHomepagePlugin(MixinPlugin):
             'opendata_theme_get_package_tracking_summary': helper.package_tracking_summary,
             'opendata_theme_get_custom_name': helper.get_custom_name,
             'opendata_theme_get_data': helper.get_data,
+            'opendata_theme_search_document_page_exists': helper.search_document_page_exists,
             'version': helper.version_builder,
         }

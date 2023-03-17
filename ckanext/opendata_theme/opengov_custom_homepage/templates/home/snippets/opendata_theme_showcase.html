@@ -5,9 +5,9 @@
                 <div class="module-content">
                     <h2 class="heading">
                         <a href="/showcase">
-                            {{ h.opendata_theme_get_custom_name('showcase-custom-name', 'Showcases') }}
-                        </a></h2>
-                    <hr/>
+                            {{ h.opendata_theme_get_custom_name('showcases-custom-name', 'Showcases') }}
+                        </a>
+                    </h2>
                     {% snippet 'home/snippets/showcase_list.html', showcases=h.opendata_theme_get_showcases() %}
                 </div>
             </div>

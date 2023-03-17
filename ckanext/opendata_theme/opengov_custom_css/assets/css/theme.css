@@ -87,7 +87,7 @@
   box-shadow: none;
 }
 .homepage [role=main] {
-  padding: 0 0 20px;
+  padding: 0;
 }
 [role=main], .main {
   background: #FFFFFF;
@@ -97,12 +97,6 @@
 }
 .homepage .hero .module-search {
   margin-top: 50px;
-}
-.main-browse, .main-updates {
-  background: #ffffff;
-}
-.main-featured {
-  background: #EFF2F5;
 }
 .browse-group-title, .slick-showcase .media-item h3{
   font-size: 20px;
@@ -117,9 +111,6 @@
 }
 .slick-showcase .media-image {
   max-height: 160px;
-}
-.main-updates li.dataset-item {
-  min-height: 80px;
 }
 .secondary.col-sm-3, .secondary.span3 {
   border: 1px solid #cccccc;
@@ -284,15 +275,6 @@ form.form-inline.form-select.lang-select {
     background: inherit !important;
     color: inherit !important;
   }
-  a.browse-group {
-    width: 140px;
-    height: 160px;
-  }
-  .browse-group-image {
-    max-height: 75px;
-    max-width: 125px;
-    margin: 6px;
-  }
 }
 @media (min-width: 768px) {
   [role=main], .main, .hero {
@@ -300,16 +282,6 @@ form.form-inline.form-select.lang-select {
   }
   .wrapper:before {
     display: none;
-  }
-  a.browse-group {
-    width: 23%;
-    min-width: 195px;
-    margin: 0 10px 10px 0;
-  }
-  .browse-group-image {
-    max-height: 100px;
-    max-width: 175px;
-    margin: 10px;
   }
   .primary div.module-content {
     padding: 0 0 30px;

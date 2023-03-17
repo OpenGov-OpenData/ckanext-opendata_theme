@@ -5,19 +5,24 @@
 
 <div role="main" style="padding:0">
   <div class="main-homepage">
-  {% if 'heroslideradmin' in g.plugins %}
-    {% snippet 'home/snippets/hero_slider.html' %}
-  {% else %}
-    {% snippet 'home/snippets/hero_title.html' %}
-    {% block opendata_theme_search %}
-      {% snippet 'home/snippets/search.html' %}
-    {% endblock %}
-  {% endif %}
-
+    <div class="container">
+      <div class="row">
+        <div class="span12 col1">
+          <div class="intro-block">
+            <div class="module-content">
+              <h1 class="hero-text-heading hero-text">{{ title }}</h1>
+              <div class="hero-text-description hero-text">
+                {{ h.render_markdown(g.site_intro_text) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container">
       <div class="row">
         <div class="col-md-12 span12 col1">
-          <div class="module-content box story-tile">
+          <div class="module-content story-tile">
             {% for showcase in showcases_story %}
               {% if showcase.url %}
                 <a href="{{ showcase.url }}" class="browse-group">
