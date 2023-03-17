@@ -54,12 +54,12 @@ class CustomFooterController(BaseCompatibilityController):
         except tk.NotAuthorized:
             tk.abort(403, tk._('Need to be system administrator to administer'))
 
+        self.save_footer_metadata(CustomFooterController.default_footer)
+
         if tk.check_ckan_version(min_version='2.9.0'):
             custom_footer_route = 'custom-footer.custom_footer'
         else:
             custom_footer_route = 'custom_footer'
-
-        self.save_footer_metadata(CustomFooterController.default_footer)
         return tk.redirect_to(custom_footer_route)
 
     @staticmethod

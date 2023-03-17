@@ -62,11 +62,6 @@ class CustomHeaderController(BaseCompatibilityController):
         except tk.NotAuthorized:
             tk.abort(403, tk._('Need to be system administrator to administer'))
 
-        if tk.check_ckan_version(min_version='2.9.0'):
-            custom_header_route = 'custom-header.custom_header'
-        else:
-            custom_header_route = 'custom_header'
-
         if tk.request.method == 'POST':
             data = self.get_form_data(tk.request)
             header_data = self.get_custom_header_metadata()
@@ -81,6 +76,11 @@ class CustomHeaderController(BaseCompatibilityController):
             header_data['errors'] = error
             return tk.render('admin/custom_header_form.html',
                              extra_vars=header_data)
+
+        if tk.check_ckan_version(min_version='2.9.0'):
+            custom_header_route = 'custom-header.custom_header'
+        else:
+            custom_header_route = 'custom_header'
         return tk.redirect_to(custom_header_route)
 
     def remove_link(self):
@@ -89,11 +89,6 @@ class CustomHeaderController(BaseCompatibilityController):
             tk.check_access('sysadmin', context, {})
         except tk.NotAuthorized:
             tk.abort(403, tk._('Need to be system administrator to administer'))
-
-        if tk.check_ckan_version(min_version='2.9.0'):
-            custom_header_route = 'custom-header.custom_header'
-        else:
-            custom_header_route = 'custom_header'
 
         if tk.request.method == 'POST':
             data = self.get_form_data(tk.request)
@@ -107,6 +102,11 @@ class CustomHeaderController(BaseCompatibilityController):
                 header_data['errors'] = "Unable to remove link."
             return tk.render('admin/custom_header_form.html',
                              extra_vars=header_data)
+
+        if tk.check_ckan_version(min_version='2.9.0'):
+            custom_header_route = 'custom-header.custom_header'
+        else:
+            custom_header_route = 'custom_header'
         return tk.redirect_to(custom_header_route)
 
     def reset_custom_header(self):
@@ -116,12 +116,12 @@ class CustomHeaderController(BaseCompatibilityController):
         except tk.NotAuthorized:
             tk.abort(403, tk._('Need to be system administrator to administer'))
 
+        self.save_custom_header_metadata(CustomHeaderController.default_header)
+
         if tk.check_ckan_version(min_version='2.9.0'):
             custom_header_route = 'custom-header.custom_header'
         else:
             custom_header_route = 'custom_header'
-
-        self.save_custom_header_metadata(CustomHeaderController.default_header)
         return tk.redirect_to(custom_header_route)
 
     def save_custom_header_metadata(self, custom_header):

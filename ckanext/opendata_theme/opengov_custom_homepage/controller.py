@@ -59,7 +59,6 @@ class CustomHomepageController(BaseCompatibilityController):
             custom_homepage_route = 'custom-homepage.custom_homepage'
         else:
             custom_homepage_route = 'custom_homepage'
-
         return tk.redirect_to(custom_homepage_route)
 
     def store_config(self, data):

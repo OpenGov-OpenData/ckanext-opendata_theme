@@ -14,8 +14,6 @@ from ckanext.opendata_theme.opengov_custom_css.constants import (
 
 
 class CustomCSSController(BaseCompatibilityController):
-    redirect_to_action_kwargs = dict(endpoint='custom-css.custom_css')
-
     def custom_css(self):
         try:
             context = {'model': model, 'user': tk.c.user}
@@ -56,9 +54,20 @@ class CustomCSSController(BaseCompatibilityController):
         return tk.render('admin/custom_css_form.html', extra_vars=extra_vars)
 
     def reset_custom_css(self):
+        try:
+            context = {'model': model, 'user': tk.c.user}
+            tk.check_access('sysadmin', context, {})
+        except tk.NotAuthorized:
+            tk.abort(403, tk._('Need to be system administrator to administer'))
+
         default_raw_css, default_css_metadata = custom_style_processor.get_custom_css({})
         self.save_css_metadata(default_raw_css, default_css_metadata)
-        return self.redirect_to()
+
+        if tk.check_ckan_version(min_version='2.9.0'):
+            custom_css_route = 'custom-css.custom_css'
+        else:
+            custom_css_route = 'custom_css'
+        return tk.redirect_to(custom_css_route)
 
     def save_css_metadata(self, custom_css, css_metadata):
         self.store_data(RAW_CSS, custom_css)
