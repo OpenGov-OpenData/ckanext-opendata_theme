@@ -1,8 +1,8 @@
 {% set popular_datasets = h.opendata_theme_get_datasets_popular() %}
 
 <div class="module-content">
-  <h2 class="heading">{{ h.opendata_theme_get_custom_name('datasets-popular-custom-name', 'Popular Datasets') }}</h2>
-  <hr/>
+  <h2 class="heading"><a href="/dataset?sort=views_recent+desc">{{ h.opendata_theme_get_custom_name('popular-datasets-custom-name', 'Popular Datasets') }}</a></h2>
+  <span class="heading-explanation">Browse popular datasets below and see what other citizens find interesting.</span>
   <section>
     {% snippet 'home/snippets/package_list.html', packages=popular_datasets, note_type='recent_views' %}
   </section>

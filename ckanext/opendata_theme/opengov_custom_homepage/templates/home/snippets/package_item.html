@@ -64,13 +64,13 @@ Example:
         {% block resources %}
           {% if package.resources and not hide_resources %}
             {% block resources_outer %}
-              <ul class="dataset-resources unstyled list-unstyled">
+              <ul class="dataset-resources list-unstyled list-unstyled">
                 {% block resources_inner %}
                   {% for resource in h.dict_list_reduce(package.resources, 'format') %}
                     <li>
-                      <a href="{{ package_url }}" class="label label-default" data-format="{{ resource.lower() }} aria-label="Access {{resource}} resources from dataset {{title}}">
-                        {{ resource }}
-                      </a>
+                      <a href="{{ h.url_for(controller='dataset', action='read', id=package.name) }}"
+                          class="label" data-format="{{ resource.lower() }}"
+                          style="color:white;">{{ resource }}</a>
                     </li>
                   {% endfor %}
                 {% endblock %}

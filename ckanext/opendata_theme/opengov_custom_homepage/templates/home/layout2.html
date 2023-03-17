@@ -1,9 +1,36 @@
 <div role="main">
-  {# Where is banner ? #}
-
-  {% block opendata_theme_search %}
-    {% snippet 'home/snippets/search.html' %}
-  {% endblock %}
+  {% if 'heroslideradmin' in g.plugins %}
+    {% snippet 'home/snippets/half_hero_slider.html' %}
+  {% else %}
+    {% snippet 'home/snippets/hero_title.html' %}
+  {% endif %}
+  <div class="search-block">
+    <div class="container">
+      <div class="row">
+        <div class="search-hint col-md-3 span3">
+          <div class="module-content">
+            <span>Get started by searching from <b>{{ h.opendata_theme_get_dataset_count() }}</b></span>
+            <br>
+            <span>datasets and maps</span>
+          </div>
+        </div>
+        <div class="col-md-6 span6">
+          {% block search %}
+            {% snippet 'home/snippets/search.html' %}
+          {% endblock %}
+        </div>
+        {% if h.opendata_theme_search_document_page_exists('advanced-search-documentation') %}
+          <div class="search-hint search-doc col-md-3 span3">
+            <div class="module-content">
+              <span>Try <a href="/pages/advanced-search-documentation"><u>Advanced Search Terms</u></a></span>
+              <br>
+              <span>for more specific results</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
 
   {% block opendata_theme_groups %}

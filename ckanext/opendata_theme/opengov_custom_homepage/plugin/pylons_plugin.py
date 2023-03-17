@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import ckan.controllers.admin as admin
 import ckan.plugins as p
-
-from ckanext.opendata_theme.opengov_custom_homepage.common_controller import CustomCSSController
-from ckanext.opendata_theme.opengov_custom_homepage.constants import CONTROLLER
 
 
 class MixinPlugin(p.SingletonPlugin):
@@ -18,21 +13,15 @@ class MixinPlugin(p.SingletonPlugin):
         m.connect takes up to 5 parameters
         1.page template, 2.url route, 3.controller action, 4.controller class, 5. font-awesome icon class
         '''
+        controller = 'ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController'
         m.connect(
             'custom_home_page',
-            '/ckan-admin/custom_home_page',
-            action='custom_home_page', controller=CONTROLLER
+            '/ckan-admin/custom_homepage',
+            action='custom_homepage', controller=controller
         )
         m.connect(
-            'reset_custom_naming',
-            '/ckan-admin/reset_custom_naming',
-            action='reset_custom_naming', controller=CONTROLLER
+            'reset_custom_homepage',
+            '/ckan-admin/reset_custom_homepage',
+            action='reset_custom_homepage', controller=controller
         )
         return m
-
-
-class CSSController(admin.AdminController, CustomCSSController):
-    redirect_to_action_kwargs = dict(
-        controller=CONTROLLER,
-        action='custom_home_page',
-    )

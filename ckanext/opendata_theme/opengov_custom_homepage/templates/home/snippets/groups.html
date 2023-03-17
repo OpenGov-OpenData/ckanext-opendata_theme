@@ -8,7 +8,6 @@
                             {{ h.opendata_theme_get_custom_name('groups-custom-name', 'Groups') }}
                         </a>
                     </h2>
-                    <hr/>
                     {% for group in h.opendata_theme_get_groups() %}
                         {% if group.package_count > 0 %}
                             <a href="/group/{{ group.name }}"

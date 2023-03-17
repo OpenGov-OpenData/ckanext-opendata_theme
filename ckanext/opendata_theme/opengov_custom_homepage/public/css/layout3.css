@@ -1,0 +1,66 @@
+.main-homepage {
+  background: linear-gradient(90deg, #E2EDF4, #FFFFFF, #E2EDF4, #FFFFFF);
+}
+.intro-block {
+  background: #FFFFFF;
+  border: 1px solid #B5B9BD;
+  border-radius: 5px;
+  margin: 20px 20px 5px;
+  padding: 5px 20px 20px;
+  opacity: 0.9;
+}
+.hero-text-heading {
+  font-size: 32px;
+}
+.hero-text-description {
+  font-size: 24px;
+}
+/* responsively change homepage showcases grid start*/
+.story-tile a:hover {
+  text-decoration: none;
+}
+a.browse-group {
+  background-color: #FFFFFF;
+  border: 1px solid #B5B9BD;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  width: calc(33% - 11px);
+}
+a.browse-group img {
+  height: 175px;
+  max-width: 100%;
+}
+.browse-group-title {
+  text-transform: none;
+  font-size: 18px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  height: 60px;
+}
+
+@media (max-width: 1200px) {
+  a.browse-group {
+    height: auto;
+  }
+  a.browse-group img {
+    height: 200px;
+  }
+}
+@media (max-width: 979px) {
+  a.browse-group {
+    width: calc(49.8% - 11px);
+  }
+  .browse-group-title {
+    height: 65px;
+  }
+}
+@media (max-width: 639px) {
+  a.browse-group {
+    width: 99%;
+  }
+}
+/*responsively change homepage story showcases grid end*/

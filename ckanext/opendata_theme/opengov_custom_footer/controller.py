@@ -22,7 +22,7 @@ def clean_html(text):
         return bleach.clean(text, tags=ALLOWED_TAGS_LIST, attributes=ALLOWED_ATTRIBUTES, styles=ALLOWED_CSS_PROPERTIES)
 
 
-class CustomFooterCommonController(BaseCompatibilityController):
+class CustomFooterController(BaseCompatibilityController):
     default_footer = {'layout_type': 'default'}
 
     def custom_footer(self):
@@ -59,19 +59,19 @@ class CustomFooterCommonController(BaseCompatibilityController):
         else:
             custom_footer_route = 'custom_footer'
 
-        self.save_footer_metadata(CustomFooterCommonController.default_footer)
+        self.save_footer_metadata(CustomFooterController.default_footer)
         return tk.redirect_to(custom_footer_route)
 
     @staticmethod
     def save_footer_metadata(custom_footer):
         try:
-            CustomFooterCommonController.store_data(CONFIG_KEY, custom_footer)
+            CustomFooterController.store_data(CONFIG_KEY, custom_footer)
         except tk.ValidationError as ex:
             return ex.error_summary
 
     @staticmethod
     def get_custom_footer_metadata():
-        data = CustomFooterCommonController.get_data(CONFIG_KEY)
+        data = CustomFooterController.get_data(CONFIG_KEY)
         if not data:
-            data = CustomFooterCommonController.default_footer.copy()
+            data = CustomFooterController.default_footer.copy()
         return data

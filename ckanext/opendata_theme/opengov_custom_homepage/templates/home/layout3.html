@@ -1,0 +1,46 @@
+
+{% set title = g.site_title %}
+{% set intro = g.site_intro_text %}
+{% set showcases_story = h.opendata_theme_get_showcases_story(story=True) %}
+
+<div role="main" style="padding:0">
+  <div class="main-homepage">
+    <div class="container">
+      <div class="row">
+        <div class="span12 col1">
+          <div class="intro-block">
+            <div class="module-content">
+              <h1 class="hero-text-heading hero-text">{{ title }}</h1>
+              <div class="hero-text-description hero-text">
+                {{ h.render_markdown(g.site_intro_text) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 span12 col1">
+          <div class="module-content story-tile">
+            {% for showcase in showcases_story %}
+              {% if showcase.url %}
+                <a href="{{ showcase.url }}" class="browse-group">
+              {% else %}
+                <a href="/showcase/{{ showcase.name }}" class="browse-group">
+              {% endif %}
+                {% set image_url = h.opendata_theme_get_value_from_extras(showcase.extras, 'image_url') %}
+                {% if image_url and not image_url.startswith('http') %}
+                  <img src="/uploads/showcase/{{ image_url }}" alt="">
+                {% else %}
+                  <img src="{{ image_url or h.url_for_static('/base/images/placeholder-group.png') }}" alt="">
+                {% endif %}
+                <h3 class="browse-group-title">{{ showcase.title }}</h3>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

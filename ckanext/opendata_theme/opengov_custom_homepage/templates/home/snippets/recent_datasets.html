@@ -1,9 +1,9 @@
 {% set latest_datasets = h.opendata_theme_get_datasets_recent() %}
 
 <div class="module-content">
-  <h2 class="heading">{{ h.opendata_theme_get_custom_name('datasets-recent-custom-name', 'New and Recent Datasets') }}</h2>
-  <hr/>
-  <section>
+  <h2 class="heading"><a href="/dataset">{{ h.opendata_theme_get_custom_name('recent-datasets-custom-name', 'New and Recent Datasets') }}</a></h2>
+  <span class="heading-explanation">Browse new or recently updated datasets below.</span>
+  <section id="recent-list">
     {% snippet 'home/snippets/package_list.html', packages=latest_datasets, note_type='updated' %}
   </section>
 </div>

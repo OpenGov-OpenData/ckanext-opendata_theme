@@ -2,7 +2,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
 import ckanext.opendata_theme.base.helpers as helper
-from ckanext.opendata_theme.opengov_custom_footer.common_controller import CustomFooterCommonController
+from ckanext.opendata_theme.opengov_custom_footer.controller import CustomFooterController
 from ckanext.opendata_theme.opengov_custom_footer.constants import CONFIG_KEY
 
 if toolkit.check_ckan_version(min_version='2.9.0'):
@@ -46,5 +46,5 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
 
 
 def get_footer_data(section):
-    data_dict = CustomFooterCommonController.get_custom_footer_metadata()
+    data_dict = CustomFooterController.get_custom_footer_metadata()
     return literal(data_dict.get(section))

@@ -4,19 +4,19 @@
 
 {% if h.version(h.ckan_version()) < h.version('2.9') %}
     {% set custom_header_action = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
     action='custom_header') %}
 
     {% set reset_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
     action='reset_custom_header') %}
 
     {% set remove_link_from_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
     action='remove_link') %}
 
     {% set add_link_from_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.plugin.pylons_plugin:HeaderController',
+    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
     action='add_link') %}
 {% else %}
     {% set custom_header_action = h.url_for('/ckan-admin/custom_header/') %}
@@ -28,9 +28,10 @@
 
 {% block primary_content_inner %}
     {{ form.errors(errors) }}
+    <h3>Header Configuration</h3>
     <form method="post" action="{{ custom_header_action }}" id="custom-header-form">
-        <h3>Header Layout</h3>
         <div class="form-group control-group control-medium">
+            <label for="header-layout" class="control-label">{{ _('Header Layout') }}</label>
             <div class="controls">
                 <select id="header-layout" class="form-control" name="layout_type">
                     <option value="default" {% if layout_type == 'default' or not layout_type %}selected="selected"{% endif %}>Default</option>
@@ -38,7 +39,8 @@
                 </select>
             </div>
         </div>
-        <h3>Current Navigation Links</h3>
+        <hr>
+        <h4>Current Navigation Links</h4>
         {% for link in links %}
             <div class="form-group control-group">
                 <div class="row" id="{{ link.position }}">
@@ -65,7 +67,7 @@
     </form>
     <hr>
     <form method="post" action="{{ add_link_from_custom_header }}">
-        <h3>Add Navigation Link</h3>
+        <h4>Add Navigation Link</h4>
         <div class="form-group control-group control-custom">
             <div class="controls editor">
                 <div class="row">
@@ -88,7 +90,7 @@
     </form>
     <hr>
     <form method="post" action="{{ remove_link_from_custom_header }}">
-        <h3>Remove Navigation Link</h3>
+        <h4>Remove Navigation Link</h4>
         <div class="form-group control-group control-custom">
             <div class="controls editor">
                 <div class="row">
@@ -111,7 +113,7 @@
     <div class="form-actions">
         <button class="btn btn-primary pull-right" name="save" type="submit" form="custom-header-form">{{ _('Update Config') }}</button>
         <a class="btn btn-danger pull-left" data-module="confirm-action"
-           data-module-content="Do you really want to reset custom header? All your changes will be lost."
+           data-module-content="Do you really want to reset the custom header? All your changes will be lost."
            href="{{ reset_custom_header }}">{{ _('Reset to Default') }}
         </a>
     </div>
@@ -121,12 +123,12 @@
     <div class="module module-narrow module-shallow">
         <h2 class="module-heading">
             <i class="fa fa-info-circle"></i>
-            {{ _('Config Options Guide') }}
+            {{ _('Header Config Options') }}
         </h2>
         <div class="module-content">
             {% block admin_form_help %}
                 {% trans %}
-                    <p><strong>Custom Header:</strong> Customize header</p>
+                    <p><strong>Header Layout:</strong> Select from different layouts.</p>
                 {% endtrans %}
             {% endblock %}
         </div>

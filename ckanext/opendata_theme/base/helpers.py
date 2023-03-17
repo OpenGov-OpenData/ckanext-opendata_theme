@@ -1,5 +1,6 @@
 import ast
 import logging
+import re
 
 from ckan.plugins import toolkit
 from ckan.plugins.toolkit import config
@@ -127,3 +128,69 @@ def get_data(key):
 
 def version_builder(text_version):
     return Version(text_version)
+
+
+def showcase_story(story=True, num=12):
+    """Return list of Showcase whose tag is story"""
+
+    existent_showcases = showcases()
+    sorted_tags = {}
+    std_story_showcase = []
+    for showcase in existent_showcases:
+        for tag in showcase['tags']:
+            if tag['name'].lower() == "story":
+                std_story_showcase.append(showcase)
+                continue
+
+            story_tag = re.findall("story[ -+]?[0-9]+$", tag['name'])
+
+            if len(story_tag) > 0:
+                key = re.findall(r'\d+', story_tag[0])
+                if int(key[0]) in sorted_tags:
+                    temp = sorted_tags[int(key[0])]
+                    temp.append(showcase)
+                    sorted_tags[int(key[0])] = temp
+                else:
+                    temp = []
+                    temp.append(showcase)
+                    sorted_tags[int(key[0])] = temp
+
+    dict_keys_sorted = sorted(list(sorted_tags))
+
+    sorted_showcases = []
+    for key in dict_keys_sorted:
+        showcases_tags_num = sorted_tags.get(key)
+        for showcase in showcases_tags_num:
+            sorted_showcases.append(showcase)
+    for showcase in std_story_showcase:
+        if showcase not in sorted_showcases:
+            sorted_showcases.append(showcase)
+
+    if story is False:
+        default_showcases = []
+        for showcase in existent_showcases:
+            if showcase not in sorted_showcases:
+                default_showcases.append(showcase)
+        return default_showcases
+    else:
+        return sorted_showcases
+
+
+def get_value_from_extras(extras, key):
+    value = ''
+    for item in extras:
+        if item.get('key') == key:
+            value = item.get('value')
+    return value
+
+
+def search_document_page_exists(page_id):
+    try:
+        if not page_id:
+            return False
+        search_doc = toolkit.get_action('ckanext_pages_show')({}, {'page': page_id})
+        if search_doc.get('content') and not search_doc.get('private'):
+            return True
+    except Exception:
+        logger.debug("[opendata_theme] Error in retrieving page")
+    return False

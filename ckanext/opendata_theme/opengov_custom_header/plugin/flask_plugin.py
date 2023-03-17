@@ -13,6 +13,7 @@ class MixinPlugin(p.SingletonPlugin):
 
 
 og_header = Blueprint('custom-header', __name__, url_prefix='/ckan-admin')
+
 og_header.add_url_rule('/custom_header/', methods=['GET', 'POST'],
                        view_func=CustomHeaderController().custom_header)
 og_header.add_url_rule('/reset_custom_header/', methods=['GET', 'POST'],

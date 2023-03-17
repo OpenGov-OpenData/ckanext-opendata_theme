@@ -1,17 +1,16 @@
 import pytest
-from ckan.logic import NotAuthorized
 
 from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
-CUSTOM_HOMEPAGE_URL = "/ckan-admin/custom_home_page/"
-RESET_CUSTOM_HOMEPAGE_URL = "/ckan-admin/reset_custom_naming/"
+CUSTOM_HOMEPAGE_URL = "/ckan-admin/custom_homepage/"
+RESET_CUSTOM_HOMEPAGE_URL = "/ckan-admin/reset_custom_homepage/"
 
 DEFAULT_DATA = {
     'custom_homepage_layout': '1',
-    'datasets-popular-custom-name': 'Popular Datasets',
-    'datasets-recent-custom-name': 'New and Recent Datasets',
+    'popular-datasets-custom-name': 'Popular Datasets',
+    'recent-datasets-custom-name': 'New and Recent Datasets',
     'groups-custom-name': 'Groups',
-    'showcase-custom-name': 'Showcases'
+    'showcases-custom-name': 'Showcases'
 }
 
 DEFAULT_HEADERS = (
@@ -42,14 +41,14 @@ def check_custom_homepage_html(response, expected_form_data):
 def check_homepage_html(response, expected_data):
     assert response, 'Response is empty.'
     for value in expected_data:
-        assert 'class="heading">{}'.format(value) in response, 'Missed header for "{}".'.format(value)
+        assert value in response, 'Missed header for "{}".'.format(value)
     assert 'alert' not in response, 'Result HTML contains alerts when they are not expected.'
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_get_custom_homepage_page_with_not_sysadmin_user(app):
-    with pytest.raises(NotAuthorized):
-        do_get(app, CUSTOM_HOMEPAGE_URL, is_sysadmin=False)
+    response = do_get(app, CUSTOM_HOMEPAGE_URL, is_sysadmin=False)
+    assert '<h1>403 Forbidden</h1>' in response
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
@@ -67,10 +66,10 @@ def test_get_custom_homepage_page_with_default_data(app):
 def test_post_custom_homepage_with_changes(app):
     data = {
         'custom_homepage_layout': '2',
-        'datasets-popular-custom-name': 'Test 1',
-        'datasets-recent-custom-name': 'Test 2',
+        'popular-datasets-custom-name': 'Test 1',
+        'recent-datasets-custom-name': 'Test 2',
         'groups-custom-name': 'Test 3',
-        'showcase-custom-name': 'Test 4'
+        'showcases-custom-name': 'Test 4'
     }
     response = do_post(app, CUSTOM_HOMEPAGE_URL, is_sysadmin=True, data=data)
 
@@ -89,10 +88,10 @@ def test_post_custom_homepage_with_changes(app):
 def test_reset_custom_homepage_changes(app):
     data = {
         'custom_homepage_layout': '2',
-        'datasets-popular-custom-name': 'Test 1',
-        'datasets-recent-custom-name': 'Test 2',
+        'popular-datasets-custom-name': 'Test 1',
+        'recent-datasets--custom-name': 'Test 2',
         'groups-custom-name': 'Test 3',
-        'showcase-custom-name': 'Test 4'
+        'showcases-custom-name': 'Test 4'
     }
     response = do_post(app, CUSTOM_HOMEPAGE_URL, is_sysadmin=True, data=data)
     assert response.status_code == 200

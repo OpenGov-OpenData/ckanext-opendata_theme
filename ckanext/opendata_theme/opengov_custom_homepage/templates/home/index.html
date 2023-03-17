@@ -16,3 +16,8 @@
     {% endblock %}
   </div>
 {% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="/css/layout{{custom_homepage_style}}.css" />
+{% endblock %}
