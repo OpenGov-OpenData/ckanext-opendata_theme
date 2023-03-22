@@ -2,15 +2,15 @@ import pytest
 
 from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
-CUSTOM_HEADER_URL = "/ckan-admin/custom_header/"
-RESET_CUSTOM_HEADER_URL = "/ckan-admin/reset_custom_header/"
-ADD_LINK_TO_HEADER_URL = "/ckan-admin/add_link_to_header/"
-REMOVE_LINK_FROM_HEADER_URL = "/ckan-admin/remove_link_from_header/"
+CUSTOM_HEADER_URL = "/ckan-admin/custom_header"
+RESET_CUSTOM_HEADER_URL = "/ckan-admin/reset_custom_header"
+ADD_LINK_TO_HEADER_URL = "/ckan-admin/add_link_to_header"
+REMOVE_LINK_FROM_HEADER_URL = "/ckan-admin/remove_link_from_header"
 DEFAULT_LINKS = (
     {'position': 0, 'title': 'Datasets', 'url': '/dataset'},
     {'position': 1, 'title': 'Organizations', 'url': '/organization'},
     {'position': 2, 'title': 'Groups', 'url': '/group'},
-    {'position': 3, 'title': 'About', 'url': '/about'}
+    {'position': 3, 'title': 'About', 'url': '/about'},
 )
 DEFAULT_HEADERS = (
     {'title': 'Datasets', 'url': '/dataset'},
@@ -26,11 +26,11 @@ def check_custom_header_page_html(response, links, headers, default_layout=True)
         assert '<option value="default" selected="selected">' in response
     else:
         assert '<option value="compressed" selected="selected">' in response
-    for link in links:
-        assert '<div class="row" id="{}">'.format(link.get('position')) in response
+    for index, link in enumerate(links):
+        assert '<div class="row" id="link-{}">'.format(index) in response
         assert 'name="position" value="{}"'.format(link.get('position')) in response
-        assert 'name="title" value="{}"'.format(link.get('title')) in response
-        assert 'name="url" value="{}"'.format(link.get('url')) in response
+        assert 'id="title-{}" name="title" value="{}"'.format(index, link.get('title')) in response
+        assert 'id="url-{}" name="url" value="{}"'.format(index, link.get('url')) in response
     for header in headers:
         assert '<li><a href="{}">{}</a></li>'.format(header.get('url'), header.get('title')) in response
 
@@ -53,15 +53,8 @@ def test_add_link_to_custom_header(app):
         'new_title': 'Example',
         'new_url': 'https://example.com',
     }
-    expected_links = [
-        {'position': 4, 'title': 'Example', 'url': 'https://example.com'},
-    ]
-    expected_links.extend(DEFAULT_LINKS)
-
-    expected_headers = [
-        {'title': 'Example', 'url': 'https://example.com'},
-    ]
-    expected_headers.extend(DEFAULT_HEADERS)
+    expected_links = DEFAULT_LINKS + ({'position': 4, 'title': 'Example', 'url': 'https://example.com'},)
+    expected_headers = DEFAULT_HEADERS + ({'title': 'Example', 'url': 'https://example.com'},)
 
     custom_header_response = do_get(app, CUSTOM_HEADER_URL, is_sysadmin=True)
     check_custom_header_page_html(custom_header_response, links=[], headers=DEFAULT_HEADERS, default_layout=True)
@@ -106,11 +99,11 @@ def test_update_multiple_custom_header_links(app):
     }
     expected_links = (
         {'position': 1, 'title': 'Dataset Catalog', 'url': '/dataset'},
-        {'position': 0, 'title': 'Departments', 'url': '/organization'}
+        {'position': 0, 'title': 'Departments', 'url': '/organization'},
     )
     expected_headers = (
         {'title': 'Dataset Catalog', 'url': '/dataset'},
-        {'title': 'Departments', 'url': '/organization'}
+        {'title': 'Departments', 'url': '/organization'},
     )
 
     response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)

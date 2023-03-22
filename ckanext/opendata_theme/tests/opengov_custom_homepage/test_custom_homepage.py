@@ -2,8 +2,8 @@ import pytest
 
 from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
-CUSTOM_HOMEPAGE_URL = "/ckan-admin/custom_homepage/"
-RESET_CUSTOM_HOMEPAGE_URL = "/ckan-admin/reset_custom_homepage/"
+CUSTOM_HOMEPAGE_URL = "/ckan-admin/custom_homepage"
+RESET_CUSTOM_HOMEPAGE_URL = "/ckan-admin/reset_custom_homepage"
 
 DEFAULT_DATA = {
     'custom_homepage_layout': '1',

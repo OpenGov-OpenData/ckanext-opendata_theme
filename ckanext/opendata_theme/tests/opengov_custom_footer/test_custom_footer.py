@@ -2,8 +2,8 @@ import pytest
 
 from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
-CUSTOM_FOOTER_URL = "/ckan-admin/custom_footer/"
-RESET_CUSTOM_FOOTER_URL = "/ckan-admin/reset_custom_footer/"
+CUSTOM_FOOTER_URL = "/ckan-admin/custom_footer"
+RESET_CUSTOM_FOOTER_URL = "/ckan-admin/reset_custom_footer"
 
 
 def check_custom_footer_page_html(response, layout_type, content_0, content_1):

@@ -2,8 +2,8 @@ import pytest
 
 from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
-CUSTOM_CSS_URL = "/ckan-admin/custom_css/"
-RESET_CUSTOM_CSS_URL = "/ckan-admin/reset_custom_css/"
+CUSTOM_CSS_URL = "/ckan-admin/custom_css"
+RESET_CUSTOM_CSS_URL = "/ckan-admin/reset_custom_css"
 
 DEFAULT_DATA = {
     'account-header-background-color': '#044187',
@@ -24,7 +24,8 @@ DEFAULT_CUSTOM_CSS = (
     '.account-masthead .account ul li a:hover {background: #1f76d8}',
     '.account-masthead .account ul li a {color: #ffffff}',
     '.masthead {background: #1f76d8}',
-    '.masthead .navigation .nav-pills li a:hover,.masthead .navigation .nav-pills li.active a {background-color: #044187}',
+    '.masthead .navigation .nav-pills li a:hover,.masthead .navigation .nav-pills li.active a,'
+    '.navbar-toggle {background-color: #044187}',
     '.navbar .nav>li>a,.masthead .nav>li>a {color: #ffffff}',
     '.module-heading {background: #1f76d8; color: #ffffff}',
     'body, .site-footer {background: #383b3d}',
