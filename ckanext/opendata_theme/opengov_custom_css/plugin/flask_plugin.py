@@ -13,7 +13,7 @@ class MixinPlugin(p.SingletonPlugin):
 
 
 api = Blueprint('custom-css', __name__, url_prefix='/ckan-admin')
-api.add_url_rule('/custom_css/', methods=['GET', 'POST'],
+api.add_url_rule('/custom_css', methods=['GET', 'POST'],
                  view_func=CustomCSSController().custom_css)
-api.add_url_rule('/reset_custom_css/', methods=['GET', 'POST'],
+api.add_url_rule('/reset_custom_css', methods=['GET', 'POST'],
                  view_func=CustomCSSController().reset_custom_css)

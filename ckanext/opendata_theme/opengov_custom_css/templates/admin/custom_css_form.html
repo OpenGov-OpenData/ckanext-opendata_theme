@@ -11,15 +11,15 @@
     controller='ckanext.opendata_theme.opengov_custom_css.controller:CustomCSSController',
     action='reset_custom_css') %}
 {% else %}
-    {% set custom_css_action = h.url_for('/ckan-admin/custom_css/') %}
-    {% set reset_custom_css = h.url_for('/ckan-admin/reset_custom_css/') %}
+    {% set custom_css_action = h.url_for('/ckan-admin/custom_css') %}
+    {% set reset_custom_css = h.url_for('/ckan-admin/reset_custom_css') %}
 {% endif %}
 
 
 {% block primary_content_inner %}
 
     {% block errors %}{{ form.errors(errors) }}{% endblock %}
-
+    <h1 class="page-heading">Manage CSS</h1>
     <form method="post" action="{{ custom_css_action }}" id="custom-css-form">
         <div class="control-group form-group">
             <div class="row">
@@ -113,10 +113,10 @@ a {
         </h2>
         <div class="module-content">
             {% block admin_form_help %}
-                <p><strong>Account Header:</strong> This is part of the header that shows
-                    the login/logout link and links for a user's account.</p>
-                <p><strong>Navigation Header:</strong> This is part of the header that shows
-                    navigation links like Dataset.</p>
+                <p><strong>Account Header:</strong> Part of the header that displays
+                    user account links (i.e. Login/Logout).</p>
+                <p><strong>Navigation Header:</strong> Part of the header that displays
+                    navigation links (i.e. Datasets).</p>
                 <p><strong>Footer:</strong> The footer appears at the bottom of the page.</p>
                 <p><strong>Side Menu:</strong> The side menu appears on the left side of the page.</p>
                 <p><strong>Custom CSS:</strong> This is a block of CSS that appears in the

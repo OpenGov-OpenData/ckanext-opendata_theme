@@ -42,7 +42,8 @@ class NavigationHeaderBackGroundColor(AbstractParser):
 
 class NavigationHeaderHoverBackgroundColor(AbstractParser):
     class_name = ('.masthead .navigation .nav-pills li a:hover,'
-                  '.masthead .navigation .nav-pills li.active a')
+                  '.masthead .navigation .nav-pills li.active a,'
+                  '.navbar-toggle')
     form_name = 'nav-header-hover-background-color'
     title = 'Navigation Header Hover Background Color'
     location = 'background-color'

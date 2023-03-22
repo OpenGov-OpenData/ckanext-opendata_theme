@@ -4,12 +4,10 @@ import ckan.lib.navl.dictization_functions as dict_fns
 from ckan.logic import (
     clean_dict, tuplize_dict, parse_params
 )
-from ckan.plugins.toolkit import get_action, redirect_to
+from ckan.plugins.toolkit import get_action
 
 
 class BaseCompatibilityController:
-    redirect_to_action_kwargs = {}
-
     @staticmethod
     def get_form_data(request):
         try:
@@ -26,9 +24,6 @@ class BaseCompatibilityController:
             )
         )
         return data
-
-    def redirect_to(self, extra_vars={}):
-        return redirect_to(extra_vars=extra_vars, **self.redirect_to_action_kwargs)
 
     @staticmethod
     def store_data(config_key, data):

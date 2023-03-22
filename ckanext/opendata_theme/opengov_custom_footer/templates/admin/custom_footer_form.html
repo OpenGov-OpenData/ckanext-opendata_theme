@@ -10,8 +10,8 @@
 {% endblock %}
 
 {% if ckan_29_or_higher %}
-    {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer/') %}
-    {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer/') %}
+    {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer') %}
+    {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer') %}
 {% else %}
     {% set custom_footer_action = h.url_for(
     controller='ckanext.opendata_theme.opengov_custom_footer.controller:CustomFooterController',
@@ -31,7 +31,7 @@
 
 {% block primary_content_inner %}
     {{ form.errors(errors) }}
-    <h3>Footer Configuration</h3>
+    <h1 class="page-heading">Manage Footer</h1>
     <form method="post" action="{{ custom_footer_action }}" id="custom-footer-form">
         <div class="form-group control-group control-medium">
             <label for="footer-layout" class="control-label">{{ _('Footer Layout') }}</label>
@@ -72,9 +72,10 @@
         </h2>
         <div class="module-content">
             {% block admin_form_help %}
-                {% trans %}
-                    <p><strong>Footer Layout:</strong> Select from different layouts.</p>
-                {% endtrans %}
+                <p><strong>Footer Layout:</strong> Select from layouts: <i>Default</i> or <i>Custom</i>.
+                    With the <i>Custom</i> layout content appears in two columns in the footer.</p>
+                <p><i>Column 1:</i> Add content that appears on the left side of the footer.</p>
+                <p><i>Column 2:</i> Add content that appears in the middle of the footer.</p>
             {% endblock %}
         </div>
     </div>

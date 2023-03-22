@@ -32,9 +32,9 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
         tk.add_template_directory(ckan_config, '../templates')
 
         if tk.check_ckan_version(min_version='2.4', max_version='2.9'):
-            tk.add_ckan_admin_tab(ckan_config, 'custom_header', 'Header Layout')
+            tk.add_ckan_admin_tab(ckan_config, 'custom_header', 'Header', icon='file-code-o')
         elif tk.check_ckan_version(min_version='2.9'):
-            tk.add_ckan_admin_tab(ckan_config, 'custom-header.custom_header', 'Header Layout')
+            tk.add_ckan_admin_tab(ckan_config, 'custom-header.custom_header', 'Header', icon='file-code-o')
 
     def update_config_schema(self, schema):
         ignore_missing = tk.get_validator('ignore_missing')

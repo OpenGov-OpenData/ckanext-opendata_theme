@@ -14,7 +14,7 @@ class MixinPlugin(p.SingletonPlugin):
 
 og_footer = Blueprint('custom-footer', __name__, url_prefix='/ckan-admin')
 
-og_footer.add_url_rule('/custom_footer/', methods=['GET', 'POST'],
+og_footer.add_url_rule('/custom_footer', methods=['GET', 'POST'],
                        view_func=CustomFooterController().custom_footer)
-og_footer.add_url_rule('/reset_custom_footer/', methods=['GET', 'POST'],
+og_footer.add_url_rule('/reset_custom_footer', methods=['GET', 'POST'],
                        view_func=CustomFooterController().reset_custom_footer)

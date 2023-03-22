@@ -25,7 +25,7 @@ a.browse-group {
   border-radius: 5px;
   padding: 5px;
   margin: 5px;
-  width: calc(33% - 11px);
+  width: calc(33% - 15px);
 }
 a.browse-group img {
   height: 175px;
@@ -52,7 +52,7 @@ a.browse-group img {
 }
 @media (max-width: 979px) {
   a.browse-group {
-    width: calc(49.8% - 11px);
+    width: calc(49.8% - 15px);
   }
   .browse-group-title {
     height: 65px;

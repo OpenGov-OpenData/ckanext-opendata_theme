@@ -1,16 +1,36 @@
 {% extends "footer.html" %}
 
-{% block footer_links_ckan %}
-  {% set api_url = 'https://docs.ckan.org/en/{0}/api/'.format(g.ckan_doc_version) %}
-  <li><a href="{{ api_url }}">{{ _('CKAN API') }}</a></li>
-{% endblock %}
-
-{% block footer_attribution %}
-  <strong>{{ _('Powered by') }}</strong>
-  <div style="white-space:nowrap; padding-bottom:16px;">
-    <a class="pull-left" target="_blank" href="https://opengov.com/?utm_campaign=Footer-Product-OpenData&utm_source=OpenGov&utm_medium=product&utm_term=PO-OGOV-1274&utm_content=logo">
-      <img src="/img/OpenGov_Logo.png" alt="OpenGov" height="25">
-    </a>
-    <a class="hide-text ckan-footer-logo" href="https://ckan.org" style="margin-left:144px;">CKAN</a>
+{% block footer_content %}
+<div class="row">
+  <div class="col-md-8 span8 footer-links">
+    {% block footer_nav %}
+    <ul class="list-unstyled">
+      {% block footer_links %}
+        {{ super() }}
+      {% endblock %}
+    </ul>
+    <ul class="list-unstyled">
+      {% block footer_links_ckan %}
+        {% set api_url = 'https://docs.ckan.org/en/{0}/api/'.format(g.ckan_doc_version) %}
+        <li><a href="{{ api_url }}">{{ _('CKAN API') }}</a></li>
+        <li><a href="http://www.opendefinition.org/okd/"><img src="{{ h.url_for_static('/base/images/od_80x15_blue.png') }}" alt="Open Data"></a></li>
+      {% endblock %}
+    </ul>
+    {% endblock %}
   </div>
+  <div class="attribution og-attribution">
+    {% block footer_attribution %}
+      <strong>{{ _('Powered by') }}</strong>
+      <div style="white-space:nowrap; padding-bottom:16px;">
+        <a class="pull-left" target="_blank" href="https://opengov.com/?utm_campaign=Footer-Product-OpenData&utm_source=OpenGov&utm_medium=product&utm_term=PO-OGOV-1274&utm_content=logo">
+          <img src="/img/OpenGov_Logo.png" alt="OpenGov" height="25">
+        </a>
+        <a class="hide-text ckan-footer-logo" href="https://ckan.org" style="margin-left:144px;">CKAN</a>
+      </div>
+    {% endblock %}
+    {% block footer_lang %}
+      {{ super() }}
+    {% endblock %}
+  </div>
+</div>
 {% endblock %}

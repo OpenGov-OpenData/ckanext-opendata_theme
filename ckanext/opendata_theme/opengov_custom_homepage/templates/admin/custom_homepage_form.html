@@ -11,14 +11,14 @@
     controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController',
     action='reset_custom_homepage') %}
 {% else %}
-    {% set custom_home_page_action = h.url_for('/ckan-admin/custom_homepage/') %}
-    {% set reset_custom_homepage = h.url_for('/ckan-admin/reset_custom_homepage/') %}
+    {% set custom_home_page_action = h.url_for('/ckan-admin/custom_homepage') %}
+    {% set reset_custom_homepage = h.url_for('/ckan-admin/reset_custom_homepage') %}
 {% endif %}
 
 
 {% block primary_content_inner %}
     {{ form.errors(error_summary) }}
-    <h3>Homepage Configuration</h3>
+    <h1 class="page-heading">Manage Homepage</h1>
     <form method='post' id='custom-homepage-layout-form' action={{ custom_home_page_action }}
             enctype="multipart/form-data">
         <div class="control-group form-group control-medium">
@@ -32,7 +32,6 @@
             {% endblock %}
         </div>
         <hr>
-        <h4>Homepage Section Titles</h4>
         <div class="control-group form-group control-medium">
             {% for name, field in custom_naming.items() %}
                 <div class="form-group form-group">
@@ -59,9 +58,12 @@
         </h2>
         <div class="module-content">
             {% block admin_form_help %}
-                {% trans %}
-                    <p><strong>Homepage Layout:</strong> Select from different layouts.</p>
-                {% endtrans %}
+                <p><strong>Homepage Layout:</strong> Select from layouts: <i>Layout 1</i>, <i>Layout 2</i> or <i>Layout 3</i>.</p>
+                <p><i>Layout 1:</i> Hero Slider (with search bar), Groups, Showcases Slider and Featured Datasets.</p>
+                <p><i>Layout 2:</i> Hero Slider (left aligned content), Search Bar, Groups, Showcase Slider and Featured Datasets.</p>
+                <p><i>Layout 3:</i> Introductory Area and Showcase Tiles.</p>
+                <hr>
+                <p><strong>Section Titles:</strong> Modify the title of a section on the homepage.</p>
             {% endblock %}
         </div>
     </div>

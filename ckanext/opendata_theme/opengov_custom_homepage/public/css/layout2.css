@@ -24,6 +24,10 @@
   padding-top: 20px;
   padding-left: 20px;
 }
+.main-updates .dataset-item:last-of-type {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
 @media (max-width: 767px) {
   a.browse-group {
     width: 140px;
@@ -32,12 +36,12 @@
   .browse-group-image {
     max-height: 75px;
     max-width: 125px;
-    margin: 6px;
+    margin: 5px;
   }
 }
 @media (min-width: 768px) {
   a.browse-group {
-    width: 23%;
+    width: calc(25% - 20px);
     min-width: 195px;
     margin: 0 10px 10px 0;
   }
