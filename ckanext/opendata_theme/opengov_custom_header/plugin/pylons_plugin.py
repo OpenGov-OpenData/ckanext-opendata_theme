@@ -24,14 +24,4 @@ class MixinPlugin(p.SingletonPlugin):
             '/ckan-admin/reset_custom_header',
             action='reset_custom_header', controller=controller
         )
-        m.connect(
-            'add_link_to_header',
-            '/ckan-admin/add_link_to_header',
-            action='add_link', controller=controller
-        )
-        m.connect(
-            'remove_link_from_header',
-            '/ckan-admin/remove_link_from_header',
-            action='remove_link', controller=controller
-        )
         return m

@@ -6,29 +6,29 @@ CUSTOM_CSS_URL = "/ckan-admin/custom_css"
 RESET_CUSTOM_CSS_URL = "/ckan-admin/reset_custom_css"
 
 DEFAULT_DATA = {
-    'account-header-background-color': '#044187',
+    'account-header-background-color': '#165cab',
     'account-header-hover-background-color': '#1f76d8',
     'account-header-text-color': '#ffffff',
-    'nav-header-background-color': '#1f76d8',
-    'nav-header-hover-background-color': '#044187',
-    'nav-header-text-color': '#ffffff',
-    'module-header-background-color': '#1f76d8',
+    'nav-header-background-color': '#ffffff',
+    'nav-header-hover-background-color': '#1f76d8',
+    'nav-header-text-color': '#07305c',
+    'module-header-background-color': '#165cab',
     'module-header-text-color': '#ffffff',
-    'footer-background-color': '#383b3d',
+    'footer-background-color': '#07305c',
     'footer-link-text-color': '#ffffff',
     'footer-text-color': '#ffffff'
 }
 
 DEFAULT_CUSTOM_CSS = (
-    '.account-masthead {background: #044187}',
+    '.account-masthead {background: #165cab}',
     '.account-masthead .account ul li a:hover {background: #1f76d8}',
     '.account-masthead .account ul li a {color: #ffffff}',
-    '.masthead {background: #1f76d8}',
+    '.masthead {background: #ffffff}',
     '.masthead .navigation .nav-pills li a:hover,.masthead .navigation .nav-pills li.active a,'
-    '.navbar-toggle {background-color: #044187}',
-    '.navbar .nav>li>a,.masthead .nav>li>a {color: #ffffff}',
-    '.module-heading {background: #1f76d8; color: #ffffff}',
-    'body, .site-footer {background: #383b3d}',
+    '.navbar-toggle {background-color: #1f76d8}',
+    '.navbar .nav>li>a,.masthead .nav>li>a,.navbar hgroup>h1>a,.navbar hgroup>h2 {color: #07305c}',
+    '.module-heading {background: #165cab; color: #ffffff}',
+    'body, .site-footer {background: #07305c}',
     '.site-footer a,.site-footer a:hover {color: #ffffff}',
     '.site-footer,.site-footer label,.site-footer small {color: #ffffff}'
 )
@@ -64,11 +64,11 @@ def test_get_custom_css_page_with_default_data(app):
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_post_custom_css_page_with_changed_color(app):
     data = DEFAULT_DATA.copy()
-    data['account-header-background-color'] = '#044189'
-    unexpected_custom_css = '.account-masthead {background: #044187}'
+    data['account-header-background-color'] = '#07305c'
+    unexpected_custom_css = '.account-masthead {background: #165cab}'
     expected_custom_css = list(DEFAULT_CUSTOM_CSS)
     expected_custom_css.remove(unexpected_custom_css)
-    expected_custom_css.append('.account-masthead {background: #044189}')
+    expected_custom_css.append('.account-masthead {background: #07305c}')
     response = do_post(app, CUSTOM_CSS_URL, is_sysadmin=True, data=data)
 
     check_custom_css_page_html(response, expected_form_data=data, expected_css_data=expected_custom_css)
@@ -96,11 +96,11 @@ def test_post_custom_css_page_with_changed_color_respond_with_contrast_connected
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_reset_changed_custom_css(app):
     data = DEFAULT_DATA.copy()
-    data['account-header-background-color'] = '#044189'
-    unexpected_custom_css = '.account-masthead {background: #044187}'
+    data['account-header-background-color'] = '#07305c'
+    unexpected_custom_css = '.account-masthead {background: #165cab}'
     expected_custom_css = list(DEFAULT_CUSTOM_CSS)
     expected_custom_css.remove(unexpected_custom_css)
-    expected_custom_css.append('.account-masthead {background: #044189}')
+    expected_custom_css.append('.account-masthead {background: #07305c}')
     response = do_post(app, CUSTOM_CSS_URL, is_sysadmin=True, data=data)
     assert unexpected_custom_css not in response
 

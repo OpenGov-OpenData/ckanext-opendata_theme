@@ -4,8 +4,6 @@ from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
 CUSTOM_HEADER_URL = "/ckan-admin/custom_header"
 RESET_CUSTOM_HEADER_URL = "/ckan-admin/reset_custom_header"
-ADD_LINK_TO_HEADER_URL = "/ckan-admin/add_link_to_header"
-REMOVE_LINK_FROM_HEADER_URL = "/ckan-admin/remove_link_from_header"
 DEFAULT_LINKS = (
     {'position': 0, 'title': 'Datasets', 'url': '/dataset'},
     {'position': 1, 'title': 'Organizations', 'url': '/organization'},
@@ -50,6 +48,7 @@ def test_get_custom_header_page(app):
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_add_link_to_custom_header(app):
     data = {
+        'add_link': '',
         'new_title': 'Example',
         'new_url': 'https://example.com',
     }
@@ -59,24 +58,26 @@ def test_add_link_to_custom_header(app):
     custom_header_response = do_get(app, CUSTOM_HEADER_URL, is_sysadmin=True)
     check_custom_header_page_html(custom_header_response, links=[], headers=DEFAULT_HEADERS, default_layout=True)
 
-    response = do_post(app, ADD_LINK_TO_HEADER_URL, data, is_sysadmin=True)
+    response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)
     check_custom_header_page_html(response, links=expected_links, headers=expected_headers)
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_add_unsupported_link_to_custom_header(app):
     data = {
+        'add_link': '',
         'new_title': 'Bad Example',
         'new_link': 'http://example.com'
     }
-    response = do_post(app, ADD_LINK_TO_HEADER_URL, data, is_sysadmin=True)
+    response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)
     check_custom_header_page_html(response, links=[], headers=DEFAULT_HEADERS)
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_remove_link_from_custom_header(app):
     data = {
-        'to_remove': 'About',
+        'remove_link': '',
+        'remove_title': 'About',
     }
     expected_links = list(DEFAULT_LINKS)
     expected_links.pop(3)
@@ -84,7 +85,7 @@ def test_remove_link_from_custom_header(app):
     expected_headers = list(DEFAULT_HEADERS)
     expected_headers.pop(3)
 
-    response = do_post(app, REMOVE_LINK_FROM_HEADER_URL, data, is_sysadmin=True)
+    response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)
     check_custom_header_page_html(response, links=expected_links, headers=expected_headers)
     assert '<li><a href="/about">About</a></li>' not in response
 
@@ -92,6 +93,7 @@ def test_remove_link_from_custom_header(app):
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_update_multiple_custom_header_links(app):
     data = {
+        'save': '',
         'layout_type': 'default',
         'position': ['1', '0'],
         'title': ['Dataset Catalog', 'Departments'],
@@ -113,6 +115,7 @@ def test_update_multiple_custom_header_links(app):
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_update_single_custom_header_links(app):
     data = {
+        'save': '',
         'layout_type': 'compressed',
         'position': '0',
         'title': 'New Datasets',

@@ -4,25 +4,15 @@
 
 {% if h.version(h.ckan_version()) < h.version('2.9') %}
     {% set custom_header_action = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
-    action='custom_header') %}
+       controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
+       action='custom_header') %}
 
     {% set reset_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
-    action='reset_custom_header') %}
-
-    {% set remove_link_from_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
-    action='remove_link') %}
-
-    {% set add_link_from_custom_header = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
-    action='add_link') %}
+       controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
+       action='reset_custom_header') %}
 {% else %}
     {% set custom_header_action = h.url_for('/ckan-admin/custom_header') %}
     {% set reset_custom_header = h.url_for('/ckan-admin/reset_custom_header') %}
-    {% set remove_link_from_custom_header = h.url_for('/ckan-admin/remove_link_from_header') %}
-    {% set add_link_from_custom_header = h.url_for('/ckan-admin/add_link_to_header') %}
 {% endif %}
 
 
@@ -41,6 +31,9 @@
         </div>
         <hr>
         <h4>Current Navigation Links</h4>
+        {% if not links %}
+            <p>No navigation links currently set.</p>
+        {% endif %}
         {% for link in links %}
             <div class="form-group control-group">
                 <div class="row" id="{{ 'link-%d' % loop.index0 }}">
@@ -66,7 +59,7 @@
         {% endfor %}
     </form>
     <hr>
-    <form method="post" action="{{ add_link_from_custom_header }}">
+    <form method="post" action="{{ custom_header_action }}">
         <h4>Add Navigation Link</h4>
         <div class="form-group control-group control-custom">
             <div class="controls editor">
@@ -74,42 +67,44 @@
                     <div class="col-sm-5 span5">
                         <div class="input-group">
                             <label class="input-group-addon" for="new_title">Title</label>
-                            <input class="form-control" type="text" id="new_title" name="new_title"/>
+                            <input class="form-control" type="text" id="new_title" name="new_title" value="{{ new_title }}"/>
                         </div>
                     </div>
                     <div class="col-sm-5 span5">
                         <div class="input-group">
                             <label class="input-group-addon" for="new_url">URL</label>
-                            <input class="form-control" type="text" id="new_url" name="new_url"/>
+                            <input class="form-control" type="text" id="new_url" name="new_url" value="{{ new_url }}"/>
                         </div>
                     </div>
-                    <button class="btn btn-default" name="add" type="submit">{{ _('Add') }}</button>
+                    <button class="btn btn-default" name="add_link" type="submit">{{ _('Add') }}</button>
                 </div>
             </div>
         </div>
     </form>
     <hr>
-    <form method="post" action="{{ remove_link_from_custom_header }}">
-        <h4>Remove Navigation Link</h4>
-        <div class="form-group control-group control-custom">
-            <div class="controls editor">
-                <div class="row">
-                    <div class="col-sm-5 span5">
-                        <div class="input-group">
-                            <label class="input-group-addon" for="to_remove">Title (URL)</label>
-                            <select class="form-control" name="to_remove">
-                                {% for link in links %}
-                                    <option value="{{ link.title }}">{{ link.title }} ( {{ link.url }} )</option>
-                                {% endfor %}
-                            </select>
+    {% if links %}
+        <form method="post" action="{{ custom_header_action }}">
+            <h4>Remove Navigation Link</h4>
+            <div class="form-group control-group control-custom">
+                <div class="controls editor">
+                    <div class="row">
+                        <div class="col-sm-5 span5">
+                            <div class="input-group">
+                                <label class="input-group-addon" for="remove_title">Title (URL)</label>
+                                <select class="form-control" name="remove_title">
+                                    {% for link in links %}
+                                        <option value="{{ link.title }}">{{ link.title }} ( {{ link.url }} )</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
+                        <button class="btn btn-default" name="remove_link" type="submit">{{ _('Remove') }}</button>
                     </div>
-                    <button class="btn btn-default" name="remove" type="submit">{{ _('Remove') }}</button>
                 </div>
             </div>
-        </div>
-    </form>
-    <hr>
+        </form>
+        <hr>
+    {% endif %}
     <div class="form-actions">
         <button class="btn btn-primary pull-right" name="save" type="submit" form="custom-header-form">{{ _('Update Config') }}</button>
         <a class="btn btn-danger pull-left" data-module="confirm-action"

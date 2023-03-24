@@ -18,7 +18,3 @@ og_header.add_url_rule('/custom_header', methods=['GET', 'POST'],
                        view_func=CustomHeaderController().custom_header)
 og_header.add_url_rule('/reset_custom_header', methods=['GET', 'POST'],
                        view_func=CustomHeaderController().reset_custom_header)
-og_header.add_url_rule('/add_link_to_header', methods=['POST'],
-                       view_func=CustomHeaderController().add_link)
-og_header.add_url_rule('/remove_link_from_header', methods=['POST'],
-                       view_func=CustomHeaderController().remove_link)

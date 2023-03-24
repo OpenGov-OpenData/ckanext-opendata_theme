@@ -13,7 +13,7 @@ class AccountHeaderBackGroundColor(AbstractParser):
     form_name = 'account-header-background-color'
     title = 'Account Header Background Color'
     location = 'background'
-    _default_value = '#044187'
+    _default_value = '#165cab'
 
 
 class AccountHeaderHoverBackgroundColor(AbstractParser):
@@ -37,7 +37,7 @@ class NavigationHeaderBackGroundColor(AbstractParser):
     form_name = 'nav-header-background-color'
     title = 'Navigation Header Background Color'
     location = 'background'
-    _default_value = '#1f76d8'
+    _default_value = '#ffffff'
 
 
 class NavigationHeaderHoverBackgroundColor(AbstractParser):
@@ -47,16 +47,18 @@ class NavigationHeaderHoverBackgroundColor(AbstractParser):
     form_name = 'nav-header-hover-background-color'
     title = 'Navigation Header Hover Background Color'
     location = 'background-color'
-    _default_value = '#044187'
+    _default_value = '#1f76d8'
 
 
 class NavigationHeaderTextColor(AbstractParser):
     class_name = ('.navbar .nav>li>a,'
-                  '.masthead .nav>li>a')
+                  '.masthead .nav>li>a,'
+                  '.navbar hgroup>h1>a,'
+                  '.navbar hgroup>h2')
     form_name = 'nav-header-text-color'
     title = 'Navigation Header Text Color'
     location = 'color'
-    _default_value = '#ffffff'
+    _default_value = '#07305c'
 
 
 class ModuleHeaderBackgroundColor(AbstractParser):
@@ -64,7 +66,7 @@ class ModuleHeaderBackgroundColor(AbstractParser):
     form_name = 'module-header-background-color'
     title = 'Side Menu Header Background Color'
     location = 'background'
-    _default_value = '#1f76d8'
+    _default_value = '#165cab'
 
 
 class ModuleHeaderTextColor(AbstractParser):
@@ -80,7 +82,7 @@ class FooterBackGroundColor(AbstractParser):
     form_name = 'footer-background-color'
     title = 'Footer Background Color'
     location = 'background'
-    _default_value = '#383b3d'
+    _default_value = '#07305c'
 
 
 class FooterLinkColor(AbstractParser):
