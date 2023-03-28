@@ -39,7 +39,7 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
     def update_config_schema(self, schema):
         ignore_missing = tk.get_validator('ignore_missing')
         schema.update({
-            CONFIG_SECTION: [ignore_missing, custom_header_url_validator, dict]
+            CONFIG_SECTION: [ignore_missing, dict, custom_header_validator, ]
         })
         return schema
 
@@ -56,7 +56,7 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
     # IValidators
     def get_validators(self):
         return {
-            u'custom_header_url_validator': custom_header_url_validator,
+            u'custom_header_url_validator': custom_header_validator,
         }
 
 
@@ -83,24 +83,39 @@ def get_header_layout():
     return layout_type
 
 
-def custom_header_url_validator(value):
+def custom_header_validator(value):
+    if value.get('layout_type') not in ['compressed', 'default']:
+        raise tk.Invalid('Header layout is not supported')
+    for item in value.get('links', []):
+        title = item.get('title', '')
+        custom_header_title_validator(title)
+        url = item.get('url', '')
+        custom_header_url_validator(url)
+    return value
+
+
+@helper.value_should_be_not_empty('URL')
+@helper.value_should_be_shorter_than_length('URL', 2000)
+def custom_header_url_validator(url):
     def check_characters(value):
         if set(value) <= set(string.ascii_letters + string.digits + '-./'):
             return False
         return True
-    for item in value.get('links', []):
-        url = item.get('url', '')
-        if not url:
-            raise tk.Invalid('Missing URL')
-        if len(url) > 2000:
-            raise tk.Invalid('URL is too long. Maximum 2000 characters allowed for "{}"'.format(url))
-        pieces = urlparse(url)
-        if pieces.scheme and pieces.scheme != 'https':
-            raise tk.Invalid('Only HTTPS URLs supported "{}"'.format(url))
-        elif not pieces.path and not all([pieces.scheme, pieces.netloc]):
-            raise tk.Invalid('Empty relative path in relative url {}'.format(url))
-        elif pieces.path and not all([pieces.scheme, pieces.netloc]) and check_characters(pieces.path):
-            raise tk.Invalid('Relative path contains invalid characters {}'.format(url))
-        elif pieces.netloc and check_characters(pieces.netloc):
-            raise tk.Invalid('URL contains invalid characters "{}"'.format(url))
-    return value
+    pieces = urlparse(url)
+    if pieces.scheme and pieces.scheme != 'https':
+        raise tk.Invalid('Only HTTPS URLs supported "{}"'.format(url))
+    elif not pieces.path and not all([pieces.scheme, pieces.netloc]):
+        raise tk.Invalid('Empty relative path in relative url {}'.format(url))
+    elif pieces.path and not all([pieces.scheme, pieces.netloc]) and check_characters(pieces.path):
+        raise tk.Invalid('Relative path contains invalid characters {}'.format(url))
+    elif pieces.netloc and check_characters(pieces.netloc):
+        raise tk.Invalid('URL contains invalid characters "{}"'.format(url))
+    tk.h.render_markdown
+    return url
+
+
+@helper.value_should_be_not_empty(field_name='title')
+@helper.value_should_be_shorter_than_length(field_name='Title', length=50)
+def custom_header_title_validator(title):
+    cleaned_title = helper.sanityze_all_html(title)
+    return cleaned_title

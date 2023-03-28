@@ -17,6 +17,7 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.IValidators)
 
     # IConfigurer
     def update_config(self, ckan_config):
@@ -33,9 +34,15 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
         ignore_missing = toolkit.get_validator('ignore_missing')
         schema.update({
             # This is a custom configuration option
-            CONFIG_KEY: [ignore_missing, dict],
+            CONFIG_KEY: [ignore_missing, custom_footer_validator],
         })
         return schema
+
+    # IValidators
+    def get_validators(self):
+        return {
+            u'custom_footer_validator': custom_footer_validator,
+        }
 
     # ITemplateHelpers
     def get_helpers(self):
@@ -48,3 +55,18 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
 def get_footer_data(section):
     data_dict = CustomFooterController.get_custom_footer_metadata()
     return literal(data_dict.get(section))
+
+
+def custom_footer_validator(value):
+    layout_type = value.get('layout_type')
+    if layout_type not in ['default', 'custom']:
+        raise toolkit.Invalid('Invalid footer layout')
+
+    # content is sanitized by controller soo only taught validation required
+    content_0 = value.get('content_0')
+    if helper.check_characters(content_0):
+        raise toolkit.Invalid('Invalid characters in Column 1')
+    content_1 = value.get('content_1')
+    if helper.check_characters(content_1):
+        raise toolkit.Invalid('Invalid characters in Column 2')
+    return value

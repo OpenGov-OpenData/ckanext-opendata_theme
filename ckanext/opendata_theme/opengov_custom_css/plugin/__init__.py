@@ -1,4 +1,4 @@
-import six
+import re
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
@@ -16,6 +16,7 @@ class OpenDataThemeCustomCSSPlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.IValidators)
 
     # IConfigurer
     def update_config(self, ckan_config):
@@ -31,11 +32,17 @@ class OpenDataThemeCustomCSSPlugin(MixinPlugin):
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
         schema.update({
-            # This is a custom configuration option
-            RAW_CSS: [ignore_missing, six.text_type],
-            CSS_METADATA: [ignore_missing, dict],
+            RAW_CSS: [ignore_missing, custom_css_validator],
+            CSS_METADATA: [ignore_missing, dict, css_meta_validator],
         })
         return schema
+
+    # IValidators
+    def get_validators(self):
+        return {
+            u'custom_css_validator': custom_css_validator,
+            u'css_meta_validator': css_meta_validator,
+        }
 
     # ITemplateHelpers
     def get_helpers(self):
@@ -47,3 +54,22 @@ class OpenDataThemeCustomCSSPlugin(MixinPlugin):
 
 def get_custom_raw_css():
     return CustomCSSController.get_raw_css()
+
+
+def custom_css_validator(value):
+    return value
+    # remove all html from css is not working well as > is allowed css symbol
+    # clear_value = helper.sanityze_all_html(value)
+    # return clear_value
+
+
+def css_meta_validator(css_meta):
+    for title, color in css_meta.items():
+        color_validator(color.get('value'))
+    return css_meta
+
+
+def color_validator(value):
+    if not re.fullmatch('^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$', value):
+        raise toolkit.Invalid('Invalid color {}'.format(value))
+    return value

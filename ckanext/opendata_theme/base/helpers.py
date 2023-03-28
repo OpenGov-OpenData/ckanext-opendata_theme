@@ -1,6 +1,8 @@
 import ast
+import bleach
 import logging
 import re
+import string
 
 from ckan.plugins import toolkit
 from ckan.plugins.toolkit import config
@@ -116,10 +118,8 @@ def get_custom_name(key, default_name):
     name = custom_naming.get(key)
     if not name:
         return default_name
-    elif not name.get('value'):
-        return default_name
     else:
-        return name.get('value')
+        return toolkit.h.render_markdown(name.get('value', default_name))
 
 
 def get_data(key):
@@ -194,3 +194,35 @@ def search_document_page_exists(page_id):
     except Exception:
         logger.debug("[opendata_theme] Error in retrieving page")
     return False
+
+
+def check_characters(value):
+    if value and set(value) <= set(string.printable):
+        return False
+    return True
+
+
+def sanityze_all_html(text):
+    cleaned_text = bleach.clean(text, tags=[], attributes={})
+    return cleaned_text
+
+
+def value_should_be_not_empty(field_name='text'):
+    def decorator(func):
+        def _wrap(value):
+            if not value:
+                raise toolkit.Invalid('Missing {}'.format(field_name))
+            return func(value)
+        return _wrap
+    return decorator
+
+
+def value_should_be_shorter_than_length(field_name='Field', length=30):
+    def decorator(func):
+        def _wrap(value):
+            if len(value) > length:
+                raise toolkit.Invalid(
+                    '{} is too long. Maximum {} characters allowed for {}'.format(field_name, length, value))
+            return func(value)
+        return _wrap
+    return decorator

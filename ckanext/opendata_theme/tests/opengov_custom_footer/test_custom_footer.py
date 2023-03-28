@@ -8,7 +8,7 @@ RESET_CUSTOM_FOOTER_URL = "/ckan-admin/reset_custom_footer/"
 
 def check_custom_footer_page_html(response, layout_type, content_0, content_1):
     assert response, 'Response is empty.'
-    assert '<option value="{}" selected="selected">'.format(layout_type) in response, 'Selected wrong layout type.'
+    assert '<option value="{}" selected="selected">'.format(layout_type) in response.body, 'Selected wrong layout type.'
     assert content_0 in response, 'Content 1 field has unexpected content.'
     assert content_1 in response, 'Content 2 field has unexpected content.'
 
@@ -68,7 +68,8 @@ def test_post_custom_footer_form_with_forbidden_html_tags(app):
     expected_contents = {
         'layout_type': 'custom',
         'content_0': '',
-        'content_1': '&lt;form action="/action.php" method="get"&gt;&lt;input type="submit" value=""&gt;&lt;/form&gt;',
+        'content_1': '&amp;lt;form action=&#34;/action.php&#34; method=&#34;get&#34;&amp;gt;&amp;lt;input '
+                     'type=&#34;submit&#34; value=&#34;&#34;&amp;gt;&amp;lt;/form&amp;gt;'
     }
     response = do_post(app, CUSTOM_FOOTER_URL, data, is_sysadmin=True)
     check_custom_footer_page_html(response, **expected_contents)

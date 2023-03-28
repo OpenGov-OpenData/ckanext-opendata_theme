@@ -38,12 +38,12 @@ def check_custom_css_page_html(response, expected_form_data, expected_css_data, 
     assert len(expected_form_data.keys()) == response.body.count('opendata-theme-color-picker')
     for key, value in expected_form_data.items():
         assert 'name="{0}" id="{0}" value="{1}"'.format(
-            key, value) in response, 'Missed form field for "{}".'.format(key)
+            key, value) in response.body, 'Missed form field for "{}".'.format(key)
     for line in expected_css_data:
-        assert line in response, 'CSS line "{}" missed in result html.'.format(line)
+        assert line in response.body, 'CSS line "{}" missed in result html.'.format(line)
     if errors:
         for error_message in errors:
-            assert error_message in response, 'Error message "{}" not in HTML.'.format(error_message)
+            assert error_message in response.body, 'Error message "{}" not in HTML.'.format(error_message)
     else:
         assert 'alert' not in response, 'Result HTML contains alerts when they are not expected.'
 
@@ -51,7 +51,7 @@ def check_custom_css_page_html(response, expected_form_data, expected_css_data, 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_get_custom_css_page_with_not_sysadmin_user(app):
     response = do_get(app, CUSTOM_CSS_URL, is_sysadmin=False)
-    assert '<h1>403 Forbidden</h1>' in response
+    assert 403 == response.status_code
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
