@@ -71,7 +71,10 @@ def build_nav_main(*args):
         url = nav_link.get('url', '')
         title = html_escape(nav_link.get('title', ''))
         link = tk.literal(u'<a href="{}">{}</a>'.format(url, title))
-        li = tk.literal('<li>') + link + tk.literal('</li>')
+        if url.endswith(tk.request.path):
+            li = tk.literal('<li class="active">') + link + tk.literal('</li>')
+        else:
+            li = tk.literal('<li>') + link + tk.literal('</li>')
         nav_output = nav_output + li
     return nav_output
 
