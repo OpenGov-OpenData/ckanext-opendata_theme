@@ -39,7 +39,7 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
     def update_config_schema(self, schema):
         ignore_missing = tk.get_validator('ignore_missing')
         schema.update({
-            CONFIG_SECTION: [ignore_missing, dict, custom_header_validator, ]
+            CONFIG_SECTION: [ignore_missing, dict, custom_header_validator]
         })
         return schema
 

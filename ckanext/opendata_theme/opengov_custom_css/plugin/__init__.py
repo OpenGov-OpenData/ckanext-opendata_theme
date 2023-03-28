@@ -1,4 +1,5 @@
 import re
+import six
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
@@ -32,7 +33,7 @@ class OpenDataThemeCustomCSSPlugin(MixinPlugin):
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
         schema.update({
-            RAW_CSS: [ignore_missing, custom_css_validator],
+            RAW_CSS: [ignore_missing, six.text_type, custom_css_validator],
             CSS_METADATA: [ignore_missing, dict, css_meta_validator],
         })
         return schema

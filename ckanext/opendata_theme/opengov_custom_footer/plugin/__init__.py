@@ -34,7 +34,7 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
         ignore_missing = toolkit.get_validator('ignore_missing')
         schema.update({
             # This is a custom configuration option
-            CONFIG_KEY: [ignore_missing, custom_footer_validator],
+            CONFIG_KEY: [ignore_missing, dict, custom_footer_validator],
         })
         return schema
 
