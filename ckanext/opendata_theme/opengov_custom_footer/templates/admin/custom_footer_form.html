@@ -3,24 +3,25 @@
 {% import 'macros/form.html' as form %}
 
 {% set ckan_29_or_higher = h.version(h.ckan_version()) >= h.version('2.9') %}
-{% block styles %}
-    {{ super() }}
-    {% set snippet_type = 'asset' if ckan_29_or_higher else 'resource'  %}
-    {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
-{% endblock %}
 
 {% if ckan_29_or_higher %}
     {% set custom_footer_action = h.url_for('/ckan-admin/custom_footer') %}
     {% set reset_custom_footer = h.url_for('/ckan-admin/reset_custom_footer') %}
 {% else %}
     {% set custom_footer_action = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_footer.controller:CustomFooterController',
-    action='custom_footer') %}
+        controller='ckanext.opendata_theme.opengov_custom_footer.controller:CustomFooterController',
+        action='custom_footer') %}
 
     {% set reset_custom_footer = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_footer.controller:CustomFooterController',
-    action='reset_custom_footer') %}
+        controller='ckanext.opendata_theme.opengov_custom_footer.controller:CustomFooterController',
+        action='reset_custom_footer') %}
 {% endif %}
+
+{% block styles %}
+    {{ super() }}
+    {% set snippet_type = 'asset' if ckan_29_or_higher else 'resource'  %}
+    {% snippet 'snippets/opendata_custom_footer_' ~ snippet_type ~ '.html' %}
+{% endblock %}
 
 {% block scripts %}
     {{ super() }}
@@ -43,7 +44,7 @@
             </div>
         </div>
         {% for index in range(2) %}
-            <div class="control-group form-group">
+            <div class="control-group form-group footer-column-form">
                 <label for="field-content-ck-{{ index }}" class="control-label">{{ _('Column') }} {{index + 1}}</label>
                 <textarea id="field-content-ck-{{ index }}"
                           class="control-medium"

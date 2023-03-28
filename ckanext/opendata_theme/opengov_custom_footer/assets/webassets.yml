@@ -7,6 +7,7 @@ main-js:
   contents:
     - vendor/ckeditor/adapters/jquery.js
     - js/ckedit.js
+    - js/custom_footer_form.js
 
 main-css:
   output: opengov_custom_footer_resource/%(version)s_main.css

@@ -19,6 +19,7 @@ class OpenDataThemeHomepagePlugin(MixinPlugin):
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, '../templates')
         toolkit.add_public_directory(ckan_config, '../public')
+        toolkit.add_resource('../assets', 'opengov_custom_homepage')
 
         if toolkit.check_ckan_version(min_version='2.4', max_version='2.9'):
             toolkit.add_ckan_admin_tab(ckan_config, 'custom_homepage', 'Homepage', icon='file-code-o')

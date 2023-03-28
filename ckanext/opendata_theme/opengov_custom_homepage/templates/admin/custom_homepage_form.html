@@ -2,19 +2,26 @@
 
 {% import 'macros/form.html' as form %}
 
-{% if h.version(h.ckan_version()) < h.version('2.9') %}
-    {% set custom_home_page_action = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController',
-    action='custom_homepage') %}
+{% set ckan_29_or_higher = h.version(h.ckan_version()) >= h.version('2.9') %}
 
-    {% set reset_custom_homepage = h.url_for(
-    controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController',
-    action='reset_custom_homepage') %}
-{% else %}
+{% if ckan_29_or_higher %}
     {% set custom_home_page_action = h.url_for('/ckan-admin/custom_homepage') %}
     {% set reset_custom_homepage = h.url_for('/ckan-admin/reset_custom_homepage') %}
+{% else %}
+    {% set custom_home_page_action = h.url_for(
+        controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController',
+        action='custom_homepage') %}
+
+    {% set reset_custom_homepage = h.url_for(
+        controller='ckanext.opendata_theme.opengov_custom_homepage.controller:CustomHomepageController',
+        action='reset_custom_homepage') %}
 {% endif %}
 
+{% block styles %}
+    {{ super() }}
+    {% set snippet_type = 'asset' if ckan_29_or_higher else 'resource'  %}
+    {% snippet 'snippets/opendata_homepage_' ~ snippet_type ~ '.html' %}
+{% endblock %}
 
 {% block primary_content_inner %}
     {{ form.errors(error_summary) }}
@@ -32,7 +39,7 @@
             {% endblock %}
         </div>
         <hr>
-        <div class="control-group form-group control-medium">
+        <div class="control-group form-group control-medium section-titles-form">
             {% for name, field in custom_naming.items() %}
                 <div class="form-group form-group">
                     <label class="control-label" for={{ name }}> {{ field["title"] }}</label><br>
