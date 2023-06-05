@@ -28,6 +28,9 @@
   padding-bottom: 20px;
   margin-bottom: 20px;
 }
+.featured-charts-wrap {
+  background-color: #FFFFFF;
+}
 @media (max-width: 767px) {
   a.browse-group {
     width: 140px;

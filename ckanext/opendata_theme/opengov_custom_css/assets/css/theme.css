@@ -229,7 +229,7 @@ form.form-inline.form-select.lang-select {
 }
 .label[data-format=csv],
 .label[data-format*=csv] {
-  background-color: #856A00;
+  background-color: #207E42 !important;
 }
 .label[data-format=xls],
 .label[data-format*=xls] {
@@ -237,11 +237,7 @@ form.form-inline.form-select.lang-select {
 }
 .label[data-format=zip],
 .label[data-format*=zip] {
-  background-color: #686868;
-}
-.label[data-format=api],
-.label[data-format*=api] {
-  background-color: #D22D81;
+  background-color: #5b5b5b !important;
 }
 .label[data-format=pdf],
 .label[data-format*=pdf] {
@@ -256,15 +252,34 @@ form.form-inline.form-select.lang-select {
 }
 .label[data-format=geojson],
 .label[data-format*=geojson] {
-  background-color: #893cdb;
+  background-color: #85252f !important;
+}
+.label[data-format=gml],
+.label[data-format*=gml] {
+  background-color: #847e31 !important;
 }
 .label[data-format=kml],
 .label[data-format*=kml] {
-  background-color: #548300;
+  background-color: #223582 !important;
 }
+.label[data-format=shp],
+.label[data-format*=shp] {
+  background-color: #3b2d80 !important;
+}
+.label[data-format=wfs],
+.label[data-format*=wfs] {
+  background-color: #246984 !important;
+}
+.label[data-format=wms],
+.label[data-format*=wms] {
+  background-color: #248462 !important;
+}
+.label[data-format=arcgis],
+.label[data-format*=arcgis],
 .label[data-format=chart],
-.label[data-format*=chart] {
-  background-color: #935DA7;
+.label[data-format*=chart],
+.label[data-format=map] {
+  background-color: #852c7b !important;
 }
 
 @media (max-width: 767px) {
