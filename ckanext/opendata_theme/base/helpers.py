@@ -224,10 +224,12 @@ def value_should_be_shorter_than_length(field_name='Field', length=30):
         def _wrap(value):
             if len(value) > length:
                 raise toolkit.Invalid(
-                    '{} is too long. Maximum {} characters allowed for {}'.format(field_name, length, value))
+                    '{} is too long. Maximum {} characters allowed for {}'.format(field_name, length, value)
+                )
             return func(value)
         return _wrap
     return decorator
+
 
 def get_default_extent():
     """
@@ -237,5 +239,7 @@ def get_default_extent():
     return config.get(
         'ckanext.spatial.default_extent',
         '{ "type": "Polygon", \
-           "coordinates": [[[-124.7844079,24.7433195],[-66.9513812,24.7433195],[-66.9513812,49.3457868],[-124.7844079,49.3457868],[-124.7844079,24.7433195]]] }'
+           "coordinates": [[[-124.7844079,24.7433195], \
+            [-66.9513812,24.7433195],[-66.9513812,49.3457868], \
+            [-124.7844079,49.3457868],[-124.7844079,24.7433195]]] }'
     )
