@@ -119,7 +119,7 @@ def get_custom_name(key, default_name):
     if not name:
         return default_name
     else:
-        return toolkit.h.render_markdown(name.get('value', default_name))
+        return toolkit.h.markdown_extract(name.get('value', default_name))
 
 
 def get_data(key):
@@ -228,3 +228,14 @@ def value_should_be_shorter_than_length(field_name='Field', length=30):
             return func(value)
         return _wrap
     return decorator
+
+def get_default_extent():
+    """
+    Return default extent to use with spatial widget
+    If none is configured a bounding box of the continental US is returned
+    """
+    return config.get(
+        'ckanext.spatial.default_extent',
+        '{ "type": "Polygon", \
+           "coordinates": [[[-124.7844079,24.7433195],[-66.9513812,24.7433195],[-66.9513812,49.3457868],[-124.7844079,49.3457868],[-124.7844079,24.7433195]]] }'
+    )

@@ -70,7 +70,8 @@ class ModuleHeaderBackgroundColor(AbstractParser):
 
 
 class ModuleHeaderTextColor(AbstractParser):
-    class_name = '.module-heading'
+    class_name = ('.module-heading,'
+                  '.module-heading .action')
     form_name = 'module-header-text-color'
     title = 'Side Menu Header Text Color'
     location = 'color'
