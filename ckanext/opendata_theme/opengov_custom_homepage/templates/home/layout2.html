@@ -32,24 +32,23 @@
     </div>
   </div>
 
-
-  {% block opendata_theme_groups %}
-    {% if h.opendata_theme_get_groups() %}
-      {% snippet 'home/snippets/groups.html' %}
-    {% endif %}
-  {% endblock %}
-
-
-  {% block opendata_theme_showcases %}
-    {% if 'showcase' in g.plugins %}
-      {% if h.opendata_theme_get_showcases() %}
-        {% snippet 'home/snippets/opendata_theme_showcase.html' %}
+  <div class="flex-container">
+    {% block opendata_theme_groups %}
+      {% if h.opendata_theme_get_groups() %}
+        {% snippet 'home/snippets/groups.html' %}
       {% endif %}
-    {% endif %}
-  {% endblock %}
+    {% endblock %}
 
+    {% block opendata_theme_showcases %}
+      {% if 'showcase' in g.plugins %}
+        {% if h.opendata_theme_get_showcases() %}
+          {% snippet 'home/snippets/opendata_theme_showcase.html' %}
+        {% endif %}
+      {% endif %}
+    {% endblock %}
 
-  {% block opendata_theme_datasets %}
-    {% snippet 'home/snippets/datasets.html' %}
-  {% endblock %}
+    {% block opendata_theme_datasets %}
+      {% snippet 'home/snippets/datasets.html' %}
+    {% endblock %}
+  </div>
 </div>

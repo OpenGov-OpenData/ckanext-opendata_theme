@@ -31,6 +31,23 @@
 .featured-charts-wrap {
   background-color: #EFF2F5;
 }
+
+/*layout2 homepage flex order start*/
+.flex-container {
+  display: flex;
+  flex-direction: column;
+}
+.main-browse {
+  order: 1;
+}
+.main-featured {
+  order: 2;
+}
+.main-updates {
+  order: 3;
+}
+/*layout2 homepage flex order end*/
+
 @media (max-width: 767px) {
   a.browse-group {
     width: 140px;
