@@ -1,5 +1,7 @@
 {% ckan_extends %}
 
+{% import 'macros/form.html' as form %}
+
 {% block admin_form %}
 
     {{ form.input('ckan.site_title', id='field-ckan-site-title', label=_('Site Title'), value=data['ckan.site_title'], error=error, classes=['control-medium']) }}
@@ -14,6 +16,10 @@
     {{ form.markdown('ckan.site_about', id='field-ckan-site-about', label=_('About'), value=data['ckan.site_about'], error=error, placeholder=_('About page text')) }}
 
     {{ form.markdown('ckan.site_intro_text', id='field-ckan-site-intro-text', label=_('Intro Text'), value=data['ckan.site_intro_text'], error=error, placeholder=_('Text on home page')) }}
+
+    {% if 'contact' in g.plugins %}
+        {{ form.markdown('contact_form_legend_content', id='field-contact-form-legend-content', label=_('Contact Form Text'), value=data['contact_form_legend_content'], error=errors['contact_form_legend_content']) }}
+    {% endif %}
 
 {% endblock %}
 
@@ -33,4 +39,8 @@
         <p><strong>Intro Text:</strong> This text will appear on this site's
             <a href="{{ home_url }}">home page</a> as a welcome message to visitors.</p>
     {% endtrans %}
+    {% if 'contact' in g.plugins %}
+        <p><strong>Contact Form Text:</strong> This text will appear on this site's
+            <a href="/contact">contact page</a>.</p>
+    {% endif %}
 {% endblock %}

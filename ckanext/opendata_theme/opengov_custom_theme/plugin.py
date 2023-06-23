@@ -1,3 +1,5 @@
+from six import text_type
+
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
@@ -11,6 +13,17 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
     # IConfigurer
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, 'templates')
+
+    def update_config_schema(self, schema):
+        ignore_missing = toolkit.get_validator('ignore_missing')
+        ignore_not_sysadmin = toolkit.get_validator('ignore_not_sysadmin')
+
+        schema.update({
+            # This is a custom configuration option
+            'contact_form_legend_content': [ignore_missing, ignore_not_sysadmin, text_type]
+        })
+
+        return schema
 
     # ITemplateHelpers
     def get_helpers(self):
