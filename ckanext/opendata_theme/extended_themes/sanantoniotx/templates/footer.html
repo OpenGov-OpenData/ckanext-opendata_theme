@@ -1,0 +1,50 @@
+<footer class="site-footer">
+  <div class="container">
+    {% block footer_content %}
+    <div class="row">
+      <div class="col-md-2 span2">
+        <img class="footer-logo" src="/img/ITSDQuadraLogo.png" alt="ITSD Logo" style="float:left;">
+      </div>
+      <div class="col-md-8 span8" style="text-align:center; margin-left:auto; margin-right:auto;">
+        <div class="row">
+          <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+            <img src="/img/creative_commons.png" alt="Creative Commons">
+          </a>
+        </div>
+        <div class="row">
+          <div class="module-content">
+            <ul class="list-unstyled">
+              <li class="footer-link"><a target="_blank" href="https://www.sanantonio.gov/ada">ADA Compliance</a></li>
+              <li class="footer-link"><a target="_blank" href="https://www.sanantonio.gov/opengovernment">Open Records</a></li>
+              <li class="footer-link"><a target="_blank" href="https://www.sanantonio.gov/contact">Contact City of San Antonio</a></li>
+              <li class="footer-link"><a target="_blank" href="https://www.sanantonio.gov/disclaimer">Privacy Policy & Disclaimer</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attribution og-attribution">
+            {% block footer_attribution %}
+              <strong>{{ _('Powered by') }}</strong>
+              <div style="white-space:nowrap; padding-bottom:16px;">
+                <a class="pull-left" href="https://opengov.com/?utm_campaign=Footer-Product-OpenData&utm_source=OpenGov&utm_medium=product&utm_term=PO-OGOV-1274&utm_content=logo" target="_blank">
+                  <img src="/img/OpenGov_Logo.png" alt="OpenGov" height="25">
+                </a>
+                <a class="hide-text ckan-footer-logo" href="https://ckan.org" target="_blank" style="margin-left:144px;">CKAN</a>
+              </div>
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 span2">
+        <img class="footer-logo" src="/img/COSAQuadraLogo.png" alt="COSA Logo" style="float:right;">
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+
+  {% block footer_debug %}
+    {% if g.debug %}
+      {% include 'snippets/debug.html' %}
+    {% endif %}
+  {% endblock %}
+</footer>

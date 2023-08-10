@@ -1,0 +1,67 @@
+body {
+  font-family: "Montserrat", Arial, sans-serif;
+}
+.site-footer {
+  padding-bottom: 0 !important;
+}
+.site-footer .container {
+  max-width: 1140px;
+}
+.site-footer a {
+  font-size: 16px !important;
+}
+.site-footer ul li {
+  margin-bottom: 5px;
+}
+.site-footer .nav-link {
+  display: block;
+}
+.footer-logo {
+  height: 60px;
+  padding-top: 18px;
+}
+.imagine {
+  font-size: 16px;
+  color: #ffffff;
+}
+.search-footer {
+  font-size: 16px !important;
+  text-transform: inherit !important;
+  padding-bottom: 0.5em;
+  font-weight: normal;
+}
+#KEYWORD {
+  color: #000;
+  display: inline;
+  padding: 0.375em 0.75em;
+  line-height: 1.5;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0 !important;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  margin-bottom: 10px;
+}
+input#KEYWORD_SUBMIT {
+  background-color: #d15421;
+  border-color: #914014;
+  border-radius: 0;
+  box-shadow: none;
+}
+.elected-officials {
+  display: block;
+}
+.site-footer .og-attribution {
+  float: none !important;
+  padding-bottom: 15px;
+}
+.site-footer .footer-copyright {
+  padding: 20px 0;
+  background: #000;
+  width: 100%;
+}
+.footer-copyright a {
+  color: #ffffff !important;
+  padding-left: 10px;
+  padding-right: 10px;
+}

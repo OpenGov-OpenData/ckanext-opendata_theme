@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "Myriad_Pro_Bold_Cond";
+  src: url("fonts/Myriad Pro Bold Condensed.ttf");
+}
+@font-face {
+  font-family: "Myriad_Pro_Bold_Cond_IE";
+  src: url("fonts/MyriadPro-BoldCond.woff");
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family:  "Myriad_Pro_Bold_Cond", "Myriad_Pro_Bold_Cond_IE", Helvetica, Arial, sans-serif;
+}
+input, textarea, select {
+  font-family: "Myriad_Pro_Bold_Cond", Arial;
+}
+.account-masthead .account ul li a {
+  font-family: "Myriad_Pro_Bold_Cond", "Myriad_Pro_Bold_Cond_IE", Helvetica, Arial, sans-serif;
+}
+.site-footer li.footer-link {
+  display: inline-block;
+  margin-right: 30px;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+.site-footer .og-attribution {
+  float: none !important;
+}
+@media (max-width: 979px) {
+  .site-footer .footer-logo {
+    display: none;
+  }
+}

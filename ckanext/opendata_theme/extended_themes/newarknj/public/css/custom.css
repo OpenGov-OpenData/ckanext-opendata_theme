@@ -1,0 +1,21 @@
+.rutgers-spaa-logo a {
+  float: right;
+}
+.rutgers-spaa-logo a img {
+  max-width: 125px;
+}
+.account-masthead .account ul li a {
+  line-height: 45px !important;
+}
+.masthead .nav > li > a {
+  font-weight: bold;
+}
+.hero-text-description {
+  font-weight: bold;
+}
+.main-browse, .main-updates {
+  background: #E8EEF5 !important;
+}
+.main-featured, .main-updates li.dataset-item {
+  background: #FFFFFF !important;
+}

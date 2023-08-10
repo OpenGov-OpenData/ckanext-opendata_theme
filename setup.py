@@ -87,6 +87,10 @@ setup(
         opengov_custom_header=ckanext.opendata_theme.opengov_custom_header.plugin:OpenDataThemeHeaderPlugin
         opengov_custom_footer=ckanext.opendata_theme.opengov_custom_footer.plugin:OpenDataThemeFooterPlugin
 
+        newarknj_theme=ckanext.opendata_theme.extended_themes.newarknj.plugin:OpenDataThemePlugin
+        oklahomastate_theme=ckanext.opendata_theme.extended_themes.oklahomastate.plugin:OpenDataThemePlugin
+        sanantoniotx_theme=ckanext.opendata_theme.extended_themes.sanantoniotx.plugin:OpenDataThemePlugin
+
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan
     ''',
