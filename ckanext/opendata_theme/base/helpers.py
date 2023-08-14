@@ -130,6 +130,15 @@ def version_builder(text_version):
     return Version(text_version)
 
 
+def get_story_banner():
+    """Return a showcase with a specific story tag"""
+    existent_showcases = showcases()
+    for showcase in existent_showcases:
+        for tag in showcase['tags']:
+            if tag['name'].lower() in ['story banner', 'story-banner', 'story+banner']:
+                return showcase
+
+
 def showcase_story(story=True, num=12):
     """Return list of Showcase whose tag is story"""
 
@@ -138,11 +147,11 @@ def showcase_story(story=True, num=12):
     std_story_showcase = []
     for showcase in existent_showcases:
         for tag in showcase['tags']:
-            if tag['name'].lower() == "story":
+            if tag['name'].lower() == 'story':
                 std_story_showcase.append(showcase)
                 continue
 
-            story_tag = re.findall("story[ -+]?[0-9]+$", tag['name'])
+            story_tag = re.findall("story[ +-]?[0-9]+$", tag['name'])
 
             if len(story_tag) > 0:
                 key = re.findall(r'\d+', story_tag[0])

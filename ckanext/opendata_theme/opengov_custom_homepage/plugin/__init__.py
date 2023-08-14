@@ -40,6 +40,7 @@ class OpenDataThemeHomepagePlugin(MixinPlugin):
         return {
             'opendata_theme_get_dataset_count': helper.dataset_count,
             'opendata_theme_get_showcases': helper.showcases,
+            'opendata_theme_get_story_banner': helper.get_story_banner,
             'opendata_theme_get_showcases_story': helper.showcase_story,
             'opendata_theme_get_value_from_extras': helper.get_value_from_extras,
             'opendata_theme_get_groups': helper.groups,
