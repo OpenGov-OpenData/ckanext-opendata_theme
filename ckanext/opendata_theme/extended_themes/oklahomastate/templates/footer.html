@@ -35,17 +35,23 @@
         </ul>
       </div>
       <div class="col-md-4 span4">
+        {% if g.governor_name or g.lieutenant_governor_name %}
         <h6 class="imagine">ELECTED OFFICIALS</h6>
-        <ul class="nav-item list-unstyled elected-officials">
-          <a class="nav-link" href="https://www.governor.ok.gov/" target="_blank" rel="noopener noreferrer">Governor Kevin Stitt
-            <li class="official "><i>Official site</i> </li>
-          </a>
-        </ul>
-        <ul class="nav-item list-unstyled elected-officials">
-          <a class="nav-link" href="https://www.ok.gov/ltgovpinnell/" target="_blank" rel="noopener noreferrer">Lt. Governor Matt Pinnell
-            <li class="official"><i>Official site</i> </li>
-          </a>
-        </ul>
+        {% endif %}
+        {% if g.governor_name and g.governor_link %}
+          <ul class="nav-item list-unstyled elected-officials">
+            <a class="nav-link" href="{{ g.governor_link }}" target="_blank" rel="noopener noreferrer">Governor {{ g.governor_name }}
+              <li class="official"><i>Official site</i> </li>
+            </a>
+          </ul>
+        {% endif %}
+        {% if g.lieutenant_governor_name and g.lieutenant_governor_link %}
+          <ul class="nav-item list-unstyled elected-officials">
+            <a class="nav-link" href="{{ g.lieutenant_governor_link }}" target="_blank" rel="noopener noreferrer">Lt. Governor {{ g.lieutenant_governor_name }}
+              <li class="official"><i>Official site</i> </li>
+            </a>
+          </ul>
+        {% endif %}
       </div>
     </div>
     <div class="row">

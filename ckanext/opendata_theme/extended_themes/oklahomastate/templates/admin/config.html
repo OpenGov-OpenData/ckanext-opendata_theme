@@ -1,0 +1,23 @@
+{% ckan_extends %}
+
+{% import 'macros/form.html' as form %}
+
+{% block admin_form %}
+    {{ super() }}
+
+    {{ form.input('governor_name', id='field-governor-name', label=_('Governor Name'), value=data['governor_name'], error=errors['governor_name']) }}
+
+    {{ form.input('governor_link', id='field-governor-link', label=_('Governor Link'), value=data['governor_link'], error=errors['governor_link']) }}
+
+    {{ form.input('lieutenant_governor_name', id='field-lieutenant-governor-name', label=_('Lieutenant Governor Name'), value=data['lieutenant_governor_name'], error=errors['lieutenant_governor_name']) }}
+
+    {{ form.input('lieutenant_governor_link', id='field-lieutenant-governor-link', label=_('Lieutenant Governor Link'), value=data['lieutenant_governor_link'], error=errors['lieutenant_governor_link']) }}
+{% endblock %}
+
+{% block admin_form_help %}
+    {{ super() }}
+    <p><strong>Governor Name:</strong> This text will appear on this site's footer.</p>
+    <p><strong>Governor Link:</strong> The Governor's official site will be linked on this site's footer.</p>
+    <p><strong>Lieutenant Governor Name:</strong> This text will appear on this site's footer.</p>
+    <p><strong>Lieutenant Governor Link:</strong> The Lt. Governor's official site will be linked on this site's footer.</p>
+{% endblock %}
