@@ -12,7 +12,7 @@ ALLOWED_TAGS_LIST = [
 
 ALLOWED_ATTRIBUTES = {
     '*': ['class'],
-    'a': ['href', 'class', 'target', 'title'],
+    'a': ['href', 'class', 'target', 'title', 'aria-label'],
     'img': ['src', 'alt', 'class', 'height', 'style', 'width'],
 }
 

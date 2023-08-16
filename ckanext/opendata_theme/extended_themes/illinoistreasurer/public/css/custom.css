@@ -1,0 +1,88 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic);
+
+body {
+  font-family: 'Open Sans', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #112e51;
+}
+.main-homepage {
+  background: url(/img/Web_4.jpg);
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.intro-block .box {
+  background: #121f32;
+  border: none;
+  color: #FFFFFF;
+  padding: 10px 30px 20px;
+  opacity: 0.95;
+}
+.intro-block hr,
+.showcase-list hr {
+  border-top: 3px solid #FB8A52;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.intro-block a,
+.vault-block a {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+.intro-block a:hover,
+.vault-block a:hover,
+.site-footer a:hover {
+  color: #FB8A52 !important;
+}
+.hero-text-heading {
+  text-align: center;
+}
+.hero-text-heading img{
+  max-width: 100%;
+}
+.hero-text-description {
+  font-size: 18px !important;
+}
+.showcase-list {
+  background-color: #f1f1f1;
+  margin: 10px 30px;
+  padding: 1px 30px !important;
+  opacity: 0.95;
+}
+.showcase-list a {
+  color: #112e51;
+}
+.showcase-subtitle {
+  color: #112e51;
+  font-style: italic;
+  font-size: 16px;
+}
+.vault-block .box {
+  background: #121f32;
+  border: none;
+  color: #FFFFFF;
+  margin: 20px 30px;
+  padding: 10px 30px 20px !important;
+  opacity: 0.95;
+}
+.site-footer .fa {
+  font-size: 24px;
+  padding-right: 10px;
+}
+.fa-facebook-square:hover {
+  color: #3B5998 !important;
+}
+.fa-twitter-square:hover {
+  color: #00aced !important;
+}
+.fa-instagram:hover {
+  background-clip: text;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.fa-youtube-square:hover {
+  color: #cc181e !important;
+}

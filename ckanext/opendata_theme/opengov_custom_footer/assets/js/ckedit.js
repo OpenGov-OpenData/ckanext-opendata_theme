@@ -40,6 +40,7 @@ this.ckan.module('ckedit', function (jQuery, _) {
       config.height = '400px';
       config.customConfig = false;
       config.allowedContent = true;
+      CKEDITOR.dtd.$removeEmpty.i = false;
 
       var editor = $(this.el).ckeditor(config);
     },

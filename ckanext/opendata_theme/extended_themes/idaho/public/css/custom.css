@@ -1,0 +1,78 @@
+@font-face {
+  font-family: 'Bryant';
+  src: url('fonts/BryantWebRegular.eot');
+  src: url('fonts/BryantWebRegular.woff') format('woff'),
+       url('fonts/BryantWebRegular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bryant';
+  src: url('fonts/BryantWebBold.eot');
+  src: url('fonts/BryantWebBold.woff') format('woff'),
+       url('fonts/BryantWebBold.woff2') format('woff2');
+  font-weight: bold;
+}
+body {
+  font-family: 'Bryant', sans-serif !important;
+  font-size: 16px;
+}
+.header-info {
+  float: left;
+  text-align: center;
+}
+.header-info ul li {
+  display: inline-block;
+}
+.header-info span.text {
+  margin: 0 2px 0 4px;
+}
+.header-info a {
+  color: #ffffff;
+  line-height: 31px;
+}
+.header-info a:hover, .header-info a:focus {
+  color: #ffffff;
+  text-decoration: underline;
+}
+.header-info .fa {
+  color: #ffffff;
+}
+.header-info li.phone-info {
+  margin-right: 30px;
+}
+.account.authed i.fa-home {
+  font-size: 16px;
+}
+.account.not-authed i.fa-home,
+.account.not-authed i.fa-twitter-square,
+.account.not-authed i.fa-facebook-square {
+  font-size: 20px;
+  margin-top: 5px;
+}
+.navbar button.dropdown-toggle {
+  background-color: #445562;
+  margin-top: 15px;
+}
+.navbar .dropdown-menu>li>a:hover,
+.navbar .dropdown-menu>li>a:focus {
+  background: #4298B5;
+}
+.intro-block .box {
+  background: #445562;
+  color: #FFFFFF;
+  text-align: center;
+}
+.hero-text-heading {
+  margin-top: 0;
+  border-bottom: #4298B5 solid thick;
+}
+.sub-footer {
+  background: #4298B5;
+  height: 22px;
+}
+.sub-footer .idaho-logo {
+  height: 22px;
+  float: right;
+  padding: 1px;
+  margin-right: 10px;
+}

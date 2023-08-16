@@ -1,0 +1,119 @@
+{% ckan_extends %}
+
+{% block header_wrapper %}
+{% block header_account %}
+  <header class="account-masthead">
+    <div class="container">
+      {% block header_account_container_content %}
+        <div class="header-info">
+          <ul class="list-unstyled unstyled">
+            <li class="phone-info">
+              <i class="fa fa-phone"></i>
+              <a title="Contact Phone Number" href="tel:1-208-334-3100" target="_blank">
+                <span class="text">(208) 334-3100</span>
+              </a>
+            </li>
+            <li class="email-info">
+              <i class="fa fa-envelope"></i>
+              <a title="Contact Email" href="mailto:transparentidaho@sco.idaho.gov" aria-label="Send an email to transparentidaho@sco.idaho.gov" target="_blank">
+                <span class="text">transparentidaho@sco.idaho.gov</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        {% if c.userobj %}
+          <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
+            <ul class="list-unstyled unstyled">
+              {% block header_account_logged %}
+                <li>
+                  <a href="{{ h.url_for('home') }}" aria-label="Link to {{ g.site_title }} homepage" title="{{ g.site_title }}">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="text">{{ _('Home') }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="social-link" href="https://twitter.com/IdahoController" aria-label="Link to State of Idaho Controller Twitter page - opens in new tab" target="_blank">
+                    <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                    <span class="text">{{ _('Twitter') }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="social-link" href="https://www.facebook.com/IdahoController/" aria-label="Link to State of Idaho Controller Facebook page - opens in new tab" target="_blank">
+                    <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                    <span class="text">{{ _('Facebook') }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/showcase" aria-label="Link to showcase page" title="{{ _('Showcase') }}">
+                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    <span class="text">{{ _('Showcase') }}</span>
+                  </a>
+                </li>
+                {{ super() }}
+              {% endblock %}
+            </ul>
+          </div>
+        {% else %}
+          <nav class="account not-authed">
+            <ul class="list-unstyled unstyled">
+              {% block header_account_notlogged %}
+                <li>
+                  <a href="{{ h.url_for('home') }}" aria-label="Link to {{ g.site_title }} homepage" title="{{ g.site_title }}">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="text">{{ _('Home') }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://twitter.com/IdahoController" aria-label="Link to State of Idaho Controller Twitter page - opens in new tab" target="_blank">
+                    <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                    <span class="text">{{ _('Twitter') }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.facebook.com/IdahoController/" aria-label="Link to State of Idaho Controller Facebook page - opens in new tab" target="_blank">
+                    <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                    <span class="text">{{ _('Facebook') }}</span>
+                  </a>
+                </li>
+              {% endblock %}
+            </ul>
+          </nav>
+        {% endif %}
+      {% endblock %}
+  </div>
+</header>
+{% endblock %}
+<header class="navbar navbar-static-top masthead">
+  {% block header_debug %}
+    {{ super() }}
+  {% endblock %}
+  <div class="container">
+    <div class="navbar-right">
+      <button data-target="#main-navigation-toggle" data-toggle="dropdown" class="btn btn-navbar dropdown-toggle" type="button" aria-label="expand or collapse" aria-expanded="false">
+        <span class="sr-only">{{ _('Toggle navigation') }}</span>
+        <span class="fa fa-bars"></span>
+      </button>
+      <div class="navbar-collapse" id="main-navigation-toggle">
+        {% block header_site_navigation %}
+          <ul class="nav dropdown-menu">
+            {% block header_site_navigation_tabs %}
+              {{ h.build_nav_main() }}
+            {% endblock %}
+          </ul>
+        {% endblock %}
+      </div>
+    </div>
+    <hgroup class="{{ g.header_class }} navbar-left">
+      {% block header_logo %}
+        {% if g.site_logo %}
+          <a class="logo" href="https://transparent.idaho.gov"><img src="{{ h.url_for_static_or_external(g.site_logo) }}" alt="Transparent Idaho" title="Transparent Idaho" /></a>
+        {% else %}
+          <h1>
+            <a href="{{ h.url_for('home') }}">{{ g.site_title }}</a>
+          </h1>
+          {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
+        {% endif %}
+      {% endblock %}
+    </hgroup>
+</header>
+{% endblock %}
