@@ -2,6 +2,8 @@
 
 {% block footer_content %}
   <div class="row">
+    {% block footer_logo %}
+    {% endblock %}
     {% for index in range(2) %}
       <div class="col-md-4 span4 footer-links">
         {{ h.opendata_theme_get_footer_data('content_{}'.format(index)) }}

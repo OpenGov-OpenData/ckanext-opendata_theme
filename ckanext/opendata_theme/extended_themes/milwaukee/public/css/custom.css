@@ -1,0 +1,20 @@
+.homepage .main-updates li.dataset-item:nth-child(4),
+.homepage .main-updates li.dataset-item:nth-child(5) {
+  display: none;
+}
+.site-footer .footer-logo {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.site-footer .footer-links {
+  margin-bottom: 20px;
+}
+@media (min-width: 992px) {
+  .site-footer .footer-logo {
+    text-align: left;
+    float: left;
+    width: 130px;
+    margin-right: 20px;
+  }
+}
