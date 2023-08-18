@@ -89,9 +89,9 @@ setup(
 
         idaho_theme=ckanext.opendata_theme.extended_themes.idaho.plugin:OpenDataThemePlugin
         illinoistreasurer_theme=ckanext.opendata_theme.extended_themes.illinoistreasurer.plugin:OpenDataThemePlugin
-        milwaukee_theme=ckanext.opendata_theme.extended_themes.milwaukee.plugin:OpenDataThemePlugin
+        milwaukeewi_theme=ckanext.opendata_theme.extended_themes.milwaukee.plugin:OpenDataThemePlugin
         newarknj_theme=ckanext.opendata_theme.extended_themes.newarknj.plugin:OpenDataThemePlugin
-        oklahomastate_theme=ckanext.opendata_theme.extended_themes.oklahomastate.plugin:OpenDataThemePlugin
+        oklahoma_theme=ckanext.opendata_theme.extended_themes.oklahomastate.plugin:OpenDataThemePlugin
         sanantoniotx_theme=ckanext.opendata_theme.extended_themes.sanantoniotx.plugin:OpenDataThemePlugin
 
         [babel.extractors]
