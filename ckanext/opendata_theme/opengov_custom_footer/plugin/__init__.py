@@ -54,7 +54,9 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
 
 def get_footer_data(section):
     data_dict = CustomFooterController.get_custom_footer_metadata()
-    return literal(data_dict.get(section))
+    if data_dict.get(section):
+        return literal(data_dict.get(section))
+    return ''
 
 
 def custom_footer_validator(value):

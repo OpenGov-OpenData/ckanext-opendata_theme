@@ -92,6 +92,7 @@ setup(
         milwaukeewi_theme=ckanext.opendata_theme.extended_themes.milwaukee.plugin:OpenDataThemePlugin
         newarknj_theme=ckanext.opendata_theme.extended_themes.newarknj.plugin:OpenDataThemePlugin
         oklahoma_theme=ckanext.opendata_theme.extended_themes.oklahomastate.plugin:OpenDataThemePlugin
+        phoenixaz_theme=ckanext.opendata_theme.extended_themes.phoenixaz.plugin:OpenDataThemePlugin
         sanantoniotx_theme=ckanext.opendata_theme.extended_themes.sanantoniotx.plugin:OpenDataThemePlugin
 
         [babel.extractors]

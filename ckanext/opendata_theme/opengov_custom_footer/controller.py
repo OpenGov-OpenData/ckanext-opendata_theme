@@ -23,7 +23,7 @@ def clean_html(text):
 
 
 class CustomFooterController(BaseCompatibilityController):
-    default_footer = {'layout_type': 'default', 'content_0': '', 'content_1': ''}
+    default_footer = {'layout_type': 'default', 'content_0': '', 'content_1': '', 'content_2': ''}
 
     def custom_footer(self):
         try:
@@ -39,7 +39,8 @@ class CustomFooterController(BaseCompatibilityController):
             custom_footer = {
                 'layout_type': data.get('layout_type', 'default'),
                 'content_0': clean_html(data.get('content_0', '')),
-                'content_1': clean_html(data.get('content_1', ''))
+                'content_1': clean_html(data.get('content_1', '')),
+                'content_2': clean_html(data.get('content_2', ''))
             }
             error = self.save_footer_metadata(custom_footer)
             custom_footer['errors'] = error

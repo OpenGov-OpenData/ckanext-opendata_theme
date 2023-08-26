@@ -29,9 +29,9 @@ DEFAULT_CUSTOM_CSS = (
     '.navbar .nav>li>a,.masthead .nav>li>a,.navbar hgroup>h1>a,.navbar hgroup>h2 {color: #07305c}',
     '.module-heading {background: #165cab}',
     '.module-heading,.module-heading .action {color: #ffffff}',
-    'body, .site-footer {background: #07305c}',
-    '.site-footer a,.site-footer a:hover {color: #ffffff}',
-    '.site-footer,.site-footer label,.site-footer small {color: #ffffff}'
+    'body, .site-footer, .footer-column-form .cke_reset {background: #07305c}',
+    '.site-footer a,.site-footer a:hover,.footer-column-form .cke_reset a {color: #ffffff}',
+    '.site-footer,.site-footer label,.site-footer small,.footer-column-form .cke_reset {color: #ffffff}'
 )
 
 

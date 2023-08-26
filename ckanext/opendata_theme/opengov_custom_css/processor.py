@@ -79,7 +79,7 @@ class ModuleHeaderTextColor(AbstractParser):
 
 
 class FooterBackGroundColor(AbstractParser):
-    class_name = 'body, .site-footer'
+    class_name = 'body, .site-footer, .footer-column-form .cke_reset'
     form_name = 'footer-background-color'
     title = 'Footer Background Color'
     location = 'background'
@@ -88,7 +88,8 @@ class FooterBackGroundColor(AbstractParser):
 
 class FooterLinkColor(AbstractParser):
     class_name = ('.site-footer a,'
-                  '.site-footer a:hover')
+                  '.site-footer a:hover,'
+                  '.footer-column-form .cke_reset a')
     form_name = 'footer-link-text-color'
     title = 'Footer Link Color'
     location = 'color'
@@ -98,7 +99,8 @@ class FooterLinkColor(AbstractParser):
 class FooterTextColor(AbstractParser):
     class_name = ('.site-footer,'
                   '.site-footer label,'
-                  '.site-footer small')
+                  '.site-footer small,'
+                  '.footer-column-form .cke_reset')
     form_name = 'footer-text-color'
     title = 'Footer Text Color'
     location = 'color'

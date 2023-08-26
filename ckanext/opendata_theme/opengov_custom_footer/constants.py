@@ -1,19 +1,21 @@
 CONFIG_KEY = 'ckanext.opendata_theme.custom_footer.data'
 
 ALLOWED_TAGS_SET = {
-    'a', 'abbr', 'acronym', 'b', 'br', 'div', 'em',
-    'i', 'img', 'li', 'ol', 'p', 'strong', 'ul'
+    'a', 'abbr', 'acronym', 'b', 'br', 'div', 'em', 'i',
+    'img', 'li', 'ol', 'p', 'path', 'strong', 'svg', 'ul'
 }
 
 ALLOWED_TAGS_LIST = [
-    'a', 'abbr', 'acronym', 'b', 'br', 'div', 'em',
-    'i', 'img', 'li', 'ol', 'p', 'strong', 'ul'
+    'a', 'abbr', 'acronym', 'b', 'br', 'div', 'em', 'i',
+    'img', 'li', 'ol', 'p', 'path', 'strong', 'svg', 'ul'
 ]
 
 ALLOWED_ATTRIBUTES = {
     '*': ['class'],
     'a': ['href', 'class', 'target', 'title', 'aria-label'],
     'img': ['src', 'alt', 'class', 'height', 'style', 'width'],
+    'path': ['fill', 'd'],
+    'svg': ['aria-hidden', 'focusable', 'role', 'xmlns', 'viewBox']
 }
 
 ALLOWED_CSS_PROPERTIES = [
