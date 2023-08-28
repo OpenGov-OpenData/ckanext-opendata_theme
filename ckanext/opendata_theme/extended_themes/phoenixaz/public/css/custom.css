@@ -1,3 +1,34 @@
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+
+a#what-works-cities-awards-logo {
+  max-width: 180px;
+  padding-left: 30px;
+}
+.homepage-intro,
+.terms-of-use {
+  background: #EFF2F5;
+}
+.homepage-intro {
+  font-family: 'Droid Serif', sans-serif;
+}
+.homepage-intro h1 {
+  font-style: italic;
+  text-align: center;
+}
+.homepage-intro p {
+  font-size: 18px;
+}
+.terms-of-use a {
+  color: #d15336;
+}
+.main-featured {
+  order: 1 !important;
+  background: #FFFFFF !important;
+}
+.main-browse {
+  order: 2 !important;
+  background: #EFF2F5 !important;
+}
 .footer-logo {
   padding: 0 15px;
 }

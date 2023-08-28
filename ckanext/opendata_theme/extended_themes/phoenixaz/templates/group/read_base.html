@@ -1,0 +1,13 @@
+{% ckan_extends %}
+
+{% block page_header %}
+  {% if c.group_dict.name == 'external-datasets' %}
+    <p>
+      <b>DISCLAIMER:</b> The data contained in the links on this page were compiled by third parties (not the City of Phoenix).
+      The City of Phoenix does not control and cannot guarantee the accuracy of this data.
+      The City of Phoenix does not provide, and specifically disclaims, any warranty (express or implied) as to the accuracy, reliability, or fitness for any purpose of this data.
+      By accessing this data, you agree that your use of this data is at your own risk, and you agree to hold the City harmless from and against any damages arising out of your use of this data.
+    </p>
+  {% endif %}
+  {{ super() }}
+{% endblock %}

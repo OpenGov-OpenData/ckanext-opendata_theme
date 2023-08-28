@@ -1,0 +1,46 @@
+<div role="main">
+  {% if 'heroslideradmin' in g.plugins %}
+    {% snippet 'home/snippets/hero_slider.html' %}
+  {% else %}
+    {% snippet 'home/snippets/hero_title.html' %}
+  {% endif %}
+
+  <div class="homepage-intro">
+    <div class="container">
+      <div class="module-content">
+        <h1>Phoenix Open Data Portal: Government Transparency in the Digital Age</h1>
+        <p>The city of Phoenix firmly believes that transparency in government encourages efficiency, as well as accountability to residents. More importantly, the availability of city data supports innovation that can be applied to make Phoenix an even better place. We invite you to explore and learn what Phoenix is all about.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-container">
+    {% block opendata_theme_groups %}
+      {% if h.opendata_theme_get_groups() %}
+        {% snippet 'home/snippets/groups.html' %}
+      {% endif %}
+    {% endblock %}
+
+    {% block opendata_theme_showcases %}
+      {% if 'showcase' in g.plugins %}
+        {% if h.opendata_theme_get_showcases() %}
+          {% snippet 'home/snippets/opendata_theme_showcase.html' %}
+        {% endif %}
+      {% endif %}
+    {% endblock %}
+
+    {% block opendata_theme_datasets %}
+      {% snippet 'home/snippets/datasets.html' %}
+    {% endblock %}
+  </div>
+
+  <div class="terms-of-use">
+    <div class="container">
+      <div class="module-content">
+        <h2>BEFORE YOU DOWNLOAD</h2>
+        <p>The city of Phoenix makes certain data available in a data file format through this site. This data is subject to the <a href="/pages/terms-of-use">Terms of Use</a> that accompany its distribution. You should read and understand these terms before using any city data.</p>
+        <p>By continuing use of data, or accessing any material on this site, you agree to the <a href="/pages/open-data-policy"> Open Data Policy</a>, as they may be updated or modified at any time. If you do not agree to them, do not use this site or download any material. Contact Us by using the <a href="/contact">contact</a> form.</p>
+      </div>
+    </div>
+  </div>
+</div>
