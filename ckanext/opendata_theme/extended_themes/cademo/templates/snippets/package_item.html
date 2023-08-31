@@ -1,0 +1,15 @@
+{% ckan_extends %}
+
+{% block resources_inner %}
+  {% set arcgis_link = h.opendata_theme_get_arcgis_link(package.resources) %}
+  {% if arcgis_link %}
+    <li>
+      <a href="{{ h.url_for(package.type ~ '.read', id=package.name) }}" class="label label-default" aria-label="Access map data from dataset {{title}}" style="background: #BD5800;">MAP</a>
+    </li>
+  {% endif %}
+  {% for resource in h.dict_list_reduce(package.resources, 'format') %}
+    <li>
+      <a href="{{ h.url_for(package.type ~ '.read', id=package.name) }}" class="label label-default" data-format="{{ resource.lower() }}" aria-label="Access {{resource}} resources from dataset {{title}}">{{ resource }}</a>
+    </li>
+  {% endfor %}
+{% endblock %}

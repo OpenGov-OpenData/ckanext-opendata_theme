@@ -1,0 +1,11 @@
+{% ckan_extends %}
+
+{% block package_description %}
+  {{ super() }}
+  {% set arcgis_link = h.opendata_theme_get_arcgis_link(pkg.resources) %}
+  {% if arcgis_link %}
+    <a href="{{ arcgis_link }}" class="btn btn-primary" target="_blank">
+      <i class="fa fa-map"></i> MAP
+    </a>
+  {% endif %}
+{% endblock %}

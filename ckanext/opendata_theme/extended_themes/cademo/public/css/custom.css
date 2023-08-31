@@ -1,0 +1,8 @@
+.main-featured .heading,
+.main-browse .heading,
+.main-updates .heading {
+  border-bottom: 2px solid #cf6a04;
+}
+a[data-format="esri rest"], a[data-format="arcgis geoservices rest api"] {
+  display: none;
+}
