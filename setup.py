@@ -87,6 +87,7 @@ setup(
         opengov_custom_header=ckanext.opendata_theme.opengov_custom_header.plugin:OpenDataThemeHeaderPlugin
         opengov_custom_footer=ckanext.opendata_theme.opengov_custom_footer.plugin:OpenDataThemeFooterPlugin
 
+        cademo_theme=ckanext.opendata_theme.extended_themes.cademo.plugin:OpenDataThemePlugin
         idaho_theme=ckanext.opendata_theme.extended_themes.idaho.plugin:OpenDataThemePlugin
         illinoistreasurer_theme=ckanext.opendata_theme.extended_themes.illinoistreasurer.plugin:OpenDataThemePlugin
         milwaukeewi_theme=ckanext.opendata_theme.extended_themes.milwaukee.plugin:OpenDataThemePlugin
