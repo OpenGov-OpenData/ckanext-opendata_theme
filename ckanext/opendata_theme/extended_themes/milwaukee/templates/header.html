@@ -1,11 +1,22 @@
 {% ckan_extends %}
 
+{% block header_account_container_content %}
+  {{ super() }}
+  <div class="BackToMilwaukee">
+    <ul class="list-unstyled">
+      <li><a target="_blank" href="https://city.milwaukee.gov">City of Milwaukee</a></li>
+    </ul>
+  </div>
+{% endblock %}
+
 {% block header_logo %}
   {% if g.site_logo %}
-    <a class="logo" href="http://city.milwaukee.gov/home" target="_blank"><img src="{{ h.url_for_static_or_external(g.site_logo) }}" alt="City of Milwaukee" title="City of Milwaukee" /></a>
+    <a class="logo" href="{{ h.url_for('home.index') }}"><img src="{{ h.url_for_static_or_external(g.site_logo) }}" alt="{{ g.site_title }}" title="{{ g.site_title }}" /></a>
     <div class="name-tag">
-      <h1>Milwaukee, Wisconsin</h1>
-      <p>City of Milwaukee Open Data</p>
+      <h1>
+        <a href="{{ h.url('home') }}">Milwaukee Open Data</a>
+      </h1>
+      <p>{{ g.site_title }}</p>
     </div>
   {% else %}
     <h1>

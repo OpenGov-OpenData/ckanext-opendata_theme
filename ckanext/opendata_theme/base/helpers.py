@@ -28,15 +28,16 @@ def dataset_count():
     return count
 
 
-def showcases(num=24):
+def showcases(num=12):
     """Return a list of showcases"""
-    showcases = []
+    sorted_showcases = []
     try:
         showcases = toolkit.get_action('ckanext_showcase_list')({}, {})
+        sorted_showcases = sorted(showcases, key=lambda k: k.get('metadata_modified'), reverse=True)
     except Exception:
         logger.debug("[opendata_theme] Error getting showcase list")
         return []
-    return showcases[:num]
+    return sorted_showcases[:num]
 
 
 def groups(num=12):
