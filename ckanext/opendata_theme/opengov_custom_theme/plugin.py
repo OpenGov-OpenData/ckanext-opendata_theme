@@ -2,13 +2,14 @@ from six import text_type
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-
 import ckanext.opendata_theme.base.helpers as helper
+import ckanext.opendata_theme.opengov_custom_theme.blueprint as view
 
 
 class OpenDataThemePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.IBlueprint)
 
     # IConfigurer
     def update_config(self, ckan_config):
@@ -33,3 +34,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
             'opendata_theme_get_default_extent': helper.get_default_extent,
             'version': helper.version_builder,
         }
+
+    # IBlueprint
+    def get_blueprint(self):
+        return view.get_blueprints()
