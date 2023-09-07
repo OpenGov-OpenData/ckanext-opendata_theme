@@ -28,7 +28,7 @@ def dataset_count():
     return count
 
 
-def showcases(num=12):
+def showcases(num=24):
     """Return a list of showcases"""
     sorted_showcases = []
     try:
