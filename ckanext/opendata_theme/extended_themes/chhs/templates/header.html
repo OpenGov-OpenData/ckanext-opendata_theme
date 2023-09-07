@@ -1,0 +1,27 @@
+{% ckan_extends %}
+
+{% block header_account_logged %}
+  <li>
+    <a href="http://chhs.us5.list-manage.com/subscribe?u=952bf4f788634d2ab0bde1737&id=71852e8cec" target="_blank" title="Subscribe">Subscribe</a>
+  </li>
+  <li>
+    <a href="https://www.chhs.ca.gov/blog/tag/data/" target="_blank" title="{{ _('News') }}">{{ _('News') }}</a>
+  </li>
+  <li>
+    <a href="/about" title="{{ _('About') }}">{{ _('About') }}</a>
+  </li>
+  {{ super() }}
+{% endblock %}
+
+{% block header_account_notlogged %}
+  {{ super() }}
+  <li>
+    <a href="http://chhs.us5.list-manage.com/subscribe?u=952bf4f788634d2ab0bde1737&id=71852e8cec" target="_blank" title="Subscribe">Subscribe</a>
+  </li>
+  <li>
+    <a href="https://www.chhs.ca.gov/blog/tag/data/" target="_blank" title="{{ _('News') }}">{{ _('News') }}</a>
+  </li>
+  <li>
+    <a href="/about" title="{{ _('About') }}">{{ _('About') }}</a>
+  </li>
+{% endblock %}

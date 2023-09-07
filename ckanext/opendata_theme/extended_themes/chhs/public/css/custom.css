@@ -1,0 +1,38 @@
+#dataset-search-form.search-form {
+  border-bottom: 1px dotted #dddddd !important;
+}
+.dataset-item {
+  border-bottom: 1px dotted #dddddd !important;
+  min-height: 90px;
+}
+.dataset-item:last-of-type {
+  border-bottom: none !important;
+}
+.dataset-list-left-icon {
+  max-width: 70px;
+  max-height: 70px;
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 30px;
+}
+.label[data-format=chart],
+.label[data-format*=chart] {
+  background-color: #935DA7;
+}
+.format-label[data-format=chart],
+.format-label[data-format*=chart] {
+  width: 32px;
+  height: 35px;
+  background: url(/img/chart_icon.png);
+  transform: unset;
+  top: 25px !important;
+  left: 25px !important;
+}
+li.changed-package span.actor {
+  display: none;
+}
+@media (max-width: 767px) {
+  .dataset-list-left-icon {
+    display: none;
+  }
+}

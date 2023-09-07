@@ -1,0 +1,22 @@
+{% ckan_extends %}
+
+{% block footer_content %}
+  <div class="row">
+    <div class="col-md-4 span4 footer-links">
+      {{ h.opendata_theme_get_footer_data('content_0') }}
+    </div>
+    <div class="col-md-4 span4 footer-links">
+      {{ h.opendata_theme_get_footer_data('content_1') }}
+    </div>
+    <div class="col-md-4 span4 footer-links">
+      {{ h.opendata_theme_get_footer_data('content_2') }}
+    <div class="attribution og-attribution">
+      {% block footer_attribution %}
+        {{ super() }}
+      {% endblock %}
+      {% block footer_lang %}
+        {{ super() }}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

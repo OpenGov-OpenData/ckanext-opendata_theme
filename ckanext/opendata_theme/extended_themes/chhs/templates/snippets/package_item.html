@@ -1,0 +1,17 @@
+{% ckan_extends %}
+
+{% set title = package.title or package.name %}
+{% set notes = h.markdown_extract(package.notes, extract_length=180) %}
+
+{% block package_item %}
+  <li class="{{ item_class or "dataset-item" }}">
+    {% if package.groups %}
+      <img class="dataset-list-left-icon" src="{{package.groups[0]['image_display_url']}}" alt="">
+    {% else %}
+      <img class="dataset-list-left-icon" src="/img/dataset_background.svg" alt="">
+    {% endif %}
+    {% block content %}
+      {{ super() }}
+    {% endblock %}
+  </li>
+{% endblock %}

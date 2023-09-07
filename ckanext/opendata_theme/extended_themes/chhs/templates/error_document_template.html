@@ -1,0 +1,44 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ gettext('Error %(error_code)s', error_code=code) }}{% endblock %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      {% if code == 404 %}
+        <h1 class="page-heading">Sorry! That link didn't work. (404 Not Found)</h1>
+        <p><big>
+          We switched to a new open data portal provider in June 2017.
+          All of the datasets have been migrated to the new platform.
+          Check out <a href="https://datanews.chhs.ca.gov/2017/06/27/check-out-the-new-open-data-portal/" target="_blank">the blog post</a> that describes the portal's evolution.
+        </big></p>
+        <p><big>You can find data by:</big></p>
+        <ul>
+          <li><big>Searching in the box above</big></li>
+          <li><big>Browsing by <a href="/group" target="_blank">topic</a></big></li>
+          <li><big>Browsing by <a href="/organization" target="_blank">department</a></big></li>
+        </ul>
+        <p><big>
+          While you're at it, why not join our mailing list?
+          <a href="http://chhs.us5.list-manage.com/subscribe?u=952bf4f788634d2ab0bde1737&amp;id=71852e8cec" target="_blank">Click here!</a>
+          You can also stay updated when new data is released by following us on Twitter at <a href="https://twitter.com/CHHSdatanews" target="_blank">@CHHSDataNews.</a>
+        </big></p>
+      {% else %}
+        {% if name %}
+        <h1>{{ code }} {{ name }}</h1>
+        {% endif %}
+        {{ content}}
+      {% endif %}
+    </div>
+  </article>
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block flash %}
+  {# eat the flash messages caused by the 404 #}
+  {% set flash_messages = h.flash.pop_messages() %}
+{% endblock %}
+
+{% block secondary %}{% endblock %}
