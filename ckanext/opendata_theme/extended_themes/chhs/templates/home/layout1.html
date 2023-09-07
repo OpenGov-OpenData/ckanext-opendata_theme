@@ -1,0 +1,40 @@
+<div role="main">
+  <div class="hero tint">
+    <div class="container">
+      <div class="col-md-12 span12 col1">
+        <div class="module-content" style="margin: 25px 0;">
+          <h1 class="hero-text-heading hero-text">{{ g.site_title }}</h1>
+          <div class="hero-text-description hero-text">
+            <p>Innovation. Information. Research. Opportunity. Engagement. Transparency.</p>
+          </div>
+          {% block search %}
+            {% snippet 'home/snippets/basic_search.html' %}
+          {% endblock %}
+          <div class="hero-text-description hero-text">
+            {{ h.render_markdown(g.site_intro_text) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-container">
+    {% block opendata_theme_groups %}
+      {% if h.opendata_theme_get_groups() %}
+        {% snippet 'home/snippets/groups.html' %}
+      {% endif %}
+    {% endblock %}
+
+    {% block opendata_theme_showcases %}
+      {% if 'showcase' in g.plugins %}
+        {% if h.opendata_theme_get_showcases() %}
+          {% snippet 'home/snippets/opendata_theme_showcase.html' %}
+        {% endif %}
+      {% endif %}
+    {% endblock %}
+
+    {% block opendata_theme_datasets %}
+      {% snippet 'home/snippets/datasets.html' %}
+    {% endblock %}
+  </div>
+</div>

@@ -8,6 +8,7 @@ from ckan.plugins.toolkit import (
     _
 )
 
+
 def dictionary_download(resource_id, response):
     try:
         resource_datastore = get_action('datastore_search')(None, {
@@ -18,7 +19,7 @@ def dictionary_download(resource_id, response):
         abort(404, _('Resource not found'))
 
     fields = [f for f in resource_datastore['fields'] if not f['id'].startswith('_')]
-    header = ['column','type','label','description']
+    header = ['column', 'type', 'label', 'description']
 
     if hasattr(response, u'headers'):
         response.headers['Content-Type'] = 'text/csv; charset=utf-8'
@@ -32,8 +33,8 @@ def dictionary_download(resource_id, response):
 
     wr.writerow(col for col in header)
     for field in fields:
-        field_info = field.get('info',{})
-        row = [field['id'], field['type'], field_info.get('label',''), field_info.get('notes','')]
+        field_info = field.get('info', {})
+        row = [field['id'], field['type'], field_info.get('label', ''), field_info.get('notes', '')]
         wr.writerow(item for item in row)
 
     return response

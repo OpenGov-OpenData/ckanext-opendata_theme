@@ -2,14 +2,15 @@
 
 {% block footer_content %}
   <div class="row">
-    <div class="col-md-4 span4 footer-links">
+    <div class="col-md-2 span2 footer-links">
       {{ h.opendata_theme_get_footer_data('content_0') }}
     </div>
-    <div class="col-md-4 span4 footer-links">
+    <div class="col-md-8 span8 footer-links">
       {{ h.opendata_theme_get_footer_data('content_1') }}
     </div>
-    <div class="col-md-4 span4 footer-links">
+    <div class="col-md-2 span2 footer-links">
       {{ h.opendata_theme_get_footer_data('content_2') }}
+    </div>
     <div class="attribution og-attribution">
       {% block footer_attribution %}
         {{ super() }}
