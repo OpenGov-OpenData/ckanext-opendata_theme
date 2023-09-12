@@ -32,6 +32,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
             'opendata_theme_group_alias': helper.get_group_alias,
             'opendata_theme_organization_alias': helper.get_organization_alias,
             'opendata_theme_get_default_extent': helper.get_default_extent,
+            'opendata_theme_is_data_dict_active': helper.is_data_dict_active,
             'version': helper.version_builder,
         }
 

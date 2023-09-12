@@ -103,6 +103,15 @@ def package_tracking_summary(package):
     return tracking_summary
 
 
+def is_data_dict_active(ddict):
+    """"Returns True if data dictionary is populated"""
+    for col in ddict:
+        info = col.get('info', {})
+        if info.get('label') or info.get('notes'):
+            return True
+    return False
+
+
 def get_group_alias():
     return str(config.get('ckan.group_alias', 'Group'))
 

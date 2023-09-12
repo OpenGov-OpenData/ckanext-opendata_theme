@@ -15,9 +15,12 @@
 
 {% block resource_additional_information %}
   {% if res.datastore_active %}
-    <div class="btn-group" style="float:right; top:15px;">
-      <a class="btn btn-primary" href="/datastore/dictionary_download/{{ res.id }}"><i class="fa fa-arrow-circle-o-down"></i> Data Dictionary Download</a>
-    </div>
+    {% set data_dict=h.datastore_dictionary(res.id) %}
+    {% if h.opendata_theme_is_data_dict_active(data_dict) %}
+      <div class="btn-group" style="float:right; top:15px;">
+        <a class="btn btn-primary" href="/datastore/dictionary_download/{{ res.id }}"><i class="fa fa-arrow-circle-o-down"></i> Data Dictionary Download</a>
+      </div>
+    {% endif %}
   {% endif %}
   {% if res %}
     <section class="module">
