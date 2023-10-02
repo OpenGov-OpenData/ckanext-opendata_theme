@@ -2,6 +2,7 @@
 
 {% set group_alias = h.opendata_theme_group_alias() %}
 {% set group_alias_pural = group_alias + 's' %}
+{% set showcase_dataset_showcase_list_route = 'showcase_blueprint.dataset_showcase_list' %}
 
 {% block head_extras -%}
   {{ super() }}
@@ -15,6 +16,9 @@
 {% block content_primary_nav %}
   {{ h.build_nav_icon('dataset_read', _('Dataset'), id=pkg.name, icon='sitemap') }}
   {{ h.build_nav_icon('dataset_groups', _('{Groups}'.format(Groups=group_alias_pural)), id=pkg.name, icon='users') }}
+  {% if 'showcase' in g.plugins %}
+    {{ h.build_nav_icon(showcase_dataset_showcase_list_route, _('Showcases'), id=pkg.name, icon='trophy') }}
+  {% endif %}
   {{ h.build_nav_icon('dataset_activity', _('Activity Stream'), id=pkg.id if is_activity_archive else pkg.name, icon='clock-o') }}
 {% endblock %}
 

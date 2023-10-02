@@ -5,8 +5,12 @@ a#what-works-cities-awards-logo {
   margin-left: 30px;
 }
 .homepage-intro,
+.main-featured,
+.main-browse,
+.main-external-datasets,
+.main-updates,
 .terms-of-use {
-  background: #EFF2F5;
+  background: #d4d9de !important;
 }
 .homepage-intro {
   font-family: 'Droid Serif', sans-serif;
@@ -23,11 +27,32 @@ a#what-works-cities-awards-logo {
 }
 .main-featured {
   order: 1 !important;
-  background: #FFFFFF !important;
 }
 .main-browse {
   order: 2 !important;
-  background: #EFF2F5 !important;
+}
+.main-external-datasets {
+  order: 3 !important;
+}
+.main-updates {
+  order: 4 !important;
+}
+.browse-group:hover,
+.browse-group:focus {
+  opacity: 0.5;
+}
+.main-browse a.browse-group[href="/group/external-datasets"] {
+  display: none;
+}
+.main-featured .heading,
+.main-browse .heading,
+.main-external-datasets .heading,
+.main-updates .heading {
+  border-bottom: 2px solid #728294 !important;
+}
+.main-updates .dataset-item {
+  background-color: #FFFFFF !important;
+  margin-bottom: 0;
 }
 .footer-logo {
   padding: 0 15px;

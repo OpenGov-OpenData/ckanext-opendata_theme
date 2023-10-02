@@ -13,8 +13,8 @@
   display: block;
   font-style: italic;
   font-size: 18px;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 .main-updates li.dataset-item {
   background-color: #EFF2F5;
@@ -50,8 +50,10 @@
 
 @media (max-width: 767px) {
   a.browse-group {
-    width: 140px;
-    height: 160px;
+    width: calc(50% - 5px);
+    min-height: 150px;
+    min-width: 145px;
+    margin: 0 1px 5px 0;
   }
   .browse-group-image {
     max-height: 75px;
@@ -62,12 +64,13 @@
 @media (min-width: 768px) {
   a.browse-group {
     width: calc(25% - 20px);
+    min-height: 180px;
     min-width: 195px;
     margin: 0 10px 10px 0;
   }
   .browse-group-image {
     max-height: 100px;
     max-width: 175px;
-    margin: 10px;
+    margin: 5px;
   }
 }

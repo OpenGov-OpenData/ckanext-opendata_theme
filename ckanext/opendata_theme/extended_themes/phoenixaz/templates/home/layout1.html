@@ -29,6 +29,31 @@
       {% endif %}
     {% endblock %}
 
+    <div class="main-external-datasets">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 span12 col1">
+            <div class="module-content">
+              <h2 class="heading">
+                <a href="/group/external-datasets" target="_blank">External Datasets</a>
+              </h2>
+              <span class="heading-explanation">These datasets from the US Census, the US Department of Housing and the Bureau of Labor Statistics, present a bigger picture of the Valley of the Sun.</span>
+              {% for group in h.opendata_theme_get_groups() %}
+                {% if group.name == 'external-datasets' %}
+                <a href="/group/{{ group.name }}" title="{{ _('{name}').format(name=h.markdown_extract(group.description, 180) or 'No description') }}" class="browse-group external-item">
+                  <img class="browse-group-image" alt="" src="{{ group.image_display_url or '/base/images/placeholder-group.png' }}">
+                  <div class="browse-group-title">
+                    {{ group.display_name }}
+                  </div>
+                </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     {% block opendata_theme_datasets %}
       {% snippet 'home/snippets/datasets.html' %}
     {% endblock %}

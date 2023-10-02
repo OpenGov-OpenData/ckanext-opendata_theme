@@ -104,6 +104,7 @@
   text-transform: none;
 }
 .browse-group {
+  background-color: #FFFFFF;
   display: inline-block;
   text-align: center;
   vertical-align: top;
@@ -207,6 +208,11 @@ form.form-inline.form-select.lang-select {
   top: 4px;
 }
 
+#s2id_field-add_group,
+#s2id_field-add_showcase {
+  margin-bottom: 4px;
+}
+
 /* Custom background color for select format labels */
 .dataset-resources li a {
   background-color: #6e6e6e;
@@ -306,6 +312,9 @@ form.form-inline.form-select.lang-select {
   }
 }
 @media (min-width: 980px) {
+  [class*="span"] {
+    float: left;
+  }
   .col-sm-12, .col-md-12, .span12 {
     width: calc(100% - 20px);
   }
