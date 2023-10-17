@@ -1,7 +1,7 @@
 {% ckan_extends %}
 
 {% block link %}
-  {% if not g.userobj and organization.orgportals_portal_created == '1' and organization.orgportals_is_active == '1' %}
+  {% if not g.userobj and organization.orgportals_portal_created == '1' and organization.orgportals_is_active == '1' and 'orgportals' in g.plugins %}
     {% set orgportal_url = h.url_for('orgportals_blueprint.view_portal', org_name=organization.name, source='admin') %}
     <a href="{{ orgportal_url }}" title="{{ _('View {organization_name}').format(organization_name=organization.display_name) }}" class="media-view" target="_blank">
       <span>{{ _('View {organization_name} Portal').format(organization_name=organization.display_name) }}</span>
