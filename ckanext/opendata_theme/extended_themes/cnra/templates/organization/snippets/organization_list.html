@@ -1,0 +1,10 @@
+{% ckan_extends %}
+
+{% block organization_list_inner %}
+  {% for organization in organizations %}
+    {% set display_org = h.opendata_theme_display_org(organization.name) %}
+    {% if display_org or h.check_access('organization_update', {'id': organization.id}) %}
+      {% snippet "organization/snippets/organization_item.html", organization=organization, position=loop.index, show_capacity=show_capacity %} 
+    {% endif %}
+  {% endfor %}
+{% endblock %}

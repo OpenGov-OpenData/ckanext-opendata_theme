@@ -61,7 +61,7 @@
 }
 .compressed.masthead .navigation {
   float: left;
-  margin-left: 10px;
+  margin-left: 25px;
 }
 .compressed.masthead .account-masthead {
   float: right;
@@ -162,6 +162,9 @@
 .dataset-content>p.empty {
   display: none;
 }
+.dataset-private {
+  padding: 2px 4px;
+}
 .page-header {
   background-color: #ffffff;
 }
@@ -210,7 +213,7 @@ form.form-inline.form-select.lang-select {
 
 #s2id_field-add_group,
 #s2id_field-add_showcase {
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 /* Custom background color for select format labels */

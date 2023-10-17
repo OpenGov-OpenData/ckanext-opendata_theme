@@ -1,0 +1,14 @@
+{% ckan_extends %}
+
+{% block page_primary_action %}
+  {% if h.check_access('package_create', {'owner_org': group_dict.id}) %}
+    {% snippet 'snippets/add_dataset.html', group=group_dict.id %}
+  {% endif %}
+
+  {% set org_upload_link = h.opendata_theme_get_org_upload_url(group_dict.name) %}
+  {% for org in h.organizations_available(permission='manage_group') %}
+    {% if org["name"] == group_dict.name and org_upload_link %}
+      <a href="{{ org_upload_link }}" class="btn btn-primary" target="_blank"><i class="fa fa-upload"></i> Bulk Upload Datasets</a>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

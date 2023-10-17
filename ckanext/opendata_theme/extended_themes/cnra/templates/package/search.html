@@ -1,0 +1,10 @@
+{% ckan_extends %}
+
+{% block page_primary_action %}
+  {{ super() }}
+  {% if h.opendata_theme_custom_page_exists('advanced-search-documentation') %}
+    <p class="search-doc">
+      <a href="/pages/advanced-search-documentation"><u>Advanced Search Terms</u></a>
+    </p>
+  {% endif %}
+{% endblock %}

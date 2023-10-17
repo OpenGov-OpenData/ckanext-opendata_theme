@@ -1,0 +1,98 @@
+{% ckan_extends %}
+
+{% block pre_primary %}
+  {% if pkg.private %}
+    <span class="dataset-private label label-inverse pull-right">
+      <i class="fa fa-lock"></i>
+      {{ _('Private') }}
+    </span>
+  {% endif %}
+  {% block package_archive_notice %}
+    {% if is_activity_archive %}
+      <div class="alert alert-danger">
+        {% trans url=h.url_for(pkg.type ~ '.read', id=pkg.id) %}
+        You're currently viewing an old version of this dataset. To see the
+        current version, click <a href="{{ url }}">here</a>.
+        {% endtrans %}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  <h1 class="dataset-title">
+    {% block page_heading %}
+      {{ h.dataset_display_name(pkg) }}
+      {% if pkg.state.startswith('draft') %}
+        [{{ _('Draft') }}]
+      {% endif %}
+      {% if pkg.state == 'deleted' %}
+        [{{ _('Deleted') }}]
+      {% endif %}
+    {% endblock %}
+  </h1>
+
+  {% block package_notes %}
+    {% if pkg.notes %}
+      <div class="notes embedded-content">
+        {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
+      </div>
+    {% endif %}
+  {% endblock %}
+{% endblock %}
+
+{% block primary %}
+  <div class="primary col-sm-9 col-xs-12 dataset-read" role="main">
+    {% block primary_content %}
+      {{ super() }}
+    {% endblock %}
+  </div>
+{% endblock %}
+
+{% block secondary_content %}
+
+  {% block secondary_help_content %}{% endblock %}
+
+  {% block package_organization %}
+    {% if pkg.organization %}
+      {% set org = h.get_organization(pkg.organization.id) %}
+      {% snippet "snippets/organization.html", organization=org, has_context_title=true %}
+    {% endif %}
+  {% endblock %}
+
+  {% block package_social %}
+    {% snippet "snippets/social.html" %}
+  {% endblock %}
+
+  {% block package_info %}
+    {% if pkg %}
+        <section class="module module-narrow">
+        <h2 class="module-heading">{{ _('Followers') }}</h2>
+        <div class="module context-info">
+            <div class="module-content">
+            {% block package_info_inner %}
+                {% block nums %}
+                {% set num_followers = h.follow_count('dataset', pkg.id) %}
+                <div>
+                    {{ h.SI_number_span(num_followers) }}
+                </div>
+                {% endblock %}
+                {% block follow_button %}
+                {% if not hide_follow_button and h.follow_button('dataset', pkg.id) %}
+                    <div class="follow_button">
+                    {{ h.follow_button('dataset', pkg.id) }}
+                    </div>
+                {% endif %}
+                {% endblock %}
+            {% endblock %}
+            </div>
+        </div>
+        </section>
+    {% endif %}
+  {% endblock %}
+
+  {#
+  {% block package_license %}
+    {% snippet "snippets/license.html", pkg_dict=pkg %}
+  {% endblock %}
+  #}
+
+{% endblock %}

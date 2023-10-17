@@ -89,6 +89,7 @@ setup(
 
         cademo_theme=ckanext.opendata_theme.extended_themes.cademo.plugin:OpenDataThemePlugin
         chhs_theme=ckanext.opendata_theme.extended_themes.chhs.plugin:OpenDataThemePlugin
+        cnra_theme=ckanext.opendata_theme.extended_themes.cnra.plugin:OpenDataThemePlugin
         idaho_theme=ckanext.opendata_theme.extended_themes.idaho.plugin:OpenDataThemePlugin
         illinoistreasurer_theme=ckanext.opendata_theme.extended_themes.illinoistreasurer.plugin:OpenDataThemePlugin
         milwaukeewi_theme=ckanext.opendata_theme.extended_themes.milwaukee.plugin:OpenDataThemePlugin

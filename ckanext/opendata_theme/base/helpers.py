@@ -203,7 +203,7 @@ def get_value_from_extras(extras, key):
     return value
 
 
-def search_document_page_exists(page_id):
+def custom_page_exists(page_id):
     try:
         if not page_id:
             return False

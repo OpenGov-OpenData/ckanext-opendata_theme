@@ -1,0 +1,17 @@
+<div class="main-featured">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 span12 col1 showcase-container">
+                <div class="module-content">
+                    <h2 class="heading">
+                        <a href="/showcase">
+                            {{ h.opendata_theme_get_custom_name('showcases-custom-name', 'Showcases') }}
+                        </a>
+                    </h2>
+                    <span class="heading-explanation">See what our users are doing with open data.</span>
+                    {% snippet 'home/snippets/showcase_list.html', showcases=h.opendata_theme_get_showcases() %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
