@@ -37,14 +37,16 @@ header.navbar.masthead {
   max-width: 70px;
   max-height: 70px;
   float: left;
-  margin-right: 10px;
+  margin-right: 15px;
   margin-bottom: 30px;
 }
 .dataset-heading {
-  font-size: 18px;
+  font-size: 20px;
 }
 .dataset-heading a {
-  color: #165cab;
+  color: #165cab !important;
+  font-size: 20px;
+  font-weight: 400;
 }
 .primary.dataset-read .resource-view {
   border-top: none;

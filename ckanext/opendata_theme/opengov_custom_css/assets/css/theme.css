@@ -38,9 +38,8 @@
   margin-top: 2px;
   margin-bottom: 2px;
 }
-.masthead hgroup h2 {
-  bottom: 0px;
-  left: 15px;
+.masthead .navbar-left h2 {
+  margin-top: 0;
 }
 .masthead .navbar-collapse {
   margin-top: 5px;
@@ -167,10 +166,6 @@
 }
 .page-header {
   background-color: #ffffff;
-}
-.page-header .nav-tabs a {
-  color: #616365;
-  font-weight: 500;
 }
 .nav-tabs>.active>a,
 .nav-tabs>.active>a:hover {

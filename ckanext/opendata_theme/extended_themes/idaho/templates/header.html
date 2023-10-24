@@ -103,7 +103,7 @@
         {% endblock %}
       </div>
     </div>
-    <hgroup class="{{ g.header_class }} navbar-left">
+    <div class="{{ g.header_class }} navbar-left">
       {% block header_logo %}
         {% if g.site_logo %}
           <a class="logo" href="https://transparent.idaho.gov"><img src="{{ h.url_for_static_or_external(g.site_logo) }}" alt="Transparent Idaho" title="Transparent Idaho" /></a>
@@ -114,6 +114,6 @@
           {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
         {% endif %}
       {% endblock %}
-    </hgroup>
+    </div>
 </header>
 {% endblock %}

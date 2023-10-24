@@ -26,7 +26,7 @@ DEFAULT_CUSTOM_CSS = (
     '.masthead {background: #ffffff}',
     '.masthead .navigation .nav-pills li a:hover,.masthead .navigation .nav-pills li.active a,'
     '.navbar-toggle {background-color: #1f76d8}',
-    '.navbar .nav>li>a,.masthead .nav>li>a,.navbar hgroup>h1>a,.navbar hgroup>h2 {color: #07305c}',
+    '.navbar .nav>li>a,.masthead .nav>li>a,.navbar .navbar-left>h1>a,.navbar .navbar-left>h2 {color: #07305c}',
     '.module-heading {background: #165cab}',
     '.module-heading,.module-heading .action {color: #ffffff}',
     'body, .site-footer, .footer-column-form .cke_reset {background: #07305c}',
