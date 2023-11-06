@@ -37,11 +37,11 @@
         <span class="fa fa-bars"></span>
       </button>
     </div>
-    <hgroup class="{{ g.header_class }} navbar-left">
+    <div class="{{ g.header_class }} navbar-left">
       {% block header_logo %}
         {{ super() }}
       {% endblock %}
-    </hgroup>
+    </div>
     <div class="collapse navbar-collapse" id="main-navigation-toggle">
       {% block header_site_navigation %}
       <nav class="section navigation">

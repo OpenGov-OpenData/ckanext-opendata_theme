@@ -87,6 +87,7 @@ setup(
         opengov_custom_header=ckanext.opendata_theme.opengov_custom_header.plugin:OpenDataThemeHeaderPlugin
         opengov_custom_footer=ckanext.opendata_theme.opengov_custom_footer.plugin:OpenDataThemeFooterPlugin
 
+        bostonma_theme=ckanext.opendata_theme.extended_themes.bostonma.plugin:OpenDataThemePlugin
         cademo_theme=ckanext.opendata_theme.extended_themes.cademo.plugin:OpenDataThemePlugin
         chhs_theme=ckanext.opendata_theme.extended_themes.chhs.plugin:OpenDataThemePlugin
         cnra_theme=ckanext.opendata_theme.extended_themes.cnra.plugin:OpenDataThemePlugin

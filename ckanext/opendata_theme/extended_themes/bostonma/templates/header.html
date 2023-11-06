@@ -1,4 +1,4 @@
-{% extends "header.html" %}
+{% ckan_extends %}
 
 {% set org_alias = h.opendata_theme_organization_alias() %}
 {% set group_alias = h.opendata_theme_group_alias() %}
@@ -23,33 +23,30 @@
     {{ super() }}
   {% endblock %}
   <div class="container">
+    {# The .header-image class hides the main text and uses image replacement for the title #}
+    <label tabindex="0" for="hb__trigger" class="nav-trigger" type="button" aria-label="Menu" aria-controls="navigation" aria-expanded="false">
+        <div class="hb">
+            <span class="hb__box">
+                <span class="hb__inner"></span>
+            </span>
+            <span class="hb__label">Menu</span>
+        </div>
+    </label>
+    <div class="{{ g.header_class }} navbar-left">
+      {% block header_logo %}
+        {{ super() }}
+      {% endblock %}
+    </div>
+    <a href="https://www.boston.gov/" title="boston-site" rel="boston-site" target="_blank" class="s">
+      <img src="/img/Digital_City_Seal.svg" alt="City of Boston Seal" class="s-i" data-pin-nopin="true">
+    </a>
     <div class="navbar-right">
       <button data-target="#main-navigation-toggle" data-toggle="collapse" class="navbar-toggle collapsed" type="button" aria-label="expand or collapse" aria-expanded="false">
         <span class="sr-only">{{ _('Toggle navigation') }}</span>
         <span class="fa fa-bars"></span>
       </button>
     </div>
-    <div class="{{ g.header_class }} navbar-left">
-      {% block header_logo %}
-        {{ super() }}
-      {% endblock %}
-    </div>
-
     <div class="collapse navbar-collapse" id="main-navigation-toggle">
-      {% block header_site_navigation %}
-        <nav class="section navigation">
-          <ul class="nav nav-pills">
-            {% block header_site_navigation_tabs %}
-              {{ h.opendata_theme_build_nav_main(
-                (search_route, _('Datasets')),
-                (organizations_index_route, _(org_alias_pural)),
-                (group_index_route, _(group_alias_pural)),
-                (about_index_route, _('About'))
-              ) }}
-            {% endblock %}
-          </ul>
-        </nav>
-      {% endblock %}
       {% block header_account %}
         <div class="account-masthead">
           {% block header_account_container_content %}
@@ -73,7 +70,23 @@
           {% endblock %}
         </div>
       {% endblock %}
-
+      {% block header_site_navigation %}
+        <nav class="section navigation">
+          <ul class="nav nav-pills">
+            {% block header_site_navigation_tabs %}
+              {{ h.build_nav_main(
+                ('search', _('Datasets')),
+              ) }}
+              <li>
+                <a href="https://www.boston.gov/news?title=&field_contact_target_id%5B%5D=1691&field_published_date_value%5Bmin%5D%5Bdate%5D=&field_published_date_value%5Bmax%5D%5Bdate%5D=" title="news" target="_blank">News</a>
+              </li>
+              <li>
+                <a href="/pages/ckan-training-videos">Tips</a>
+              </li>
+            {% endblock %}
+          </ul>
+        </nav>
+      {% endblock %}
     </div>
   </div>
 </header>

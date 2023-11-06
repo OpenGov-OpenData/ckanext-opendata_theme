@@ -53,8 +53,8 @@ class NavigationHeaderHoverBackgroundColor(AbstractParser):
 class NavigationHeaderTextColor(AbstractParser):
     class_name = ('.navbar .nav>li>a,'
                   '.masthead .nav>li>a,'
-                  '.navbar hgroup>h1>a,'
-                  '.navbar hgroup>h2')
+                  '.navbar .navbar-left>h1>a,'
+                  '.navbar .navbar-left>h2')
     form_name = 'nav-header-text-color'
     title = 'Navigation Header Text Color'
     location = 'color'
