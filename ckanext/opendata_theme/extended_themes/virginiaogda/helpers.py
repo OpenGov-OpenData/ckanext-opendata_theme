@@ -2,7 +2,6 @@
 import logging
 
 import ckan.lib.helpers as h
-from ckan.lib.plugins import toolkit as tk
 import ckan.model as model
 from ckan.lib.search import make_connection
 
@@ -11,6 +10,7 @@ from ckan.model.package import Package
 from ckan.model.package_extra import PackageExtra
 
 log = logging.getLogger(__name__)
+
 
 def get_featured_datasets():
     """
@@ -24,19 +24,20 @@ def get_featured_datasets():
             .filter(PackageExtra.value == 'yes')\
             .filter(Package.state == 'active')\
             .filter(Package.private == False)\
-            .order_by(PackageExtra.value) \
-            .all()
+            .order_by(PackageExtra.value)\
+            .all()  # noqa: E712
     except Exception as e:
         logging.error('Error getting featured datasets: %s', e)
-    featured_datasets_dict_list = h.convert_to_dict('package',featured_datasets)
+    featured_datasets_dict_list = h.convert_to_dict('package', featured_datasets)
     return featured_datasets_dict_list
+
 
 def get_all_resource_count():
     """
     Returns a sum of all resources
     """
     q = model.Session.query(model.Resource).filter(model.Resource.state == 'active')
-    
+
     data = {'total_resources': q.count()}
     return data
 
@@ -44,7 +45,7 @@ def get_all_resource_count():
 def get_contributors_count():
     solr = make_connection()
 
-    total = 0 # total number of contributors
+    total = 0  # total number of contributors
     results = (
         solr.search(
             '*:*',
@@ -78,7 +79,7 @@ def get_contributors_count():
     # order the solr facets by created date
     order = list(
         model.Session.query(model.Package.id, model.Package.metadata_created)
-        .filter(model.Package.private == False)
+        .filter(model.Package.private == False)  # noqa: E712
         .filter(model.Package.state == model.State.ACTIVE)
         .order_by(model.Package.metadata_created)
     )
@@ -87,4 +88,3 @@ def get_contributors_count():
         total += counts.get(package_id, 0)
     log.info('Total number of contributors: %s', total)
     return total
-
