@@ -1,0 +1,40 @@
+
+        {% block facet_list_item %}
+        <div class="{{'module-narrow module-shallow accordion-group' }}">
+            {% block facet_list_heading %}
+            {% set title = title or h.get_facet_title(name) %}
+            <div class="accordion-toggle {% if title != 'Organizations' and title != 'Groups' %}collapsed{% endif %}"
+                    data-toggle="collapse" href="#collapse-{{title}}" >
+                <h2 class="accordion-heading">
+                    {{ title }}
+                </h2>
+            </div>
+            {% endblock %}
+            {% block facet_list_items %}
+            <div id="collapse-{{title}}" class="collapse accordion-body {% if title == 'Organizations' or title == 'Groups' %}in{% endif %}">
+            {% with items = items or h.get_facet_items_dict(name) %}
+            {% if items %}
+                <nav>
+                <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
+                    {% for item in items %}
+                    {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
+                    {% set label = label_function(item) if label_function else item.display_name %}
+                    {% set label_truncated = h.truncate(label, 75) if not label_function else label %}
+                    {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
+                        <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}">
+                        <a href="{{ href }}" title="{{ label if label != label_truncated else '' }}">
+                            <span>{{ label_truncated }} {{ count }}</span>
+                        </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                </nav>
+
+            {% else %}
+                <p class="module-content empty">{{ _('There are no {facet_type} that match this search').format(facet_type=title) }}</p>
+            {% endif %}
+            {% endwith %}
+            </div>
+            {% endblock %}
+        </div>
+        {% endblock %}

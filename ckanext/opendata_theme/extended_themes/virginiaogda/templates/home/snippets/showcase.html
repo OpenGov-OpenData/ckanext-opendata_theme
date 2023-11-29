@@ -1,0 +1,16 @@
+<div class="main-showcase">
+    <div class="container">
+        <div class="module-content">
+            <h2>
+                <a href="/showcase">
+                    {{ h.opendata_theme_get_custom_name('showcases-custom-name', 'Showcases') }}
+                </a>
+            </h2>
+            <section>
+                {% snippet 'home/snippets/showcase_list.html', showcases=h.opendata_theme_get_showcases() %}
+            </section>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+{% set featured = h.opendata_theme_get_featured_datasets() %}
+
+<div class="main-featured">
+  <div class="container">
+    <div class="module-content">
+      <h2>
+        <a href="/dataset?sort=views_recent+desc">{{ h.opendata_theme_get_custom_name('featured-datasets-custom-name', 'Featured Datasets') }}</a>
+      </h2>
+      <section>
+        {% snippet 'home/snippets/package_list.html', packages=featured, note_type='recent_views' %}
+      </section>
+    </div>
+  </div>
+</div>

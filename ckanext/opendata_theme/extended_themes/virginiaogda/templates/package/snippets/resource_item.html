@@ -1,0 +1,23 @@
+{% ckan_extends %}
+
+  {% block resource_item_explore %}
+  {% if not url_is_edit %}
+
+    <div class="btn-group">
+      <div class="preview">
+        <a href="{{ url }}" class="btn btn-xs btn-preview">
+            <i class="fa fa-bar-chart-o"></i>
+            {{ _('Preview') }}
+        </a>
+      </div>
+
+     <div class="download">
+        <a href="{{ res.url }}" class="btn btn-xs btn-download">
+            <i class="fa fa-download"></i>
+            {{ _('DOWNLOAD') }}
+        </a>
+    </div>
+
+  {% endif %}
+{% endblock %}
+

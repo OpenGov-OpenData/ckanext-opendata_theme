@@ -98,6 +98,7 @@ setup(
         oklahoma_theme=ckanext.opendata_theme.extended_themes.oklahomastate.plugin:OpenDataThemePlugin
         phoenixaz_theme=ckanext.opendata_theme.extended_themes.phoenixaz.plugin:OpenDataThemePlugin
         sanantoniotx_theme=ckanext.opendata_theme.extended_themes.sanantoniotx.plugin:OpenDataThemePlugin
+        virginia_theme=ckanext.opendata_theme.extended_themes.virginiaogda.plugin:OpenDataThemePlugin
 
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan

@@ -1,0 +1,32 @@
+<div class="main-groups">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 span12 col1">
+                <div class="module-content">
+                    <h2>
+                        <a href="/group">
+                            {{ h.opendata_theme_get_custom_name('groups-custom-name', 'Groups') }}
+                        </a>
+                    </h2>
+                    <div class="groups-wrapper">
+                        {% for group in h.opendata_theme_get_groups() %}
+                            {% if group.package_count > 0 %}
+                            <div class="group-wrapper">
+                                <a href="/group/{{ group.name }}"
+                                title="{{ _('{name}').format(name=h.markdown_extract(group.description, 180) or 'No description') }}"
+                                class="browse-group">
+                                    <img class="browse-group-image" alt=""
+                                        src="{{ group.image_display_url or '/base/images/placeholder-group.png' }}">
+                                    <div class="browse-group-title">
+                                        {{ group.display_name }}
+                                    </div>
+                                </a>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

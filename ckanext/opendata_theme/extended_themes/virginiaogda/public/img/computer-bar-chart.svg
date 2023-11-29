@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 52">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+        stroke: #37464c;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .cls-1, .cls-3 {
+        stroke-linecap: round;
+      }
+
+      .cls-3 {
+        stroke-dasharray: 0 0 0 0 0 0 0 4;
+      }
+    </style>
+  </defs>
+  <g id="Icons">
+    <g>
+      <line class="cls-2" x1="23" y1="51" x2="23" y2="45"/>
+      <line class="cls-1" x1="37" y1="51" x2="19" y2="51"/>
+      <line class="cls-2" x1="33" y1="45" x2="33" y2="51"/>
+      <path class="cls-1" d="m27,9H3c-1.1,0-2,.9-2,2v32c0,1.1.9,2,2,2h50c1.1,0,2-.9,2-2V11c0-1.1-.9-2-2-2h-8"/>
+      <line class="cls-3" x1="7" y1="39" x2="7" y2="15"/>
+      <line class="cls-1" x1="55" y1="39" x2="1" y2="39"/>
+      <line class="cls-1" x1="45" y1="19" x2="51" y2="19"/>
+      <line class="cls-1" x1="45" y1="23" x2="51" y2="23"/>
+      <line class="cls-1" x1="45" y1="27" x2="51" y2="27"/>
+      <polyline class="cls-1" points="19 35 19 27 13 27 13 35"/>
+      <polyline class="cls-1" points="39 35 39 13 43 13 36 1 29 13 33 13 33 35"/>
+      <polyline class="cls-1" points="29 35 29 21 23 21 23 35"/>
+    </g>
+  </g>
+</svg>

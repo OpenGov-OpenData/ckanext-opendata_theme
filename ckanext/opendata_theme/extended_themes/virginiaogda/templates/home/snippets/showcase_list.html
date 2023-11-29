@@ -1,0 +1,11 @@
+{% block showcase_list %}
+{% if showcases %}
+  <ul class="{{ list_class or 'dataset-list list-unstyled' }}">
+    {% block showcase_list_inner %}
+      {% for showcase in showcases %}
+        {% snippet 'home/snippets/showcase_vitem.html', showcase=showcase, list_class=list_class, item_class=item_class, truncate=truncate, truncate_title=60 %}
+      {% endfor %}
+    {% endblock %}
+  </ul>    
+{% endif %}
+{% endblock %}

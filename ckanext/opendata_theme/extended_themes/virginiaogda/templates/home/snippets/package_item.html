@@ -1,0 +1,31 @@
+{% block package_item %}
+  <li class="{{ item_class or "dataset-item" }}">
+    {% block content %}
+      <div class="dataset-content">
+        {% block heading %}
+          <h3 class="dataset-heading">
+            {% block heading_private %}
+              {% if package.private %}
+              <span class="dataset-private label label-inverse">
+                <i class="fa fa-lock"></i>
+                {{ _('Private') }}
+              </span>
+              {% endif %}
+            {% endblock %}
+            {% block heading_title %}
+              {{ h.link_to(h.truncate(package.get('title')), h.url_for('dataset.read', id=package.get('name'))) }}
+            {% endblock %}
+            {% block heading_meta %}
+              {% if package.get('state', '').startswith('draft') %}
+                <span class="label label-info">{{ _('Draft') }}</span>
+              {% elif package.get('state', '').startswith('deleted') %}
+                <span class="label label-important">{{ _('Deleted') }}</span>
+              {% endif %}
+            {% endblock %}
+          </h3>
+          <p class="dataset-description">{{ h.truncate(package.get('notes'), 80) }}</p>
+          {% endblock %}
+      </div>
+    {% endblock %}
+  </li>
+{% endblock %}
