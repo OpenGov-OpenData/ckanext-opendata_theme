@@ -6,3 +6,8 @@ main-js:
       - base/main
   contents:
     - js/seal.js
+
+main-css:
+  output: bostonma_theme_resource/%(version)s_main.css
+  contents:
+    - css/custom.css

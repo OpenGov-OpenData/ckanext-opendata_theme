@@ -15,6 +15,15 @@ from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMI
 logger = logging.getLogger(__name__)
 
 
+def abbreviate_name(name):
+    """Returns an abbreviation of a name"""
+    name_snippets = name.split()
+    result = ''
+    for s in name_snippets:
+        result += s[0].upper()
+    return result
+
+
 def dataset_count():
     """Return a count of all datasets"""
     count = 0

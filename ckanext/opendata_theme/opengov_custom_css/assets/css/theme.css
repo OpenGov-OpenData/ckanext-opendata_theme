@@ -1,3 +1,6 @@
+a[href^="/datastore/dictionary_download/"] {
+  display: none;
+}
 .btn-default {
   box-shadow: inset 0 -2em 1.8em -1em #eff2f5
 }
@@ -112,15 +115,12 @@
 .slick-showcase .media-image {
   max-height: 160px;
 }
-.secondary.col-sm-3, .secondary.span3 {
-  border: 1px solid #cccccc;
-}
 .media-grid {
   background: #ffffff;
   border: none;
 }
 .media-grid .media-item {
-  height: 270px;
+  height: 275px;
   width: 220px;
   text-align: center;
 }
@@ -358,6 +358,9 @@ form.form-inline.form-select.lang-select {
   }
   .secondary.col-sm-3, .secondary.span3 {
     width: 220px;
+  }
+  .secondary.col-sm-3, .secondary.span3 {
+    border: 1px solid #cccccc;
   }
   .box, .wrapper {
     -webkit-box-shadow: none;

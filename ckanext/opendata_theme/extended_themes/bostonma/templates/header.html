@@ -54,7 +54,36 @@
               <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
                 <ul class="list-unstyled unstyled">
                   {% block header_account_logged %}
-                    {{ super() }}
+                    {% if c.userobj.sysadmin %}
+                      <li>
+                        <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
+                          <i class="fa fa-gavel" aria-hidden="true"></i>
+                          <span class="text">{{ _('Admin') }}</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    <li>
+                      <a href="{{ h.url_for('user.read', id=c.userobj.name) }}" class="image" title="{{ _('View profile') }}">
+                              {{ h.user_image((c.user if c and c.user else ''), size=22) }}
+                              <span class="username">{{ h.opendata_theme_abbreviate_name(c.userobj.display_name) }}</span>
+                      </a>
+                    </li>
+                    {% set new_activities = h.new_activities() %}
+                    <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
+                      {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities)
+                      %}
+                      <a href="{{ h.url_for('dashboard.index') }}" title="{{ notifications_tooltip }}">
+                        <i class="fa fa-tachometer" aria-hidden="true"></i>
+                        <span class="text">{{ _('Dashboard') }}</span>
+                        <span class="badge">{{ new_activities }}</span>
+                      </a>
+                    </li>
+                    {% block header_account_settings_link %}
+                      {{ super() }}
+                    {% endblock %}
+                    {% block header_account_log_out_link %}
+                      {{ super() }}
+                    {% endblock %}
                   {% endblock %}
                 </ul>
               </div>
@@ -78,7 +107,7 @@
                 ('search', _('Datasets')),
               ) }}
               <li>
-                <a href="https://www.boston.gov/news?title=&field_contact_target_id%5B%5D=1691&field_published_date_value%5Bmin%5D%5Bdate%5D=&field_published_date_value%5Bmax%5D%5Bdate%5D=" title="news" target="_blank">News</a>
+                <a href="https://www.boston.gov/news" title="news" target="_blank">News</a>
               </li>
               <li>
                 <a href="/pages/ckan-training-videos">Tips</a>
