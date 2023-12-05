@@ -24,6 +24,13 @@ Example:
 
 {% block package_item %}
   <li class="{{ item_class or "dataset-item" }}">
+    <div class="thumb-wrapper">
+      {% if package.icon_url %}
+        <img class="dataset-list-left-icon" src="{{package.icon_url}}" alt="">
+      {% else %}
+        <img class="dataset-list-left-icon" src="/img/default_icon_for_dataset.png" alt="">
+      {% endif %}
+    </div>
     {% block content %}
       <div class="dataset-content">
         {% block heading %}

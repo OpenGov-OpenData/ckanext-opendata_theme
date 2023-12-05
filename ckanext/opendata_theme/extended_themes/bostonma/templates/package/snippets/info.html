@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+{% block package_info_inner %}
+  <div class="image">
+    <img src="{{ pkg.icon_url or h.url_for_static('/img/dataset_background.svg') }}" width="200" />
+  </div>
+  {{ super() }}
+{% endblock %}

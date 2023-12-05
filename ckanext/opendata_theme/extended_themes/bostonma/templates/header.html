@@ -91,7 +91,10 @@
               <nav class="account not-authed" aria-label="{{ _('Account') }}">
                 <ul class="list-unstyled unstyled">
                   {% block header_account_notlogged %}
-                    {{ super() }}
+                    <li>{% link_for _('Log in'), named_route='user.login' %}</li>
+                    {% if h.check_access('user_create') %}
+                      <li>{% link_for _('Sign up'), named_route='user.register', class_='sub' %}</li>
+                    {% endif %}
                   {% endblock %}
                 </ul>
               </nav>

@@ -116,16 +116,6 @@ h4 {
 h5 {
   font-size: 12px;
 }
-h1.hero-text-heading.heading {
-  color: #fff;
-  text-transform: uppercase;
-  margin: 0 0 20px 0;
-  padding: 0 20px;
-  font-size: 36px;
-  line-height: 40px;
-  font-size: 2rem;
-  line-height: 2.22222rem;
-}
 h2.module-heading > i {
   display: none;
 }
@@ -232,6 +222,9 @@ ul.menu {
 .account-masthead .account ul li {
   border-left: none;
 }
+.account-masthead .account.not-authed ul li a {
+  font-weight: normal;
+}
 .account-masthead .account ul li a:hover {
   background: #469c23;
 }
@@ -306,6 +299,9 @@ ul.menu {
 }
 .btn-group > .btn, .form-horizontal > .btn, .btn-sm {
   padding: 15px 20px;
+}
+.dropdown.btn-group > .btn {
+  padding: 5px 10px;
 }
 .btn-primary, .btn-success, .btn-success:hover, .btn-success:active {
   background-color: #288BE4 !important;
@@ -531,33 +527,6 @@ ul.menu {
   width: 100%;
   z-index: -10;
 }
-.hero-text {
-  color: #ffffff;
-}
-.hero-text-heading {
-  font-size: 36px;
-}
-.hero-text-description {
-  font-size: 18px;
-}
-.hero-text-description a {
-  color: #ffffff;
-}
-.hero-text-heading.heading,
-.hero-text-description.secondary-heading {
-  color: #ffffff;
-}
-.hero-text-description.secondary-heading {
-  line-height: 1.35em;
-  -webkit-font-smoothing: antialiased;
-  color: #fff;
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-size: 22px;
-}
-.hero-text-description.secondary-heading p:first-child strong {
-  line-height: 52px;
-}
 .homepage .browse-group-display-nam, .homepage .browse-group-title {
   line-height: 30px;
   overflow: hidden;
@@ -651,7 +620,9 @@ input:-ms-input-placeholder {
   background-color: #ffffff !important;
   border: none;
   display: block;
-  height: 150px;
+  min-height: 160px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .masonry-brick .count {
   font-weight: normal;
@@ -782,7 +753,7 @@ input:-ms-input-placeholder {
 }
 .media-item strong,
 .dataset-list .dataset-heading,
-.dataset-list .package-item-extra {
+.dataset-list .dataset-item-extra {
   font-family: "Lora", serif;
   font-style: italic;
 }
@@ -968,6 +939,9 @@ header .navbar .nav>li>a {
 }
 .main-browse, .main-updates {
   background: #EFF2F5 !important;
+}
+.main-browse, .main-featured, .main-updates {
+  padding-top: 20px;
 }
 .challenge h2 {
     font-size: 30px;
@@ -1216,10 +1190,12 @@ fieldset.checkboxes label input {
   .dataset-list-left-icon {
     display: none;
   }
+  .dataset-list .dataset-item .dataset-content,
+  .dataset-list .dataset-item .dataset-resources {
+    padding-left: 0 !important;
+  }
   .page_primary_action .dataset-list .dataset-item .dataset-resources,
-  .main-responsive-panel .dataset-list .dataset-item .dataset-resources,
-  .main-responsive-panel .dataset-list .dataset-item .package-item-note,
-  .main-responsive-panel .dataset-list .dataset-item .package-item-extra {
+  .main-responsive-panel .dataset-list .dataset-item .dataset-resources {
     padding-left: 0;
   }
   a.browse-group {
@@ -1293,12 +1269,6 @@ fieldset.checkboxes label input {
   .wrapper {
     background-image: none;
   }
-  .node-type-landing-page .landing-hero-intro-text {
-    font-size: 30px;
-    line-height: 80px;
-    font-size: 1.66667rem;
-    line-height: 4.44444rem;
-  }
   .landing-hero-logo {
     width: 90px;
     height: 90px;
@@ -1308,24 +1278,12 @@ fieldset.checkboxes label input {
     left: 50%;
     padding-top: 6px;
   }
-  .node-type-landing-page .landing-hero-logo img {
-    padding-top: 29px;
-    height: auto;
-    width: 45px;
-  }
   .form-actions .action-info {
     float: none;
     width: 95%;
   }
 }
 @media (min-width: 980px) {
-  h1.hero-text-heading.heading {
-    font-size: 90px;
-    line-height: 85px;
-    font-size: 5rem;
-    line-height: 4.72222rem;
-    padding: 0;
-  }
   .account a {
     display: inline-block;
   }
@@ -1697,6 +1655,8 @@ label.nav-trigger:after {
 }
 .homepage .search-form .search-input.search-giant input {
   border: 5px solid #091f2f;
+  font-size: 28px;
+  padding: 5px;
 }
 .main-updates .heading {
   font-size: 30px;
@@ -1830,7 +1790,7 @@ footer.site-footer .container {
   width: 100%;
 }
 .landing-hero-intro-text {
-  padding-top: 65px !important;
+  padding-top: 70px !important;
 }
 .hero-text-description secondary-heading {
   padding-top: 30px;
@@ -1966,9 +1926,6 @@ keygen, select {
   -moz-border-radius-bottomleft: 0;
   border-bottom-left-radius: 0;
 }
-.tags {
-  margin-bottom: 50px;
-}
 .dataset-item {
   padding-bottom: 25px;
 }
@@ -1978,15 +1935,12 @@ keygen, select {
 .dataset-item:last-of-type {
   border-bottom: none  !important;
 }
-.package-item-extra {
-  margin-top: 6px;
-}
 .page_primary_action .dataset-list .dataset-item .dataset-content,
 .page_primary_action .dataset-list .dataset-item .dataset-resources,
 .main-responsive-panel .dataset-list .dataset-item .dataset-resources {
   padding-left: 120px;
 }
-#dataset-resources h2, .additional-info h3 {
+#dataset-resources h2, h3.tags-header, .additional-info h3 {
   border-bottom: 5px solid #091f2f;
   margin-bottom: 25px;
   margin-top: 50px;
@@ -2076,7 +2030,16 @@ section.tags h3 {
 }
 .dataset-list-left-icon {
   max-width: 120px;
+  max-height: 70px;
   float: left;
+  margin-bottom: 30px;
+}
+.dataset-item-extra {
+  margin-top: 6px;
+}
+.dataset-list .dataset-item .dataset-content,
+.dataset-list .dataset-item .dataset-resources {
+  padding-left: 120px;
 }
 .modal {
   margin: 0;
@@ -2157,6 +2120,7 @@ ul.media-grid.masonry {
   display: none;
 }
 
+nav.not-authed a[href="/contact"],
 #custom-footer-form .footer-column-form:nth-child(4) {
   display: none !important;
 }
@@ -2167,5 +2131,11 @@ ul.media-grid.masonry {
   }
   .site-footer .attribution{
     margin-top: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-text-title {
+    font-size: 64px !important;
   }
 }

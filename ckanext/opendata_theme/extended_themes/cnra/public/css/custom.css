@@ -34,11 +34,15 @@ header.navbar.masthead {
   border-bottom: none !important;
 }
 .dataset-list-left-icon {
-  max-width: 70px;
-  max-height: 70px;
+  max-width: 75px;
+  max-height: 75px;
   float: left;
   margin-right: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+}
+.dataset-list .dataset-item .dataset-content,
+.dataset-list .dataset-item .dataset-resources {
+  padding-left: 90px;
 }
 .dataset-heading {
   font-size: 20px;
@@ -65,6 +69,10 @@ header.navbar.masthead {
 @media (max-width: 767px) {
   .dataset-list-left-icon {
     display: none;
+  }
+  .dataset-list .dataset-item .dataset-content,
+  .dataset-list .dataset-item .dataset-resources {
+    padding-left: 0 !important;
   }
 }
 @media (min-width: 768px) {

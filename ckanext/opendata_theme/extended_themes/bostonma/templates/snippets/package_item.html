@@ -1,0 +1,37 @@
+{% ckan_extends %}
+
+{% set title = package.title or package.name %}
+{% set notes = h.markdown_extract(package.notes, extract_length=180) %}
+
+{% block package_item %}
+  <li class="{{ item_class or "dataset-item" }}">
+    {% if package.icon_url %}
+      <img class="dataset-list-left-icon" src="{{ package.icon_url }}" alt="">
+    {% else %}
+      <img class="dataset-list-left-icon" src="/img/default_icon_for_dataset.png" alt="">
+    {% endif %}
+    {% block content %}
+      <div class="dataset-content">
+        {% block heading %}
+          {{ super() }}
+        {% endblock %}
+        {% block banner %}
+          {{ super() }}
+        {% endblock %}
+        {% block notes %}
+          {{ super() }}
+          {% if package.metadata_modified %}
+            <div class="dataset-item-extra">Modified on {{ h.render_datetime(package.metadata_modified) }}</div>
+          {% endif %}
+          {% set tracking_summary = h.opendata_theme_get_package_tracking_summary(package) %}
+          {% if tracking_summary.total > 1 %}
+            <div class="dataset-item-extra">{{ tracking_summary.total }} total views</div>
+          {% endif %}
+        {% endblock %}
+      </div>
+      {% block resources %}
+        {{ super() }}
+      {% endblock %}
+    {% endblock %}
+  </li>
+{% endblock %}
