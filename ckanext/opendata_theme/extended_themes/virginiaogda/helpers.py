@@ -5,11 +5,11 @@ import ckan.lib.helpers as h
 import ckan.model as model
 from ckan.lib.search import make_connection
 
-
 from ckan.model.package import Package
 from ckan.model.package_extra import PackageExtra
 
 log = logging.getLogger(__name__)
+
 
 def get_featured_datasets():
     """
@@ -23,11 +23,11 @@ def get_featured_datasets():
             .filter(PackageExtra.value == 'yes')\
             .filter(Package.state == 'active')\
             .filter(Package.private == False)\
-            .order_by(PackageExtra.value) \
-            .all()
+            .order_by(PackageExtra.value)\
+            .all()  # noqa: E712
     except Exception as e:
         logging.error('Error getting featured datasets: %s', e)
-    featured_datasets_dict_list = h.convert_to_dict('package',featured_datasets)
+    featured_datasets_dict_list = h.convert_to_dict('package', featured_datasets)
     return featured_datasets_dict_list
 
 
