@@ -49,11 +49,11 @@
   border-bottom: none !important;
 }
 .dataset-list-left-icon {
-  max-width: 70px;
-  max-height: 70px;
+  max-width: 75px;
+  max-height: 75px;
   float: left;
   margin-right: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 .label[data-format=chart],
 .label[data-format*=chart] {

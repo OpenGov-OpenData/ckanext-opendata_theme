@@ -38,9 +38,8 @@ header.navbar.masthead {
   max-height: 75px;
   float: left;
   margin-right: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
 }
-.dataset-list .dataset-item .dataset-content,
 .dataset-list .dataset-item .dataset-resources {
   padding-left: 90px;
 }
@@ -70,7 +69,6 @@ header.navbar.masthead {
   .dataset-list-left-icon {
     display: none;
   }
-  .dataset-list .dataset-item .dataset-content,
   .dataset-list .dataset-item .dataset-resources {
     padding-left: 0 !important;
   }
