@@ -1186,7 +1186,6 @@ fieldset.checkboxes label input {
   .dataset-list-left-icon {
     display: none;
   }
-  .dataset-list .dataset-item .dataset-content,
   .dataset-list .dataset-item .dataset-resources {
     padding-left: 0 !important;
   }
@@ -2026,14 +2025,13 @@ section.tags h3 {
 }
 .dataset-list-left-icon {
   max-width: 120px;
-  max-height: 70px;
+  max-height: 75px;
   float: left;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 .dataset-item-extra {
   margin-top: 6px;
 }
-.dataset-list .dataset-item .dataset-content,
 .dataset-list .dataset-item .dataset-resources {
   padding-left: 120px;
 }
