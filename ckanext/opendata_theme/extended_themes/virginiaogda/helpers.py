@@ -47,7 +47,10 @@ def get_resource_info(resource_id):
     Returns a dictionary of resource information
     """
     res_info = {}
-    datastore_info = tk.get_action('datastore_info')({}, {'id': resource_id})
-    res_info['columns'] = len(datastore_info.get('schema').keys())
-    res_info['rows'] = datastore_info.get('meta').get('count')
+    try:
+        datastore_info = tk.get_action('datastore_info')({}, {'id': resource_id})
+        res_info['columns'] = len(datastore_info.get('schema').keys())
+        res_info['rows'] = datastore_info.get('meta').get('count')
+    except (tk.ObjectNotFound, tk.NotAuthorized):
+        log.debug("[opendata_theme] Datastore info not found")
     return res_info
