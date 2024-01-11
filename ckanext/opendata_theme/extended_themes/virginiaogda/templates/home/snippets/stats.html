@@ -8,14 +8,14 @@
                 <div class="module-content">
                     <div class="cards">
                         <div class="card">
-                            <img class="card-img-top" src="/img/browse.svg" alt="Card image cap">
+                            <img class="card-img-top" src="/img/noun-data-mine.svg" alt="Data mine icon">
                             <div class="card-body">
-                                <h5 class="card-title">   {{ h.SI_number_span(stats.dataset_count) }}</h5>
-                                <p class="card-text"> Datasets Available</p>
+                                <h5 class="card-title">{{ h.SI_number_span(stats.dataset_count) }}</h5>
+                                <p class="card-text">Datasets Available</p>
                             </div>
                         </div>
                         <div class="card">
-                            <img class="card-img-top" src="/img/bar-graph.svg" alt="Card image cap">
+                            <img class="card-img-top" src="/img/noun-data-analysis.svg" alt="Data analysis icon">
                             <div class="card-body">
                                 <h5 class="card-title">{{ h.SI_number_span(data.get('total_resources')) }}</h5>
                                 <p class="card-text">Total Resources</p>
@@ -23,10 +23,10 @@
                         </div>
 
                         <div class="card">
-                            <img class="card-img-top" src="/img/computer-bar-chart.svg" alt="Card image cap">
+                            <img class="card-img-top" src="/img/noun-data.svg" alt="Data icon">
                             <div class="card-body">
-                                <h5 class="card-title"> {{ h.SI_number_span(stats.organization_count) }}</h5>
-                                <p class="card-text">Total Organizations </p>
+                                <h5 class="card-title">{{ h.SI_number_span(stats.organization_count) }}</h5>
+                                <p class="card-text">Total Organizations</p>
                             </div>  
                         </div>
                     </div>
