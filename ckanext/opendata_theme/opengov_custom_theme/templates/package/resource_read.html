@@ -25,6 +25,27 @@
   {% if res %}
     <section class="module">
       {% block resource_additional_information_inner %}
+        {% if res.datastore_active %}
+          {% set dict=h.datastore_dictionary(res.id) %}
+          {% if h.opendata_theme_is_data_dict_active(dict) %}
+            <div class="module-content">
+              <h2>{{ _('Data Dictionary') }}</h2>
+              <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ _('Column') }}</th>
+                    <th scope="col">{{ _('Type') }}</th>
+                    <th scope="col">{{ _('Label') }}</th>
+                    <th scope="col">{{ _('Description') }}</th>
+                  </tr>
+                </thead>
+                {% for field in dict %}
+                  {% snippet "package/snippets/dictionary_table.html", field=field %}
+                {% endfor %}
+              </table>
+            </div>
+          {% endif %}
+        {% endif %}
         <div class="module-content">
           <h2>{{ _('Additional Information') }}</h2>
           <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
