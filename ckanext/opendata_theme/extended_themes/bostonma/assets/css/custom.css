@@ -1,3 +1,6 @@
+a[href^="/datastore/dictionary_download/"] {
+  display: none;
+}
 .btn {
   border-radius: 0;
 }

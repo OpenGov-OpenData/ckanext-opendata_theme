@@ -62,6 +62,10 @@
     {% snippet "snippets/social.html" %}
   {% endblock %}
 
+  {% block package_license %}
+    {% snippet "snippets/license.html", pkg_dict=pkg %}
+  {% endblock %}
+
   {% block package_info %}
     {% if pkg %}
         <section class="module module-narrow">
@@ -88,11 +92,5 @@
         </section>
     {% endif %}
   {% endblock %}
-
-  {#
-  {% block package_license %}
-    {% snippet "snippets/license.html", pkg_dict=pkg %}
-  {% endblock %}
-  #}
 
 {% endblock %}
