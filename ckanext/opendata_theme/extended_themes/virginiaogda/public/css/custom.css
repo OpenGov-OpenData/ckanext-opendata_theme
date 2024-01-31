@@ -361,6 +361,9 @@ aside.secondary .filters .accordion-group .accordion-toggle.collapsed[data-toggl
   font-weight: 600;
   letter-spacing: -1px;
 }
+.dataset-item-extra {
+  margin-top: 6px;
+}
 .primary article.module .module-content h1 {
   font-size: 20px;
   margin: 1rem auto;
