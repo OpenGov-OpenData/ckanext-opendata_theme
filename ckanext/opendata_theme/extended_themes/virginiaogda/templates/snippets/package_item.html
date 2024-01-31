@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block notes %}
+  {{ super() }}
+  {% set tracking_summary = h.opendata_theme_get_package_tracking_summary(package) %}
+  {% if tracking_summary.total > 1 %}
+    <div class="dataset-item-extra">{{ tracking_summary.total }} total views</div>
+  {% endif %}
+{% endblock %}
