@@ -4,40 +4,28 @@
 <input type="checkbox" id="hb__trigger" class="hb__trigger" aria-hidden="true">
 <div class="main-navigation">
   <div class="main-navigation-title">
-    
   </div>
-    <div class="region region-navigation">
-      <ul class="menu list-unstyled unstyled">
-      <li class="menu__item is-leaf first leaf secondary-menu-item">
-        <a href="{{ h.url_for('/') }}" class="menu__link">{{ _('Home') }}</a>
-      </li>
-      <li class="menu__item is-leaf first leaf secondary-menu-item">
-        <a href="{{ h.url_for('search') }}" class="menu__link">{{ _('Datasets') }}</a>
-      </li>
-      <li class="menu__item is-leaf leaf secondary-menu-item">
-        <a href="{{ h.url_for('organizations_index') }}" class="menu__link">{{ _('Departments') }}</a>
-      </li>
-      <li class="menu__item is-leaf leaf secondary-menu-item">
-        <a href="{{ h.url_for('group_index') }}" class="menu__link">{{ _('Groups') }}</a>
-      </li>
-      <li class="menu__item is-leaf leaf secondary-menu-item">
-        <a href="/pages/tips">{{ _('Tips for Users') }}</a>
-      </li>
+  <div class="region region-navigation">
+    <ul class="menu list-unstyled unstyled">
+      {% block header_site_navigation_tabs %}
+        {{ h.opendata_theme_build_nav_main() }}
+      {% endblock %}
     </ul>
   </div>
 </div>
+
 <div class="page" id="page">
   {% block skip %}
     {{ super() }}
   {% endblock %}
 
   {% block header %}
-  {% if header_layout_type=='compressed' %}
+    {% if header_layout_type=='compressed' %}
       {% include "compressed_header.html" %}
-  {% else %}
+    {% else %}
       {% include "default_header.html" %}
-  {% endif %}
-{% endblock %}
+    {% endif %}
+  {% endblock %}
 
   {%- block content %}
     {{ super() }}

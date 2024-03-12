@@ -4,12 +4,17 @@
     {% block item_inner %}
       {% block title %}
       <h3 class="dataset-heading">
-        {{ h.link_to(h.truncate(showcase.title), "showcase/"+showcase.id) }}
+        {{ h.link_to(h.truncate(showcase.title, 35), "showcase/"+showcase.id) }}
       </h3>
       {% endblock %}
       {% block notes %}
-      <figure class="showcase-image">
-          <img src="uploads/showcase/{{ h.opendata_theme_get_value_from_extras(showcase.extras, 'image_url')}}" />
+        <figure class="showcase-image">
+          {% set image_url = h.opendata_theme_get_value_from_extras(showcase.extras, 'image_url') %}
+          {% if image_url and not image_url.startswith('http') %}
+            <img src="/uploads/showcase/{{ image_url }}" alt="{{ showcase.title }}">
+          {% else %}
+            <img src="{{ image_url }}" alt="{{ showcase.title }}">
+          {% endif %}
         </figure>
       {% endblock %}
       {% endblock %}

@@ -139,6 +139,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .main-featured .container .module-content section .dataset-list .dataset-item,
 .main-popular .container .module-content section .dataset-list .dataset-item,
 .main-showcase .container .module-content section .dataset-list .dataset-item {
+  border-bottom: none;
   width: 32%;
   margin: 0 2% 0 0;
 }
@@ -263,7 +264,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 .main-groups .container .module-content .groups-wrapper .group-wrapper a.browse-group .browse-group-title {
   text-align: center;
-  color: #77C5EB;
+  color: #206b82;
   font-size: 30px;
 }
 
