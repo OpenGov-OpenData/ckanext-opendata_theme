@@ -52,6 +52,13 @@ a[href^="/datastore/dictionary_download/"] {
 .js .image-upload #field-image-upload {
   height: 100%;
 }
+
+/* hidden only for public user registration/edit */
+#user-register-form .image-upload,
+#user-edit-form .image-upload {
+  display: none !important;
+}
+
 a {
   color: #10497C;
   font-family: "Montserrat", sans-serif;

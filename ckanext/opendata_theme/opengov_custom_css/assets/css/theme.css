@@ -392,3 +392,9 @@ form.form-inline.form-select.lang-select {
 .site-footer .ckan-footer-logo {
   margin-left: 20px;
 }
+
+/* hidden only for public user registration/edit */
+#user-register-form .image-upload,
+#user-edit-form .image-upload {
+  display: none !important;
+}
