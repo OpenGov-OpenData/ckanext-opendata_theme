@@ -2,7 +2,7 @@
 
 {% block primary_content_inner %}
   {% if 'featuredviews' in g.plugins %}
-  {% set view = h.get_canonical_resource_view(pkg.id) %}
+    {% set view = h.get_canonical_resource_view(pkg.id) %}
     {% if view %}
       {% snippet 'package/snippets/resource_view.html',
           resource_view = view['resource_view'],
