@@ -66,31 +66,10 @@
     {% snippet "snippets/license.html", pkg_dict=pkg %}
   {% endblock %}
 
+  <div class="section-divider" style="border-bottom: 2px solid #cccccc;"></div>
+
   {% block package_info %}
-    {% if pkg %}
-        <section class="module module-narrow">
-        <h2 class="module-heading">{{ _('Followers') }}</h2>
-        <div class="module context-info">
-            <div class="module-content">
-            {% block package_info_inner %}
-                {% block nums %}
-                {% set num_followers = h.follow_count('dataset', pkg.id) %}
-                <div>
-                    {{ h.SI_number_span(num_followers) }}
-                </div>
-                {% endblock %}
-                {% block follow_button %}
-                {% if not hide_follow_button and h.follow_button('dataset', pkg.id) %}
-                    <div class="follow_button">
-                    {{ h.follow_button('dataset', pkg.id) }}
-                    </div>
-                {% endif %}
-                {% endblock %}
-            {% endblock %}
-            </div>
-        </div>
-        </section>
-    {% endif %}
+    {% snippet 'package/snippets/info.html', pkg=pkg %}
   {% endblock %}
 
 {% endblock %}
