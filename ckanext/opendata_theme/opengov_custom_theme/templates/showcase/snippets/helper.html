@@ -1,0 +1,20 @@
+{% if 'showcase' in g.plugins %}
+  {% set showcase_admins_route = 'showcase_blueprint.admins' %}
+
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+      <i class="fa fa-info-circle icon-info-sign"></i>
+      {{ _('What are Showcases?') }}
+    </h2>
+    <div class="module-content">
+      <p>
+        {% trans %}Showcases include dashboards, applications, and websites that provide further insight, ideas, and inspiration around open data.{% endtrans %}
+      </p>
+      {% if h.check_access('ckanext_showcase_admin_add') %}
+        <p>
+          {% trans url=h.url_for(showcase_admins_route) %}Sysadmins can manage Showcase Admins from the <a href='{{ url }}'>Showcase configuration page</a>.{% endtrans %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

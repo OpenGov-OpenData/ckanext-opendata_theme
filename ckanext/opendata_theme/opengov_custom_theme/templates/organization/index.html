@@ -33,3 +33,6 @@
 {% block organizations_search_form %}
   {% snippet 'snippets/search_form.html', form_id='organization-search-form', type='organization', query=q, sorting_selected=sort_by_selected, count=page.item_count, placeholder=_('Search {Organizations}...'.format(Organizations=org_alias_pural)), show_empty=request.params, no_bottom_border=true if page.items, sorting = [(_('Name Ascending'), 'title asc'), (_('Name Descending'), 'title desc')] %}
 {% endblock %}
+
+{% block secondary %}
+{% endblock %}
