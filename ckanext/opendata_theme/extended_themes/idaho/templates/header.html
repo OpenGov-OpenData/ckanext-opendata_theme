@@ -21,8 +21,8 @@
             </li>
           </ul>
         </div>
-        {% if c.userobj %}
-          <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
+        {% if g.userobj %}
+          <div class="account avatar authed" data-module="me" data-me="{{ g.userobj.id }}">
             <ul class="list-unstyled unstyled">
               {% block header_account_logged %}
                 <li>
