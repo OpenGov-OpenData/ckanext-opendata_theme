@@ -121,12 +121,8 @@ def is_data_dict_active(ddict):
     return False
 
 
-def is_segment_active():
-    return config.get('ckan.segment_active', 'false').lower() == 'true'
-
-
-def get_segment_apikey():
-    return str(config.get('ckan.segment_apikey', 'xBaaEbCBAwfUvAab29dAvDNL9GCH6Z4a'))
+def get_segment_writekey():
+    return str(config.get('ckan.segment_writekey', ''))
 
 
 def get_group_alias():
