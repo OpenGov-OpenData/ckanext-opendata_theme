@@ -34,6 +34,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
             'opendata_theme_get_default_extent': helper.get_default_extent,
             'opendata_theme_is_data_dict_active': helper.is_data_dict_active,
             'version': helper.version_builder,
+            'opendata_theme_segment_writekey': helper.get_segment_writekey,
         }
 
     # IBlueprint

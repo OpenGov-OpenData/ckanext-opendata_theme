@@ -121,6 +121,10 @@ def is_data_dict_active(ddict):
     return False
 
 
+def get_segment_writekey():
+    return str(config.get('ckan.segment_writekey', ''))
+
+
 def get_group_alias():
     return str(config.get('ckan.group_alias', 'Group'))
 

@@ -30,5 +30,11 @@
         {{ h.build_nav_icon(dashboard_organizations_route, _('My {Organizations}'.format(Organizations=org_alias_pural))) }}
         {{ h.build_nav_icon(dashboard_groups_route, _('My {Groups}'.format(Groups=group_alias_pural))) }}
       </ul>
-     </header>
+    </header>
+    <script>
+      analytics.identify(' {{user.id}} ', {
+        name: '{{user.fullname}}',
+        email: '{{user.email}}'
+      });
+    </script>
 {% endblock %}
