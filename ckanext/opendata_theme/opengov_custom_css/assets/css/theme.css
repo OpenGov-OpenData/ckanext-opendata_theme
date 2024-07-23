@@ -65,7 +65,8 @@ p a,
 .pagination > .disabled > a,
 .pagination > .disabled > a:hover,
 .pagination > .disabled > a:focus,
-.media-item span.count {
+.media-item span.count,
+small.date {
   color: #616365;
 }
 .label-default {
@@ -75,6 +76,7 @@ p a,
   background-color: #dfe3e8;
   color: #131517;
 }
+button.slick-arrow:focus,
 .dropdown-toggle:focus {
   outline: 5px auto -webkit-focus-ring-color;
 }
@@ -230,6 +232,9 @@ p a,
 .dropdown-submenu:focus>a {
   background: #1f76d8;
   color: #ffffff;
+}
+.dropdown-menu>li>a {
+  min-width: 150px;
 }
 form.form-inline.form-select.lang-select {
   display: none;
