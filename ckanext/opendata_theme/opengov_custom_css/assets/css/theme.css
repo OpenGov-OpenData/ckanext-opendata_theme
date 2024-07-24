@@ -1,27 +1,84 @@
+p a,
+.dataset-content div a {
+  text-decoration: underline;
+}
 .btn-default {
-  box-shadow: inset 0 -2em 1.8em -1em #eff2f5
+  background: rgb(247, 249, 250);
+  border: 1px solid rgb(181, 185, 189);
+  color: rgb(97, 99, 101);
+}
+.btn-default:hover
+.btn-default:focus {
+  background: rgb(223, 227, 232);
+  border: 1px solid rgb(97, 99, 101);
+  color: rgb(19, 21, 23);
 }
 .btn-primary,
 .btn-success {
-  background: #044187;
-  border: 1px solid #07305c;
-  box-shadow: inset 0 2em 1.8em -1em rgba(31, 118, 216, 0.7);
-  color: white;
+  background: rgb(22, 92, 171);
+  border-color: rgb(22, 92, 171);
+  color: rgb(255, 255, 255);
 }
 .btn-primary:hover,
-.btn-success:hover {
-  background-color: #044187;
-  box-shadow: inset 0 1em 1em -1em rgba(31, 118, 216, 0.7);
+.btn-success:hover,
+.btn-primary:focus,
+.btn-success:focus {
+  background: rgb(4, 65, 135);
+  border: 1px solid rgb(97, 99, 101);
 }
 .btn-danger {
-  background: #b23e24;
-  border: 1px solid #942a12;
-  box-shadow: inset 0 2em 1.8em -1em #d15336;
-  color: white;
+  background: rgb(178, 62, 36);
+  border: 1px solid rgb(178, 62, 36);
+  color: rgb(255, 255, 255);
 }
-.btn-danger:hover {
-  border: 1px solid #6b1c0b;
-  box-shadow: none;
+.btn-danger:hover,
+.btn-danger:focus {
+  background: rgb(148, 42, 18);
+  border: 1px solid rgb(107, 28, 11);
+}
+.btn.og-login {
+  background-color: #165cab !important;
+}
+.stages {
+  color: #616365;
+}
+.stages li:before {
+  background-color: #616365;
+}
+.stages li.active:before {
+  color: #165cab;
+}
+.stages li.active .highlight {
+  background: #165cab;
+}
+.control-required {
+  color: #b23e24;
+  font-size: 16px;
+}
+.error-block {
+  background: #b23e24;
+}
+.activity .item .date,
+.pagination > .disabled > span,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus,
+.media-item span.count,
+small.date {
+  color: #616365;
+}
+.label-default {
+  background-color: #616365;
+}
+.nav > li.active > a:focus {
+  background-color: #dfe3e8;
+  color: #131517;
+}
+button.slick-arrow:focus,
+.dropdown-toggle:focus {
+  outline: 5px auto -webkit-focus-ring-color;
 }
 .account-masthead .account ul li {
   border-left: none;
@@ -176,6 +233,9 @@
   background: #1f76d8;
   color: #ffffff;
 }
+.dropdown-menu>li>a {
+  min-width: 150px;
+}
 form.form-inline.form-select.lang-select {
   display: none;
 }
@@ -210,7 +270,7 @@ form.form-inline.form-select.lang-select {
 
 /* Custom background color for select format labels */
 .dataset-resources li a {
-  background-color: #6e6e6e;
+  background-color: #595959;
 }
 .label[data-format=html],
 .label[data-format*=html] {
@@ -391,6 +451,21 @@ form.form-inline.form-select.lang-select {
 
 .site-footer .ckan-footer-logo {
   margin-left: 20px;
+}
+
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.skip-content {
+  background-color: #ffffff;
 }
 
 /* hidden only for public user registration/edit */
