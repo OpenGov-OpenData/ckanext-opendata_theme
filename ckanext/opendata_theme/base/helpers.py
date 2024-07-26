@@ -114,7 +114,7 @@ def get_user_uuid():
             logger.debug("[opendata_theme] Error querying user token: {}".format(e))
             return None
     return None
-    
+
 
 def package_tracking_summary(package):
     """Return the tracking summary of a dataset"""
