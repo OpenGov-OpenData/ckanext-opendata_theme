@@ -4,8 +4,10 @@ import logging
 import re
 import string
 
+import ckan.model as model
+
 from ckan.plugins import toolkit
-from ckan.plugins.toolkit import config
+from ckan.plugins.toolkit import config, c
 from packaging.version import Version
 
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
@@ -98,6 +100,21 @@ def new_datasets(num=3):
         return []
     return datasets[:num]
 
+
+def get_user_uuid():
+    """Return the user platform_uuid for a given email, if there is a token for that email"""
+    if c.user:
+        user = c.userobj
+        try:
+            user_token = model.Session.query(model.UserToken).filter(model.UserToken.email == user.email).first()
+            if user_token:
+                return user_token.platform_uuid
+            return None
+        except Exception as e:
+            logger.debug("[opendata_theme] Error querying user token: {}".format(e))
+            return None
+    return None
+    
 
 def package_tracking_summary(package):
     """Return the tracking summary of a dataset"""
