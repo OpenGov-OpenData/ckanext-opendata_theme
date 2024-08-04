@@ -33,7 +33,7 @@
     </header>
     <script>
       var userplatformuuid = "{{ h.opendata_theme_platform_uuid() }}";
-      analytics.identify(userplatformuuid || ' {{user.id}} ', {
+      analytics.identify(userplatformuuid || '{{user.id}}', {
         name: '{{user.fullname}}',
         email: '{{user.email}}'
       });
