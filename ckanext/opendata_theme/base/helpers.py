@@ -10,8 +10,6 @@ from ckan.plugins import toolkit
 from ckan.plugins.toolkit import config, c
 from packaging.version import Version
 
-from ckanext.opengov_auth.auth.db import UserToken
-
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING
 
@@ -105,6 +103,7 @@ def new_datasets(num=3):
 
 def get_user_uuid():
     """Return the user platform_uuid for a given email, if there is a token for that email"""
+    from ckanext.opengov.auth.db import UserToken
     if c.user:
         user = c.userobj
         try:
