@@ -10,6 +10,7 @@ from ckan.plugins import toolkit
 from ckan.plugins.toolkit import config, c
 from packaging.version import Version
 
+from ckanext.opengov.auth.db import UserToken
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING
 
@@ -108,7 +109,7 @@ def get_user_uuid():
         print(" c.userobj.email: {}".format(c.userobj.email))
         user = c.userobj
         try:
-            user_token = model.Session.query(model.UserToken).filter(model.UserToken.user_name == user.email).first()
+            user_token = model.Session.query(UserToken).by_user_name(user_name=user.email).first()
             if user_token:
                 logger.info(" user_token: {}".format(user_token))
                 print(" user_token: {}".format(user_token))
