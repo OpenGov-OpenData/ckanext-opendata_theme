@@ -107,7 +107,7 @@ def get_user_uuid():
     if c.user:
         user = c.userobj
         try:
-            user_token = model.Session.query(UserToken).by_user_name(user_name=user.email).first()
+            user_token = model.Session.query(UserToken).filter_by(user_name=user.email).first()
             if user_token:
                 logger.info(" user_token: {}".format(user_token))
                 return user_token.platform_uuid
