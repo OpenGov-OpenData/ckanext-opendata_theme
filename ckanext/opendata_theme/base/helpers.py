@@ -104,15 +104,32 @@ def new_datasets(num=3):
 def get_user_uuid():
     """Return the user platform_uuid for a given email, if there is a token for that email"""
     if c.user:
+        logger.info(" c.userobj.email: {}".format(c.userobj.email))
+        print(" c.userobj.email: {}".format(c.userobj.email))
         user = c.userobj
         try:
             user_token = model.Session.query(model.UserToken).filter(model.UserToken.user_name == user.email).first()
             if user_token:
+                logger.info(" user_token: {}".format(user_token))
+                print(" user_token: {}".format(user_token))
                 return user_token.platform_uuid
+            else:
+                logger.info(" NO TOKEN")
+                print("  NO TOKEN" )
             return None
         except Exception as e:
-            logger.debug("[opendata_theme] Error querying user token: {}".format(e))
+            logger.info("[opendata_theme] Error querying user token: {}".format(e))
+            print("[opendata_theme] Error querying user token: {}".format(e))
+            logger.info(" EMAIL: {}".format(c.userobj.email))
+            print(" EMAIL: {}".format(c.userobj.email))
+            logger.info(" user_token: {}".format(user_token))
+            print(" user_token: {}".format(user_token))
+            logger.info(" platform_uuid: {}".format(user_token.platform_uuid))
+            print(" platform_uuid: {}".format(user_token.platform_uuid))
             return None
+    else:
+        logger.info(" NO C.USER")
+        print(" NO C.USER" )
     return None
 
 
