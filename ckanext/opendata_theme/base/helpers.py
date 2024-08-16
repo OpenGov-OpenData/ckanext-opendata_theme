@@ -115,7 +115,7 @@ def get_user_uuid():
                 return user_token.platform_uuid
             else:
                 logger.info(" NO TOKEN")
-                print("  NO TOKEN" )
+                print("  NO TOKEN")
             return None
         except Exception as e:
             logger.info("[opendata_theme] Error querying user token: {}".format(e))
@@ -129,7 +129,7 @@ def get_user_uuid():
             return None
     else:
         logger.info(" NO C.USER")
-        print(" NO C.USER" )
+        print(" NO C.USER")
     return None
 
 
