@@ -10,10 +10,12 @@
         analytics.page();
         var entityid = "{{ h.opendata_theme_entity() }}";
         analytics.group(entityid)
-        if (window.location.pathname.endsWith("dashboard/")) {
-          var userplatformuuid = "{{ h.opendata_theme_platform_uuid() }}";
-          analytics.identify(userplatformuuid || '{{user.id}}', {name: '{{user.fullname}}', email: '{{user.email}}'});
-        }
+        {% if user %}
+          if (window.location.pathname.endsWith("dashboard/")) {
+            var userplatformuuid = "{{ h.opendata_theme_platform_uuid() }}";
+            analytics.identify(userplatformuuid || '{{user.id}}', {name: '{{user.fullname}}', email: '{{user.email}}'});
+          }
+        {% endif %}
       }}();
     }
   </script>
