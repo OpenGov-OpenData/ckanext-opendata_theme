@@ -35,7 +35,8 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
             'opendata_theme_is_data_dict_active': helper.is_data_dict_active,
             'version': helper.version_builder,
             'opendata_theme_segment_writekey': helper.get_segment_writekey,
-            'opendata_theme_platform_uuid': helper.get_user_uuid
+            'opendata_theme_platform_uuid': helper.get_user_uuid,
+            'opendata_theme_entity': helper.get_entity_id
         }
 
     # IBlueprint

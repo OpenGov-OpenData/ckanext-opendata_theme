@@ -143,6 +143,10 @@ def get_segment_writekey():
     return str(config.get('ckan.segment_writekey', ''))
 
 
+def get_entity_id():
+    return str(config.get('ckanext.opengov.datastore.entity_id', 'controlpanel'))
+
+
 def get_group_alias():
     return str(config.get('ckan.group_alias', 'Group'))
 
