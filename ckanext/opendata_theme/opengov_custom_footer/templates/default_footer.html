@@ -33,4 +33,8 @@
     {% endblock %}
   </div>
 </div>
+{% set script_snippet = h.opendata_theme_get_footer_script_snippet() %}
+{% if script_snippet %}
+  {{ script_snippet }}
+{% endif %}
 {% endblock %}
