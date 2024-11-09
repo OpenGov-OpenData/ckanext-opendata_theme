@@ -126,7 +126,10 @@ def package_tracking_summary(package):
             tracking_summary = result.get('tracking_summary')
     except Exception:
         logger.debug("[opendata_theme] Error getting dataset tracking_summary")
-        return {}
+        return {
+            'total': 0,
+            'recent': 0
+        }
     return tracking_summary
 
 

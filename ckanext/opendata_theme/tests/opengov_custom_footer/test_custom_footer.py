@@ -1,5 +1,6 @@
 import pytest
 
+from ckanext.opendata_theme.opengov_custom_footer.plugin import get_footer_script_snippet
 from ckanext.opendata_theme.tests.helpers import do_get, do_post
 
 CUSTOM_FOOTER_URL = "/ckan-admin/custom_footer"
@@ -100,3 +101,7 @@ def test_reset_custom_footer_form_after_some_footer_modification(app):
         'content_2': ''
     }
     check_custom_footer_page_html(reset_response, **expected_data)
+
+
+def test_invalid_get_footer_script_snippet():
+    assert get_footer_script_snippet() is False

@@ -1,5 +1,6 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
+import re
 
 import ckanext.opendata_theme.base.helpers as helper
 from ckanext.opendata_theme.opengov_custom_footer.controller import CustomFooterController
@@ -48,6 +49,7 @@ class OpenDataThemeFooterPlugin(MixinPlugin):
     def get_helpers(self):
         return {
             'opendata_theme_get_footer_data': get_footer_data,
+            'opendata_theme_get_footer_script_snippet': get_footer_script_snippet,
             'version': helper.version_builder,
         }
 
@@ -59,12 +61,23 @@ def get_footer_data(section):
     return ''
 
 
+def get_footer_script_snippet():
+    pattern = r'<script\b[^>]*>(.*?)<\/script>'
+    script_snippet = toolkit.config.get('ckanext.opendata_theme.script_snippet', '')
+    if not script_snippet:
+        return False
+    match = re.match(pattern, script_snippet, re.IGNORECASE)
+    if not bool(match):
+        return False
+    return literal(script_snippet)
+
+
 def custom_footer_validator(value):
     layout_type = value.get('layout_type')
     if layout_type not in ['default', 'custom']:
         raise toolkit.Invalid('Invalid footer layout')
 
-    # content is sanitized by controller soo only taught validation required
+    # content is sanitized by controller so only simple validation required
     content_0 = value.get('content_0')
     if helper.check_characters(content_0):
         raise toolkit.Invalid('Invalid characters in Column 1')
