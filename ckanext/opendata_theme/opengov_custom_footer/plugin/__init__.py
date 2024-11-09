@@ -77,7 +77,7 @@ def custom_footer_validator(value):
     if layout_type not in ['default', 'custom']:
         raise toolkit.Invalid('Invalid footer layout')
 
-    # content is sanitized by controller soo only taught validation required
+    # content is sanitized by controller so only simple validation required
     content_0 = value.get('content_0')
     if helper.check_characters(content_0):
         raise toolkit.Invalid('Invalid characters in Column 1')
