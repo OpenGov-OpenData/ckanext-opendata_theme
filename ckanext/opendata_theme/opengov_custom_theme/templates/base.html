@@ -12,8 +12,11 @@
         analytics.group(entityid)
         {% if user %}
           if (window.location.pathname.endsWith("dashboard/")) {
-            var userplatformuuid = "{{ h.opendata_theme_platform_uuid() }}";
-            analytics.identify(userplatformuuid || '{{user.id}}', {name: '{{user.fullname}}', email: '{{user.email}}'});
+            var userId = "{{ h.opendata_theme_platform_uuid() }}";
+            if (!userId || userId === 'None' || userId.length <= 30) {
+              userId =  '{{user.id}}';
+            }
+            analytics.identify(userId, {name: '{{user.fullname}}', email: '{{user.email}}'});
           }
         {% endif %}
       }}();
