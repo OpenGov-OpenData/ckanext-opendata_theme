@@ -13,9 +13,7 @@
         {% if user %}
           if (window.location.pathname.endsWith("dashboard/")) {
             var userId = "{{ h.opendata_theme_platform_uuid() }}";
-            console.log(userId);
-            if (!userId || userId.length <= 30) {
-              console.log("entro");
+            if (!userId || userId === 'None' || userId.length <= 30) {
               userId =  '{{user.id}}';
             }
             analytics.identify(userId, {name: '{{user.fullname}}', email: '{{user.email}}'});
