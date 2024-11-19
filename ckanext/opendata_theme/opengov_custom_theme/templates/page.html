@@ -3,3 +3,11 @@
 {% block skip %}
   <div class="visually-hidden-focusable skip-content"><a href="#content">{{ _('Skip to content') }}</a></div>
 {% endblock %}
+
+{%- block scripts %}
+  {{ super() }}
+  {% set script_snippet = h.opendata_theme_get_footer_script_snippet() %}
+  {% if script_snippet %}
+    {{ script_snippet }}
+  {% endif %}
+{% endblock -%}
