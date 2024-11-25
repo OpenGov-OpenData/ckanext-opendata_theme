@@ -1,0 +1,8 @@
+theme-js:
+  filters: rjsmin
+  output: opengov_custom_theme/%(version)s_theme.js
+  extra:
+    preload:
+      - base/main
+  contents:
+    - js/theme.js

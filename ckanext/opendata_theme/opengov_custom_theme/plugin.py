@@ -14,6 +14,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
     # IConfigurer
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, 'templates')
+        toolkit.add_resource('assets', 'opengov_custom_theme')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
