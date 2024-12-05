@@ -13,6 +13,11 @@ from packaging.version import Version
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
 from ckanext.opendata_theme.opengov_custom_homepage.constants import CUSTOM_NAMING
 
+if toolkit.check_ckan_version(min_version='2.9.0'):
+    from ckan.lib.helpers import literal
+else:
+    from webhelpers.html import literal
+
 
 logger = logging.getLogger(__name__)
 
@@ -300,3 +305,14 @@ def get_default_extent():
             [-66.9513812,24.7433195],[-66.9513812,49.3457868], \
             [-124.7844079,49.3457868],[-124.7844079,24.7433195]]] }'
     )
+
+
+def get_footer_script_snippet():
+    pattern = r'<script\b[^>]*>(.*?)<\/script>'
+    script_snippet = toolkit.config.get('ckanext.opendata_theme.script_snippet', '')
+    if not script_snippet:
+        return False
+    match = re.match(pattern, script_snippet, re.IGNORECASE)
+    if not bool(match):
+        return False
+    return literal(script_snippet)

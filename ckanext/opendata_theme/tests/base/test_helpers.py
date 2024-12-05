@@ -4,7 +4,8 @@ from ckanext.opendata_theme.base.helpers import (
     abbreviate_name, is_data_dict_active,
     get_group_alias, get_organization_alias,
     version_builder, check_characters,
-    sanityze_all_html
+    sanityze_all_html,
+    get_footer_script_snippet
 )
 from packaging.version import InvalidVersion
 
@@ -54,3 +55,7 @@ def test_sanityze_all_html():
     assert sanityze_all_html('<script>alert("test")</script>') == '&lt;script&gt;alert("test")&lt;/script&gt;'
     assert sanityze_all_html('<a href="test">test</a>') == '&lt;a href="test"&gt;test&lt;/a&gt;'
     assert sanityze_all_html('test') == 'test'
+
+
+def test_invalid_get_footer_script_snippet():
+    assert get_footer_script_snippet() is False
