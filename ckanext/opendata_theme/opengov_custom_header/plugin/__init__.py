@@ -30,6 +30,7 @@ class OpenDataThemeHeaderPlugin(MixinPlugin):
     # IConfigurer
     def update_config(self, ckan_config):
         tk.add_template_directory(ckan_config, '../templates')
+        tk.add_public_directory(ckan_config, '../public')
 
         if tk.check_ckan_version(min_version='2.4', max_version='2.9'):
             tk.add_ckan_admin_tab(ckan_config, 'custom_header', 'Header', icon='file-code-o')
@@ -87,7 +88,7 @@ def get_header_layout():
 
 
 def custom_header_validator(value):
-    if value.get('layout_type') not in ['compressed', 'default']:
+    if value.get('layout_type') not in ['default', 'compressed', 'sidebar']:
         raise tk.Invalid('Header layout is not supported')
     for item in value.get('links', []):
         title = item.get('title', '')

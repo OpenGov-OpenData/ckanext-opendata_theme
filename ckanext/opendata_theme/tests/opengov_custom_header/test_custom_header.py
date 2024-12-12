@@ -18,12 +18,20 @@ DEFAULT_HEADERS = (
 )
 
 
-def check_custom_header_page_html(response, links, headers, default_layout=True):
+def check_custom_header_page_html(response, links, headers, header_layout='default'):
     assert response, 'Response is empty.'
-    if default_layout:
+    if header_layout == 'default':
         assert '<option value="default" selected="selected">' in response
-    else:
+        assert '<option value="compressed">' in response
+        assert '<option value="sidebar">' in response
+    elif header_layout == 'compressed':
+        assert '<option value="default">' in response
         assert '<option value="compressed" selected="selected">' in response
+        assert '<option value="sidebar">' in response
+    elif header_layout == 'sidebar':
+        assert '<option value="default">' in response
+        assert '<option value="compressed">' in response
+        assert '<option value="sidebar" selected="selected">' in response
     for index, link in enumerate(links):
         assert '<div class="row" id="link-{}">'.format(index) in response
         assert 'name="position" value="{}"'.format(link.get('position')) in response
@@ -42,7 +50,7 @@ def test_get_custom_header_page_with_not_sysadmin_user(app):
 @pytest.mark.usefixtures("clean_db", "with_request_context")
 def test_get_custom_header_page(app):
     response = do_get(app, CUSTOM_HEADER_URL, is_sysadmin=True)
-    check_custom_header_page_html(response, links=[], headers=DEFAULT_HEADERS, default_layout=True)
+    check_custom_header_page_html(response, links=[], headers=DEFAULT_HEADERS, header_layout='default')
 
 
 @pytest.mark.usefixtures("clean_db", "with_request_context")
@@ -56,7 +64,7 @@ def test_add_link_to_custom_header(app):
     expected_headers = DEFAULT_HEADERS + ({'title': 'Example', 'url': 'https://example.com'},)
 
     custom_header_response = do_get(app, CUSTOM_HEADER_URL, is_sysadmin=True)
-    check_custom_header_page_html(custom_header_response, links=[], headers=DEFAULT_HEADERS, default_layout=True)
+    check_custom_header_page_html(custom_header_response, links=[], headers=DEFAULT_HEADERS, header_layout='default')
 
     response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)
     check_custom_header_page_html(response, links=expected_links, headers=expected_headers)
@@ -126,4 +134,27 @@ def test_update_single_custom_header_links(app):
     ]
 
     response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)
-    check_custom_header_page_html(response, links=[], headers=expected_headers, default_layout=False)
+    check_custom_header_page_html(response, links=[], headers=expected_headers, header_layout='compressed')
+
+
+@pytest.mark.usefixtures("clean_db", "with_request_context")
+def test_set_layout_to_sidebar(app):
+    data = {
+        'save': '',
+        'layout_type': 'sidebar',
+        'position': ['0', '1'],
+        'title': ['Datasets', 'Departments'],
+        'url': ['/dataset', '/organization']
+    }
+    expected_links = (
+        {'position': 0, 'title': 'Datasets', 'url': '/dataset'},
+        {'position': 1, 'title': 'Departments', 'url': '/organization'},
+    )
+    expected_headers = (
+        {'title': 'Datasets', 'url': '/dataset'},
+        {'title': 'Departments', 'url': '/organization'},
+    )
+
+    response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)
+    check_custom_header_page_html(response, links=expected_links, headers=expected_headers, header_layout='sidebar')
+    
