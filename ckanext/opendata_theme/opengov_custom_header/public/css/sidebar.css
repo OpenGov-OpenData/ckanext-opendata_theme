@@ -281,7 +281,8 @@ label.nav-trigger:after {
 }
 
 .main-navigation .menu li a:hover,
-.main-navigation .menu li a:focus {
+.main-navigation .menu li a:focus,
+.main-navigation .menu li.active a {
   color: #fff;
 }
 

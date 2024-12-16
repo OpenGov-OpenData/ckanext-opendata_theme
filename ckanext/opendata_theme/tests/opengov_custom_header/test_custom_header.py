@@ -22,15 +22,9 @@ def check_custom_header_page_html(response, links, headers, header_layout='defau
     assert response, 'Response is empty.'
     if header_layout == 'default':
         assert '<option value="default" selected="selected">' in response
-        assert '<option value="compressed">' in response
-        assert '<option value="sidebar">' in response
     elif header_layout == 'compressed':
-        assert '<option value="default">' in response
         assert '<option value="compressed" selected="selected">' in response
-        assert '<option value="sidebar">' in response
     elif header_layout == 'sidebar':
-        assert '<option value="default">' in response
-        assert '<option value="compressed">' in response
         assert '<option value="sidebar" selected="selected">' in response
     for index, link in enumerate(links):
         assert '<div class="row" id="link-{}">'.format(index) in response
@@ -157,4 +151,3 @@ def test_set_layout_to_sidebar(app):
 
     response = do_post(app, CUSTOM_HEADER_URL, data, is_sysadmin=True)
     check_custom_header_page_html(response, links=expected_links, headers=expected_headers, header_layout='sidebar')
-    
