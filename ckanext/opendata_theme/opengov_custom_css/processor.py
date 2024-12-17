@@ -33,7 +33,7 @@ class AccountHeaderTextColor(AbstractParser):
 
 
 class NavigationHeaderBackGroundColor(AbstractParser):
-    class_name = '.masthead'
+    class_name = '.masthead, .main-navigation'
     form_name = 'nav-header-background-color'
     title = 'Navigation Header Background Color'
     location = 'background'
@@ -44,6 +44,11 @@ class NavigationHeaderHoverBackgroundColor(AbstractParser):
     class_name = ('.masthead .navigation .nav-pills li a:hover,'
                   '.masthead .navigation .nav-pills li a:focus,'
                   '.masthead .navigation .nav-pills li.active a,'
+                  '.main-navigation .main-navigation-title,'
+                  '.main-navigation .menu li a:hover,'
+                  '.main-navigation .menu li a:focus,'
+                  '.main-navigation .menu li.active a,'
+                  'label.nav-trigger,'
                   '.navbar-toggle')
     form_name = 'nav-header-hover-background-color'
     title = 'Navigation Header Hover Background Color'
@@ -55,7 +60,9 @@ class NavigationHeaderTextColor(AbstractParser):
     class_name = ('.navbar .nav>li>a,'
                   '.masthead .nav>li>a,'
                   '.navbar .navbar-left>h1>a,'
-                  '.navbar .navbar-left>h2')
+                  '.navbar .navbar-left>h2,'
+                  '.main-navigation .main-navigation-title,'
+                  '.main-navigation .menu li a')
     form_name = 'nav-header-text-color'
     title = 'Navigation Header Text Color'
     location = 'color'

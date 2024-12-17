@@ -1,0 +1,10 @@
+{% ckan_extends %}
+
+{% set header_layout_type = h.opendata_theme_get_header_layout() %}
+
+{% block styles %}
+  {{ super() }}
+  {% if header_layout_type=='sidebar' %}
+    <link rel="stylesheet" href="/css/sidebar.css" />
+  {% endif %}
+{% endblock %}

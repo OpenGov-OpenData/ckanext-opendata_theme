@@ -23,10 +23,17 @@ DEFAULT_CUSTOM_CSS = (
     '.account-masthead {background: #165cab}',
     '.account-masthead .account ul li a:hover {background: #1f76d8}',
     '.account-masthead .account ul li a {color: #ffffff}',
-    '.masthead {background: #ffffff}',
-    '.masthead .navigation .nav-pills li a:hover,.masthead .navigation .nav-pills li a:focus,'
-    '.masthead .navigation .nav-pills li.active a,.navbar-toggle {background-color: #1f76d8}',
-    '.navbar .nav>li>a,.masthead .nav>li>a,.navbar .navbar-left>h1>a,.navbar .navbar-left>h2 {color: #07305c}',
+    '.masthead, .main-navigation {background: #ffffff}',
+    '.masthead .navigation .nav-pills li a:hover,'
+    '.masthead .navigation .nav-pills li a:focus,'
+    '.masthead .navigation .nav-pills li.active a,'
+    '.main-navigation .main-navigation-title,'
+    '.main-navigation .menu li a:hover,'
+    '.main-navigation .menu li a:focus,'
+    '.main-navigation .menu li.active a,'
+    'label.nav-trigger,.navbar-toggle {background-color: #1f76d8}',
+    '.navbar .nav>li>a,.masthead .nav>li>a,.navbar .navbar-left>h1>a,.navbar .navbar-left>h2,'
+    '.main-navigation .main-navigation-title,.main-navigation .menu li a {color: #07305c}',
     '.module-heading {background: #165cab}',
     '.module-heading,.module-heading .action {color: #ffffff}',
     'body, .site-footer, .footer-column-form .cke_reset {background: #07305c}',

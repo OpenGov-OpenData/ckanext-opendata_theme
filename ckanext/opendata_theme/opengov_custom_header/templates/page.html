@@ -2,10 +2,44 @@
 
 {% set header_layout_type = h.opendata_theme_get_header_layout() %}
 
-{% block header %}
-    {% if header_layout_type=='compressed' %}
+{%- block page -%}
+  {% block skip %}
+    {{ super() }}
+  {% endblock %}
+
+  {% if header_layout_type=='sidebar' %}
+    <input type="checkbox" id="hb__trigger" class="hb__trigger" aria-hidden="true">
+    <div class="main-navigation">
+      <div class="main-navigation-title">
+        {{ _('Menu') }}
+      </div>
+      <div class="region region-navigation">
+        <ul class="menu list-unstyled unstyled">
+        {% block header_site_navigation_tabs %}
+          {{ h.opendata_theme_build_nav_main() }}
+        {% endblock %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="page" id="page">
+    {% block header %}
+      {% if header_layout_type=='compressed' %}
         {% include "compressed_header.html" %}
-    {% else %}
+      {% elif header_layout_type=='sidebar' %}
+        {% include "sidebar_header.html" %}
+      {% else %}
         {% include "default_header.html" %}
-    {% endif %}
+      {% endif %}
+    {% endblock %}
+
+    {%- block content %}
+      {{ super() }}
+    {% endblock -%}
+
+    {%- block footer %}
+      {{ super() }}
+    {% endblock -%}
+  </div>
 {% endblock %}

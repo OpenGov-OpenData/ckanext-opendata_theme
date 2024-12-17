@@ -13,6 +13,8 @@
   <meta name="twitter:description" content="{{ description|forceescape|trim }}" />
 {% endblock -%}
 
+{% block resource_read_title %}<h1 class="page-heading">{{ h.resource_display_name(res) | truncate(100) }}</h1>{% endblock %}
+
 {% block download_resource_button %}
   {% if res.datastore_active %}
     <button class="btn btn-primary dropdown-toggle" role="button" id="dropdownDownloadFormat" data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ _('List of downloadable formats') }}">

@@ -471,6 +471,10 @@ form.form-inline.form-select.lang-select {
   background-color: #ffffff;
 }
 
+.navbar-toggle:focus {
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
 /* hidden only for public user registration/edit */
 #user-register-form .image-upload,
 #user-edit-form .image-upload {

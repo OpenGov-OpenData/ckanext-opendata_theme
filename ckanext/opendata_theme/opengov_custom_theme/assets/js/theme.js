@@ -90,3 +90,22 @@ function trapFocus(modal) {
     }
   });
 }
+
+// Sidebar menu
+$(document).on('keydown', function(event) {
+  const $menuTrigger = $('#hb__trigger');
+  const $navLabel = $('label[for="hb__trigger"]');
+
+  // Check if the focused element is the label
+  if ($(document.activeElement).is($navLabel)) {
+    // Open or close the menu with the Enter key (event.key === 'Enter')
+    if (event.key === 'Enter') {
+      $menuTrigger.prop('checked', !$menuTrigger.prop('checked'));
+    }
+  }
+
+  // Close the menu with the Escape key (event.key === 'Escape')
+  if (event.key === 'Escape' && $menuTrigger.prop('checked')) {
+    $menuTrigger.prop('checked', false);
+  }
+});
