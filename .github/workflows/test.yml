@@ -66,7 +66,7 @@ jobs:
     - name: Run tests
       run: pytest --ckan-ini=test.ini --cov=ckanext.opendata_theme --cov-report xml:coverage.xml --disable-warnings --cov-fail-under=${CODE_COVERAGE_THRESHOLD_REQUIRED} ckanext/opendata_theme/tests
     - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@v4.1.0
+      uses: sonarsource/sonarqube-scan-action@v4.0.0
       with:
         args: >
           -Dsonar.projectKey=ckanext-opendata_theme
