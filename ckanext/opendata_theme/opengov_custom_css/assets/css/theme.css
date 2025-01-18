@@ -83,6 +83,9 @@ button.slick-arrow:focus,
 .dropdown-toggle:focus {
   outline: 5px auto -webkit-focus-ring-color;
 }
+#header-alert {
+  margin-bottom: 1px;
+}
 .account-masthead .account ul li {
   border-left: none;
 }

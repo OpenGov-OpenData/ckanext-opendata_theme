@@ -17,7 +17,9 @@ class CustomHeaderController(BaseCompatibilityController):
             {'position': 1, 'title': '{}s'.format(helper.get_organization_alias()), 'url': '/organization'},
             {'position': 2, 'title': '{}s'.format(helper.get_group_alias()), 'url': '/group'},
             {'position': 3, 'title': 'About', 'url': '/about'}
-        ]
+        ],
+        'display_alert': 'Hide',
+        'alert_message': ''
     }
 
     def custom_header(self):
@@ -44,7 +46,9 @@ class CustomHeaderController(BaseCompatibilityController):
     def save_link(self, data):
         custom_header = {
             'layout_type': data.get('layout_type', 'default'),
-            'links': []
+            'links': [],
+            'display_alert': data.get('display_alert', 'Hide'),
+            'alert_message': data.get('alert_message', '')
         }
         try:
             if isinstance(data.get('url'), list):

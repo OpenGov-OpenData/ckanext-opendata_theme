@@ -2,7 +2,12 @@
 
 {% import 'macros/form.html' as form %}
 
-{% if h.version(h.ckan_version()) < h.version('2.9') %}
+{% set ckan_29_or_higher = h.version(h.ckan_version()) >= h.version('2.9') %}
+
+{% if ckan_29_or_higher %}
+    {% set custom_header_action = h.url_for('/ckan-admin/custom_header') %}
+    {% set reset_custom_header = h.url_for('/ckan-admin/reset_custom_header') %}
+{% else %}
     {% set custom_header_action = h.url_for(
        controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
        action='custom_header') %}
@@ -10,11 +15,20 @@
     {% set reset_custom_header = h.url_for(
        controller='ckanext.opendata_theme.opengov_custom_header.controller:CustomHeaderController',
        action='reset_custom_header') %}
-{% else %}
-    {% set custom_header_action = h.url_for('/ckan-admin/custom_header') %}
-    {% set reset_custom_header = h.url_for('/ckan-admin/reset_custom_header') %}
 {% endif %}
 
+{% block styles %}
+    {{ super() }}
+    {% set snippet_type = 'asset' if ckan_29_or_higher else 'resource'  %}
+    {% snippet 'snippets/opendata_custom_header_' ~ snippet_type ~ '.html' %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {% if ckan_29_or_higher %}
+        <script src="/vendor/ckeditor/ckeditor.js"></script>
+    {% endif %}
+{% endblock %}
 
 {% block primary_content_inner %}
     {{ form.errors(errors) }}
@@ -28,6 +42,27 @@
                     <option value="compressed" {% if layout_type == 'compressed' %}selected="selected"{% endif %}>Compressed</option>
                     <option value="sidebar" {% if layout_type == 'sidebar' %}selected="selected"{% endif %}>Sidebar</option>
                 </select>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group control-group">
+            <label for="display-alert" class="control-label">{{ _('Display Alert') }}</label>
+            <div class="controls">
+                <select id="display-alert" class="form-control" name="display_alert">
+                    <option value="Display" {% if display_alert == 'Display' %}selected="selected"{% endif %}>Display</option>
+                    <option value="Hide" {% if display_alert == 'Hide' or not display_alert %}selected="selected"{% endif %}>Hide</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group control-group">
+            <label for="alert-message" class="control-label">{{ _('Alert Message') }}</label>
+            <div class="controls">
+                <textarea id="alert-message"
+                          class="control-medium"
+                          name="alert_message"
+                          placeholder="{{_('My HTML content')}}"
+                          data-module="ckedit"
+                          data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=True)) }}">{{ alert_message }}</textarea>
             </div>
         </div>
         <hr>

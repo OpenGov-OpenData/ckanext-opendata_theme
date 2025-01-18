@@ -1,6 +1,7 @@
 {% ckan_extends %}
 
 {% set header_layout_type = h.opendata_theme_get_header_layout() %}
+{% set header_alert_message = h.opendata_theme_get_alert_message() %}
 
 {%- block page -%}
   {% block skip %}
@@ -25,6 +26,11 @@
 
   <div class="page" id="page">
     {% block header %}
+      {% if header_alert_message %}
+        <div id="header-alert" class="alert alert-danger" role="alert">
+          {{ header_alert_message }}
+        </div>
+      {% endif %}
       {% if header_layout_type=='compressed' %}
         {% include "compressed_header.html" %}
       {% elif header_layout_type=='sidebar' %}
