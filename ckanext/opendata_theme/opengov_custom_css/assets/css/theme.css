@@ -29,6 +29,18 @@ p a,
   background: rgb(4, 65, 135);
   border: 1px solid rgb(97, 99, 101);
 }
+.btn-outline-primary {
+  color: rgb(22, 92, 171);
+  background-color: transparent;
+  background-image: none;
+  border-color: rgb(22, 92, 171);
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  color: #fff;
+  background-color: rgb(22, 92, 171);
+  border-color: rgb(22, 92, 171);
+}
 .btn-danger {
   background: rgb(178, 62, 36);
   border: 1px solid rgb(178, 62, 36);
@@ -344,6 +356,10 @@ form.form-inline.form-select.lang-select {
 .label[data-format*=chart],
 .label[data-format=map] {
   background-color: #852c7b !important;
+}
+
+#dataset-resources .btn-group .btn {
+  margin-left: 5px;
 }
 
 @media (max-width: 767px) {

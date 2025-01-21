@@ -21,6 +21,9 @@ else:
     from webhelpers.html import literal  # noqa: F401
 
 
+natural_number_validator = tk.get_validator("natural_number_validator")
+
+
 class OpenDataThemeHeaderPlugin(MixinPlugin):
     plugins.implements(plugins.IConfigurable, inherit=True)
     plugins.implements(plugins.IConfigurer)
@@ -95,7 +98,19 @@ def custom_header_validator(value):
         custom_header_title_validator(title)
         url = item.get('url', '')
         custom_header_url_validator(url)
+        position = item.get('position', '')
+        try:
+            natural_number_validator(position, {})
+        except tk.Invalid:
+            raise tk.Invalid('Position for {} {} should be a natural number'.format(title, url))
     return value
+
+
+@helper.value_should_be_not_empty(field_name='title')
+@helper.value_should_be_shorter_than_length(field_name='Title', length=50)
+def custom_header_title_validator(title):
+    cleaned_title = helper.sanityze_all_html(title)
+    return cleaned_title
 
 
 @helper.value_should_be_not_empty('URL')
@@ -116,10 +131,3 @@ def custom_header_url_validator(url):
         raise tk.Invalid('URL contains invalid characters "{}"'.format(url))
     tk.h.render_markdown
     return url
-
-
-@helper.value_should_be_not_empty(field_name='title')
-@helper.value_should_be_shorter_than_length(field_name='Title', length=50)
-def custom_header_title_validator(title):
-    cleaned_title = helper.sanityze_all_html(title)
-    return cleaned_title
