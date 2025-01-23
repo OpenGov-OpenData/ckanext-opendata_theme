@@ -58,7 +58,7 @@ header.navbar.masthead {
   border: 1px solid #e5e5e5;
   border-radius: 4px;
 }
-.resources h2, .additional-info h3 {
+.resources h2 {
   border-bottom: 3px solid #165cab;
   margin: 20px 0;
 }

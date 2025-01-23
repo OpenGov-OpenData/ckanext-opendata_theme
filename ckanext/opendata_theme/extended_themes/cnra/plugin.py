@@ -22,6 +22,14 @@ def display_org(organization_name):
     return True
 
 
+def get_arcgis_link(resources):
+    for resource in resources:
+        if resource.get('name') in ['ArcGIS Hub Dataset', 'ArcGIS Open Dataset'] \
+                and resource.get('format') == 'HTML':
+            return resource.get('url')
+    return ''
+
+
 def get_org_upload_url(org_id=''):
     url_list = toolkit.config.get('ckanext.cnra_theme.upload_urls', '[]')
     urls = json.loads(url_list)
@@ -46,5 +54,6 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
     def get_helpers(self):
         return {
             'opendata_theme_display_org': display_org,
+            'opendata_theme_get_arcgis_link': get_arcgis_link,
             'opendata_theme_get_org_upload_url': get_org_upload_url
         }

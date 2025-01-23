@@ -3,18 +3,18 @@
 {% block resource_item_explore %}
   {% if not url_is_edit %}
     <div class="btn-group">
-      <a href="{{ url }}" class="btn btn-xs btn-outline-primary" aria-label="Preview resource {{ res.name or res.id }}">
+      <a href="{{ url }}" class="btn btn-sm btn-outline-primary" aria-label="Preview resource {{ res.name or res.id }}">
         <i class="fa fa-bar-chart-o"></i>
         {{ _('Preview') }}
       </a>
       {% if res.url and h.is_url(res.url) %}
-        <a href="{{ res.url }}" class="btn btn-xs btn-primary resource-url-analytics" target="_blank" aria-label="Download resource {{ res.name or res.id }}">
+        <a href="{{ res.url }}" class="btn btn-sm btn-primary resource-url-analytics" target="_blank" aria-label="Download resource {{ res.name or res.id }}">
           <i class="fa fa-arrow-circle-o-down"></i>
           {{ _('Download') }}
         </a>
       {% endif %}
       {% if can_edit %}
-        <a href="{{ h.url_for(pkg.type ~ '_resource.edit', id=pkg.name, resource_id=res.id) }}" class="btn btn-xs btn-primary" aria-label="Edit resource {{ res.name or res.id }}">
+        <a href="{{ h.url_for(pkg.type ~ '_resource.edit', id=pkg.name, resource_id=res.id) }}" class="btn btn-sm btn-primary" aria-label="Edit resource {{ res.name or res.id }}">
           <i class="fa fa-pencil-square-o"></i>
           {{ _('Edit') }}
         </a>

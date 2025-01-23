@@ -1,6 +1,15 @@
 {% ckan_extends %}
 
-{% block primary_content_inner %}
+{% block package_description %}
+  {{ super() }}
+
+  {% set arcgis_link = h.opendata_theme_get_arcgis_link(pkg.resources) %}
+  {% if arcgis_link %}
+    <a href="{{ arcgis_link }}" class="btn btn-primary" target="_blank">
+      <i class="fa fa-map"></i> MAP
+    </a>
+  {% endif %}
+
   {% if 'featuredviews' in g.plugins %}
     {% set view = h.get_canonical_resource_view(pkg.id) %}
     {% if view %}
@@ -11,16 +20,4 @@
       %}
     {% endif %}
   {% endif %}
-
-  {% block package_resources %}
-    {{ super() }}
-  {% endblock %}
-
-  {% block package_tags %}
-    {{ super() }}
-  {% endblock %}
-
-  {% block package_additional_info %}
-    {{ super() }}
-  {% endblock %}
 {% endblock %}
