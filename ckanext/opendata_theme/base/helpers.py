@@ -58,13 +58,14 @@ def showcases(num=24):
 
 def groups(num=12):
     """Return a list of groups"""
-    groups = []
+    sorted_groups = []
     try:
-        groups = toolkit.get_action('group_list')({}, {'all_fields': True, 'sort': 'packages'})
+        groups = toolkit.get_action('group_list')({}, {'all_fields': True})
+        sorted_groups = sorted(groups, key=lambda k: (-int(k.get('package_count')), k.get('title')))
     except Exception:
         logger.debug("[opendata_theme] Error getting group list")
         return []
-    return groups[:num]
+    return sorted_groups[:num]
 
 
 def popular_datasets(num=5):

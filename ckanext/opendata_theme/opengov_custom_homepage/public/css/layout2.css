@@ -48,6 +48,12 @@
 }
 /*layout2 homepage flex order end*/
 
+.flex-wrap-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
 @media (max-width: 767px) {
   a.browse-group {
     width: calc(50% - 5px);
