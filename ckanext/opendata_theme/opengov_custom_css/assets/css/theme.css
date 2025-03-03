@@ -107,8 +107,8 @@ button.slick-arrow:focus,
 }
 .masthead .logo img {
   max-height: 65px;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 .masthead .navbar-left h2 {
   margin-top: 0;
@@ -360,6 +360,10 @@ form.form-inline.form-select.lang-select {
 
 #dataset-resources .btn-group .btn {
   margin-left: 5px;
+}
+
+.module-heading .action {
+  color: #ffffff !important;
 }
 
 @media (max-width: 767px) {
