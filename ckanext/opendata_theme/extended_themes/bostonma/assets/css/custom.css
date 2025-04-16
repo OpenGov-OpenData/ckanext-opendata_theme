@@ -10,6 +10,9 @@ a[href^="/datastore/dictionary_download/"] {
 .masthead .logo img {
   max-height: 20px !important;
 }
+.masthead .site-search {
+  padding-top: 0;
+}
 .account.avatar.authed a[href="/blog"],
 .account.avatar.authed a[href="/contact"] {
   display: none;
@@ -17,9 +20,6 @@ a[href^="/datastore/dictionary_download/"] {
 .compressed.masthead .navigation {
   float: right !important;
   padding: 5px 0;
-}
-.compressed.masthead .account-masthead {
-  margin-top: 5px;
 }
 .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
   max-width: unset !important;
@@ -32,9 +32,6 @@ a[href^="/datastore/dictionary_download/"] {
 #dataset-map .module-heading .action {
   color: #ffffff;
 }
-#field-sitewide-search {
-  height: 26px;
-}
 #footer-attribution-content {
   display: inline;
   right: 20%
@@ -42,9 +39,6 @@ a[href^="/datastore/dictionary_download/"] {
 #footer-attribution-content img {
   max-height: 25px;
   padding-right: 10px;
-}
-#page {
-  padding-top: 65px;
 }
 #twitter-widget-0, #twitter-widget-1 {
   height: 620px !important;
@@ -140,11 +134,8 @@ header .header-image.navbar-left {
 }
 header.navbar.navbar-static-top.masthead {
   box-shadow: 0 1px 2px 1px rgba(0,0,0,0.1);
-  position: fixed;
   min-height: 65px;
   width: 100%;
-  top: 0;
-  left: 0;
   z-index: 100;
 }
 input, textarea, select {
@@ -211,35 +202,6 @@ ul.menu {
 }
 .accordion-toggle.collapsed h2.accordion-heading:after {
   content: "\f078";
-}
-.account {
-  height: 48px;
-}
-.account ul {
-  height: 48px;
-}
-.account ul a:hover {
-  background-color: #126c9c;
-}
-.account li {
-  height: 48px;
-  display: inline-block;
-}
-.account-masthead .account ul li {
-  border-left: none;
-}
-.account-masthead .account.not-authed ul li a {
-  font-weight: normal;
-}
-.account-masthead .account ul li a:hover {
-  background: #469c23;
-}
-.account.avatar.authed ul, .account.not-authed ul {
-  padding-top: 0;
-}
-.account.avatar.authed ul a, .account.not-authed ul a {
-  padding: 14px 7px;
-  text-decoration: none;
 }
 .activity .item .date {
   color: #767676;
@@ -636,13 +598,6 @@ input:-ms-input-placeholder {
 .masthead {
   background: #ffffff none;
 }
-.masthead input[type="text"] {
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  border: 0;
-  border-radius: 0;
-  color: black;
-}
 .masthead .btn-navbar,
 .masthead .btn-navbar:hover, .masthead .btn-navbar:focus, .masthead .btn-navbar:active,
 .masthead .btn-navbar.active, .masthead .btn-navbar.disabled, .masthead .btn-navbar[disabled] {
@@ -674,23 +629,6 @@ input:-ms-input-placeholder {
 .masthead .navbar .nav-pills li.active a.s,
 .masthead a.s:hover {
   background-color: #fff;
-}
-.masthead .navigation {
-  margin-right: 0;
-}
-.masthead .section.site-search.simple-input {
-  float: right;
-  margin: 20px 0;
-  position: relative;
-}
-.masthead .site-search {
-  margin: 2px 2px 22px 0;
-}
-.masthead .site-search input {
-  background-color: transparent;
-  box-shadow: none;
-  padding: 4px 10px 4px 25px;
-  width: 144px;
 }
 .media-grid {
   background: #fff none;
@@ -927,9 +865,6 @@ header .navbar .nav>li>a {
   font-weight: normal;
   margin-bottom: 26px;
 }
-.section.site-search.simple-input [class^="icon-"] {
-  font-size: 20px;
-}
 .select2-container {
   margin-top: 1px;
   margin-bottom: 5px;
@@ -964,7 +899,6 @@ header .navbar .nav>li>a {
 .site-footer,
 .site-footer a,
 .site-footer small {
-  background-color: #0c2639;
   color: #51acff;
   font-weight: 400;
   font-size: 16px;
@@ -977,9 +911,6 @@ header .navbar .nav>li>a {
   width: 215px;
   margin-bottom: 10px;
   padding: 4px 6px;
-}
-.site-search.simple-input {
-  border: 1px solid rgb(205,205,205);
 }
 .spinner {
   -webkit-animation: scaleout 1.0s infinite ease-in-out;
@@ -1081,9 +1012,6 @@ fieldset.checkboxes label input {
   }
   .primary .nav.nav-tabs i {
     display: none;
-  }
-  .masthead .site-search {
-    display: inline;
   }
   .nav .dropdown .dropdown-menu,
   .js .dropdown:hover .dropdown-menu {
@@ -1289,21 +1217,6 @@ fieldset.checkboxes label input {
   }
 }
 @media (min-width: 980px) {
-  .account a {
-    display: inline-block;
-  }
-  .account li {
-    display: inline-block;
-    padding-top: 0;
-  }
-  .account.avatar.authed, .account.not-authed {
-    float: right;
-    margin-right: 34px;
-  }
-  .account.avatar.authed li, .account.not-authed li {
-    display: inline;
-    padding-top: 0;
-  }
   .masthead .nav-collapse {
     float: none;
     padding: 0;
@@ -1516,6 +1429,7 @@ label.nav-trigger:after {
 }
 .main-navigation .main-navigation-title {
   background: url(/img/b-logo-dark.svg) no-repeat center #fff;
+  background-color: #ffffff !important;
   background-size: 54px 83px;
   margin: 0;
   padding: 112px;
@@ -1523,7 +1437,7 @@ label.nav-trigger:after {
 }
 .main-navigation a {
   background-color: #0075d1;
-  color: #fff;
+  color: #fff !important;
   display: block;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
@@ -1599,11 +1513,6 @@ label.nav-trigger:after {
 .media-item.masonry-brick {
   border: 1px solid #e3e3e3;
   margin-left: 40px;
-}
-.main-navigation .account.avatar.authed ul a:hover,
-.main-navigation .account.not-authed li.active a,
-.main-navigation .account ul a:hover {
-  background-color: #175182;
 }
 .module-content.box {
   padding: 20px;
@@ -1756,9 +1665,6 @@ footer.site-footer .container {
 }
 .site-footer .container .row {
   padding-left: 40px;
-}
-.site-footer, .site-footer a, .site-footer small {
-  background-color: rgb(9,31,47);
 }
 .s {
   background-color: #fff;
@@ -2114,6 +2020,7 @@ ul.media-grid.masonry {
 
 .masthead, .masthead .navbar-collapse{
   padding: 0;
+  margin-top: 0;
 }
 
 .navbar-static-top{
@@ -2124,7 +2031,6 @@ ul.media-grid.masonry {
   display: none;
 }
 
-nav.not-authed a[href="/contact"],
 #custom-footer-form .footer-column-form:nth-child(4) {
   display: none !important;
 }

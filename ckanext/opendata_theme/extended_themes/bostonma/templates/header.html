@@ -18,19 +18,28 @@
 {% endif %}
 
 {% block header_wrapper %}
-<header class="navbar navbar-static-top masthead compressed">
+  {% block header_account %}
+    <div class="account-masthead">
+      <div class="container">
+        {% block header_account_container_content %}
+          {{ super() }}
+        {% endblock %}
+      </div>
+    </div>
+  {% endblock %}
+<header class="navbar navbar-static-top masthead">
   {% block header_debug %}
     {{ super() }}
   {% endblock %}
   <div class="container">
     {# The .header-image class hides the main text and uses image replacement for the title #}
     <label tabindex="0" for="hb__trigger" class="nav-trigger" type="button" aria-label="Menu" aria-controls="navigation" aria-expanded="false">
-        <div class="hb">
-            <span class="hb__box">
-                <span class="hb__inner"></span>
-            </span>
-            <span class="hb__label">Menu</span>
-        </div>
+      <div class="hb">
+        <span class="hb__box">
+          <span class="hb__inner"></span>
+        </span>
+        <span class="hb__label">Menu</span>
+      </div>
     </label>
     <div class="{{ g.header_class }} navbar-left">
       {% block header_logo %}
@@ -47,61 +56,6 @@
       </button>
     </div>
     <div class="collapse navbar-collapse" id="main-navigation-toggle">
-      {% block header_account %}
-        <div class="account-masthead">
-          {% block header_account_container_content %}
-            {% if g.userobj %}
-              <div class="account avatar authed" data-module="me" data-me="{{ g.userobj.id }}">
-                <ul class="list-unstyled unstyled">
-                  {% block header_account_logged %}
-                    {% if g.userobj.sysadmin %}
-                      <li>
-                        <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
-                          <i class="fa fa-gavel" aria-hidden="true"></i>
-                          <span class="text">{{ _('Admin') }}</span>
-                        </a>
-                      </li>
-                    {% endif %}
-                    <li>
-                      <a href="{{ h.url_for('user.read', id=g.userobj.name) }}" class="image" title="{{ _('View profile') }}">
-                              {{ h.user_image((c.user if c and c.user else ''), size=22) }}
-                              <span class="username">{{ h.opendata_theme_abbreviate_name(g.userobj.display_name) }}</span>
-                      </a>
-                    </li>
-                    {% set new_activities = h.new_activities() %}
-                    <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
-                      {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities)
-                      %}
-                      <a href="{{ h.url_for('dashboard.index') }}" title="{{ notifications_tooltip }}">
-                        <i class="fa fa-tachometer" aria-hidden="true"></i>
-                        <span class="text">{{ _('Dashboard') }}</span>
-                        <span class="badge">{{ new_activities }}</span>
-                      </a>
-                    </li>
-                    {% block header_account_settings_link %}
-                      {{ super() }}
-                    {% endblock %}
-                    {% block header_account_log_out_link %}
-                      {{ super() }}
-                    {% endblock %}
-                  {% endblock %}
-                </ul>
-              </div>
-            {% else %}
-              <nav class="account not-authed" aria-label="{{ _('Account') }}">
-                <ul class="list-unstyled unstyled">
-                  {% block header_account_notlogged %}
-                    <li>{% link_for _('Log in'), named_route='user.login' %}</li>
-                    {% if h.check_access('user_create') %}
-                      <li>{% link_for _('Sign up'), named_route='user.register', class_='sub' %}</li>
-                    {% endif %}
-                  {% endblock %}
-                </ul>
-              </nav>
-            {% endif %}
-          {% endblock %}
-        </div>
-      {% endblock %}
       {% block header_site_navigation %}
         <nav class="section navigation">
           <ul class="nav nav-pills">
@@ -115,6 +69,9 @@
               <li>
                 <a href="/pages/ckan-training-videos">Tips</a>
               </li>
+            {% endblock %}
+            {% block header_site_search %}
+              {{ super() }}
             {% endblock %}
           </ul>
         </nav>
