@@ -1620,6 +1620,10 @@ label.nav-trigger:after {
   background-color: #091f2f;
   color: #fff;
 }
+table.dataTable th {
+  background-color: #fff;
+  color: #333;
+}
 .table-striped tbody>tr:nth-child(odd)>th {
   background-color: #091f2f;
   color: #ffffff;
