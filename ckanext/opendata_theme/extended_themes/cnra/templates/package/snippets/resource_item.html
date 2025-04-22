@@ -7,10 +7,15 @@
         <i class="fa fa-bar-chart-o"></i>
         {{ _('Preview') }}
       </a>
-      {% if res.url and h.is_url(res.url) %}
+      {% if res.url and res.url_type == 'upload' %}
         <a href="{{ res.url }}" class="btn btn-sm btn-primary resource-url-analytics" target="_blank" aria-label="Download resource {{ res.name or res.id }}">
           <i class="fa fa-arrow-circle-o-down"></i>
           {{ _('Download') }}
+        </a>
+      {% else %}
+        <a href="{{ res.url }}" class="btn btn-sm btn-primary resource-url-analytics" target="_blank" aria-label="Go to resource {{ res.name or res.id }}">
+          <i class="fa fa-external-link"></i>
+          {{ _('Go to resource') }}
         </a>
       {% endif %}
       {% if can_edit %}
