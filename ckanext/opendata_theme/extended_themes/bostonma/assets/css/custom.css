@@ -13,15 +13,21 @@ a[href^="/datastore/dictionary_download/"] {
 .masthead .site-search {
   padding-top: 0;
 }
-.account.avatar.authed a[href="/blog"],
-.account.avatar.authed a[href="/contact"] {
+.account-masthead .account ul li a {
+  text-transform: uppercase;
+}
+.account-masthead .account ul li a[href="/blog"],
+.account-masthead .account ul li a[href="/contact"] {
   display: none;
 }
 .compressed.masthead .navigation {
   float: right !important;
   padding: 5px 0;
 }
-.navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+.account-masthead .container,
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
   max-width: unset !important;
   width: 100% !important;
 }
@@ -823,6 +829,7 @@ header .navbar .nav>li>a {
   -moz-box-shadow: none;
   box-shadow: none;
 }
+.account-masthead .container,
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
@@ -1451,13 +1458,10 @@ label.nav-trigger:after {
 }
 .main-navigation li {
   list-style-type: none;
-  border-top: 3px solid #091f2f;
+  border-top: 2px solid #091f2f;
 }
 .main-navigation a {
   text-decoration: none;
-}
-.main-navigation a:hover {
-  background-color: #175182;
 }
 .main-navigation .logout a {
   background-color: #d22d23;
@@ -2014,7 +2018,6 @@ ul.media-grid.masonry {
   left: 0;
   display: block;
   float: left;
-  margin: 0 10px 0 0;
 }
 
 .navbar-default{
