@@ -17,6 +17,11 @@
   {% set about_index_route = 'about' %}
 {% endif %}
 
+{% block header_account_notlogged %}
+  {{ super() }}
+  <li><a href="https://forms.gle/u8J13xqjtdHj9AF18" target="_blank">Help and Feedback</a></li>
+{% endblock %}
+
 {% block header_wrapper %}
   {% block header_account %}
     <div class="account-masthead">
