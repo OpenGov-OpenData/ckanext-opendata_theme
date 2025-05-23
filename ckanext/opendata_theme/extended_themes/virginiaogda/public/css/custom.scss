@@ -305,7 +305,6 @@ aside.secondary {
 /* Additional info tables */
 
 .table.table-striped.table-bordered.table-condensed{
-    border: 1px solid #000000;
     border-collapse: collapse;
     width: 100%;
     margin: 0 auto;
@@ -317,12 +316,10 @@ aside.secondary {
     .dataset-label{
         background-color: #173055;
         color: #fff;
-      }
-  
-  }
+    }
+}
 
 .table.table-striped.table-bordered.table-condensed{
-    border: 1px solid #000000;
     border-collapse: collapse;
     width: 100%;
     margin: 0 auto;
@@ -331,11 +328,11 @@ aside.secondary {
     font-weight: normal;
     line-height: 1.5;
     tr {
-            th[scope="row"]{
-                background-color: #173055!important;
-                color: #fff;
-            }  
+        th[scope="row"]{
+            background-color: #173055!important;
+            color: #fff;
         }
+    }
 }
 
 @media (min-width: 980px) {
