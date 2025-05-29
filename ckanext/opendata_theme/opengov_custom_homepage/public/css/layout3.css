@@ -41,8 +41,10 @@ a.browse-group {
   padding: 5px;
 }
 a.browse-group img {
-  max-height: 175px;
-  max-width: 100%;
+  height: 175px;
+  width: 100%;
+  object-fit: cover;
+  object-position: 0 0;
 }
 .browse-group-title {
   text-transform: none;

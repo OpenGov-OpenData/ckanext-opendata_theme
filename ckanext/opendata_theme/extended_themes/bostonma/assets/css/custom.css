@@ -264,6 +264,9 @@ ul.menu {
   border: 1px solid #d22d23 !important;
   box-shadow: none;
 }
+.btn-default {
+  font-family: "Montserrat", sans-serif;
+}
 .btn-group.open .btn-primary.dropdown-toggle {
   background-color: #085871 !important;
   border: 1px solid #085871 !important;
@@ -271,11 +274,15 @@ ul.menu {
 .actions .btn-default {
   padding: 15px 20px;
 }
-.btn-group > .btn, .form-horizontal > .btn, .btn-sm {
+.btn-group > .btn,
+.form-horizontal > .btn,
+.btn-sm {
   padding: 15px 20px;
 }
-.dropdown.btn-group > .btn {
-  padding: 5px 10px;
+.dropdown.btn-group > .btn,
+.dt-buttons > .btn-group > .btn,
+.dt-buttons > .btn {
+  padding: 6px 12px;
 }
 .btn-primary, .btn-success, .btn-success:hover, .btn-success:active {
   background-color: #0075d1 !important;
@@ -1599,12 +1606,6 @@ label.nav-trigger:after {
   border-radius: 100%;
   display: none;
 }
-.table-bordered {
-  border-top: 1px solid rgb(88,88,91);
-  border-right: 1px solid rgb(88,88,91);
-  border-bottom: 1px solid rgb(88,88,91);
-  border-collapse: collapse;
-}
 .table-bordered th,
 .table-bordered td {
   border-left: 1px solid rgb(88,88,91)
@@ -1655,6 +1656,13 @@ article.module .module-content .table-striped tbody tr:nth-child(even) td {
 }
 table tr:not(:last-child) th {
   border-bottom: 1px solid #fff;
+}
+.dataTables_scrollBody {
+  font-family: "Montserrat", sans-serif;
+}
+.dataTables_scrollBody .table-striped tbody tr td,
+.dataTables_scrollBody .table-striped tbody tr th {
+  padding: 5px;
 }
 footer {
   background: url(/img/b-logo-light.svg) no-repeat 1.75em center;
@@ -1743,10 +1751,6 @@ input, textarea, select {
 }
 .page-header .content_action {
   margin-right: 5px;
-}
-.btn-group>.btn:first-child:hover {
-  border: 1px solid #d22d23;
-  background-color: #ffffff;
 }
 .resource-item:hover {
   background-color: #ffffff;
