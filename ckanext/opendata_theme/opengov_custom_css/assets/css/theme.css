@@ -182,7 +182,7 @@ button.slick-arrow:focus,
   padding: 5px;
 }
 .slick-showcase .media-image {
-  height: 160px;
+  height: 170px;
   width: 100%;
   object-fit: cover;
   object-position: 50% 0;
@@ -198,6 +198,7 @@ button.slick-arrow:focus,
 }
 .media-grid .media-item .media-image {
   max-height: 120px;
+  max-width: 100%
 }
 .media-grid .media-item img.img-responsive {
   display: inline-block;
@@ -210,6 +211,9 @@ button.slick-arrow:focus,
   max-height: 100px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+.slick-showcase .media-item h3 {
+  margin-top: 10px;
 }
 #organization-search-form + .media-grid p,
 #group-search-form + .media-grid p {
