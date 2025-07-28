@@ -7,26 +7,37 @@
             <div class="col-md-12 span12 col1">
                 <div class="module-content">
                     <div class="cards">
-                        <div class="card">
+                        <div class="card" role="region" aria-label="{{ stats.dataset_count }} datasets available">
                             <img class="card-img-top" src="/img/noun-data-mine.svg" alt="Data mine icon">
                             <div class="card-body">
-                                <h5 class="card-title">{{ h.SI_number_span(stats.dataset_count) }}</h5>
-                                <p class="card-text">Datasets Available</p>
+                                <p class="card-text stat-number" aria-hidden="true">
+                                    {{ h.SI_number_span(stats.dataset_count) }}
+                                </p>
+                                <p class="card-text stat-label" aria-hidden="true">
+                                    Datasets Available
+                                </p>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" role="region" aria-label="{{ data.get('total_resources') }} total resources">
                             <img class="card-img-top" src="/img/noun-data-analysis.svg" alt="Data analysis icon">
                             <div class="card-body">
-                                <h5 class="card-title">{{ h.SI_number_span(data.get('total_resources')) }}</h5>
-                                <p class="card-text">Total Resources</p>
+                                <p class="card-text stat-number" aria-hidden="true">
+                                    {{ h.SI_number_span(data.get('total_resources')) }}
+                                </p>
+                                <p class="card-text stat-label" aria-hidden="true">
+                                    Total Resources
+                                </p>
                             </div>
                         </div>
-
-                        <div class="card">
+                        <div class="card" role="region" aria-label="{{ stats.organization_count }} total organizations">
                             <img class="card-img-top" src="/img/noun-data.svg" alt="Data icon">
                             <div class="card-body">
-                                <h5 class="card-title">{{ h.SI_number_span(stats.organization_count) }}</h5>
-                                <p class="card-text">Total Organizations</p>
+                                <p class="card-text stat-number" aria-hidden="true">
+                                    {{ h.SI_number_span(stats.organization_count) }}
+                                </p>
+                                <p class="card-text stat-label" aria-hidden="true">
+                                    Total Organizations
+                                </p>
                             </div>  
                         </div>
                     </div>
