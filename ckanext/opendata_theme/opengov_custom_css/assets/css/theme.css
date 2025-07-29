@@ -54,6 +54,9 @@ p a,
 .btn.og-login {
   background-color: #165cab !important;
 }
+.context-info .description {
+  word-break: break-word;
+}
 .stages {
   color: #616365;
 }

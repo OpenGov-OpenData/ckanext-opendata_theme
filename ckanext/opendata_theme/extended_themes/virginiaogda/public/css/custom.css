@@ -7,20 +7,30 @@ html, body {
   line-height: 1.5;
 }
 
+body .va-agency-bar-container {
+  z-index: 10 !important;
+  direction: ltr !important;
+}
+.navbar-static-top {
+  z-index: 1 !important;
+}
+.site-footer .og-attribution .pull-left {
+  float: left !important;
+}
+
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-weight: 300 !important;
   font-family: "Montserrat", sans-serif !important;
 }
 
 /*
-
 @media (min-width: 768px) {
-    #content.container {
-      width: 750px!important;
-      max-width: 100%!important;
-    }
+  #content.container {
+    width: 750px!important;
+    max-width: 100%!important;
   }
-  */
+}
+*/
 @media (min-width: 980px) {
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
     max-width: 1200px !important;
@@ -33,9 +43,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     width: 1170px!important;
     max-width: 1170px!important;
   }
-
 }
 */
+
 .main-browse.stats {
   background: url(/img/networkparticles.svg);
   background-position: center;
@@ -59,11 +69,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   border-radius: 40px;
   background-color: #77C5EB;
   padding: 12px;
-  margin: 1rem auto;
+  margin: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+@media (max-width: 768px) {
+  .main-browse .module-content .cards .card {
+    margin: 1rem auto;
+  }
 }
 .main-browse .module-content .cards .card .card-img-top {
   max-width: 100%;
@@ -80,21 +95,20 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   padding: 0 15px;
   text-align: center;
 }
-.main-browse .module-content .cards .card .card-body .card-title {
+.main-browse .module-content .cards .card .card-body .card-text {
   position: relative;
   color: #000000;
+  margin: 0;
+}
+.main-browse .module-content .cards .card .card-body .card-text.stat-number {
+  font-weight: normal;
   font-size: 36px;
-  font-weight: lighter;
-  margin: 0;
 }
-.main-browse .module-content .cards .card .card-body .card-title span {
-  font-weight: lighter;
-}
-.main-browse .module-content .cards .card .card-body .card-text {
-  font-size: 21px;
+.main-browse .module-content .cards .card .card-body .card-text.stat-label {
   font-weight: bold;
-  margin: 0;
+  font-size: 21px;
 }
+
 
 /* Main Containers */
 .main-browse .container .module-content h2,
@@ -158,6 +172,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .main-showcase .container .module-content section .dataset-list .dataset-item:nth-child(n+3) {
   margin: 0;
 }
+.main-featured .dataset-content,
+.main-popular .dataset-content {
+  min-height: 235px;
+}
 .main-browse .container .module-content section .dataset-list .dataset-item .dataset-content,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content,
@@ -186,7 +204,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover {
-  color: rgba(255, 255, 255, 0.25);
+  text-decoration: underline;
 }
 .main-browse .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading::after,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading::after,
@@ -249,7 +267,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin: 0 auto;
 }
 .main-groups .container .module-content .groups-wrapper .group-wrapper a.browse-group:hover {
-  text-decoration: none;
+  text-decoration: underline;
   color: #075A83;
 }
 .main-groups .container .module-content .groups-wrapper .group-wrapper a.browse-group img.browse-group-image {
@@ -265,7 +283,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .main-groups .container .module-content .groups-wrapper .group-wrapper a.browse-group .browse-group-title {
   text-align: center;
   color: #206b82;
-  font-size: 30px;
+  font-size: 24px;
 }
 
 aside.secondary .module-narrow .context-info .module-content h1 {

@@ -3,40 +3,38 @@
  
 /*Overwrite */
 html, body {
-  font-family: 'Montserrat', sans-serif!important;
-  font-size: 16px;
-  font-weight: normal;
-  line-height: 1.5;
+    font-family: 'Montserrat', sans-serif!important;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.5;
 }
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 { 
-  font-weight: 300!important;
-  font-family: 'Montserrat', sans-serif!important;
+    font-weight: 300!important;
+    font-family: 'Montserrat', sans-serif!important;
 } 
-/*
 
+/*
 @media (min-width: 768px) {
     #content.container {
-      width: 750px!important;
-      max-width: 100%!important;
+        width: 750px!important;
+        max-width: 100%!important;
     }
-  }
-  */
+}
+*/
   @media (min-width: 980px) {
     .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
       max-width: 1200px!important;
       width: 100%!important;
     }
   }
-  /*
-  @media (min-width: 1200px) {
+/*
+@media (min-width: 1200px) {
     #content.container {
-      width: 1170px!important;
-      max-width: 1170px!important;
+        width: 1170px!important;
+        max-width: 1170px!important;
     }
-
-  }
-  */
-
+}
+*/
 
 .main-browse .module-content .cards {
     display: flex;
