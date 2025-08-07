@@ -471,6 +471,12 @@ form.form-inline.form-select.lang-select {
   }
 }
 
+@media (min-width: 991px) {
+  .resource-item {
+    padding-right: 195px;
+  }
+}
+
 .site-footer .og-attribution {
   display: inline-block;
   float: right;
