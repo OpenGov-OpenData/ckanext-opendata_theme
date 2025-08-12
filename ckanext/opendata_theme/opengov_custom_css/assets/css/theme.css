@@ -368,10 +368,6 @@ form.form-inline.form-select.lang-select {
   background-color: #852c7b !important;
 }
 
-#dataset-resources .btn-group .btn {
-  margin-left: 5px;
-}
-
 .module-heading .action {
   color: #ffffff !important;
 }
@@ -468,6 +464,12 @@ form.form-inline.form-select.lang-select {
   }
   .control-medium input, .control-medium select, .control-medium textarea {
     width: 380px;
+  }
+}
+
+@media (min-width: 991px) {
+  .resource-item {
+    padding-right: 140px;
   }
 }
 
