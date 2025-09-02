@@ -275,8 +275,7 @@ ul.menu {
   padding: 15px 20px;
 }
 .btn-group > .btn,
-.form-horizontal > .btn,
-.btn-sm {
+.form-horizontal > .btn {
   padding: 15px 20px;
 }
 .dropdown.btn-group > .btn,
@@ -321,8 +320,9 @@ ul.menu {
 .btn-warning {
   text-shadow: none;
 }
-.btn-small {
+.btn-sm, .btn-group > .btn-sm {
   padding: 5px 10px;
+  font-size: 12px;
 }
 .carousel {
   line-height: inherit;
@@ -1959,6 +1959,7 @@ section.tags h3 {
 }
 .dataset-item-extra {
   margin-top: 6px;
+  margin-left: 120px;
 }
 .dataset-list .dataset-item .dataset-resources {
   padding-left: 120px;
