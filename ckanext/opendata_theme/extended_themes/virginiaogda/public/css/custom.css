@@ -46,24 +46,21 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 */
 
-.main-browse.stats {
-  background: url(/img/networkparticles.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.main-stats {
+  background: #ffffff;
 }
-.main-browse .module-content .cards {
+.main-stats .module-content .cards {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
-  padding: 75px 0;
+  padding: 25px 0;
 }
 @media screen and (max-width: 768px) {
-  .main-browse .module-content .cards {
+  .main-stats .module-content .cards {
     flex-direction: column;
   }
 }
-.main-browse .module-content .cards .card {
+.main-stats .module-content .cards .card {
   height: 240px;
   width: 240px;
   border-radius: 40px;
@@ -76,17 +73,17 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   flex-direction: column;
 }
 @media (max-width: 768px) {
-  .main-browse .module-content .cards .card {
+  .main-stats .module-content .cards .card {
     margin: 1rem auto;
   }
 }
-.main-browse .module-content .cards .card .card-img-top {
+.main-stats .module-content .cards .card .card-img-top {
   max-width: 100%;
   max-height: 128px;
   background: transparent;
   padding-top: 0px;
 }
-.main-browse .module-content .cards .card .card-body {
+.main-stats .module-content .cards .card .card-body {
   position: relative;
   display: flex;
   align-items: center;
@@ -95,23 +92,39 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   padding: 0 15px;
   text-align: center;
 }
-.main-browse .module-content .cards .card .card-body .card-text {
+.main-stats .module-content .cards .card .card-body .card-text {
   position: relative;
   color: #002c56;
   margin: 0;
 }
-.main-browse .module-content .cards .card .card-body .card-text.stat-number {
+.main-stats .module-content .cards .card .card-body .card-text.stat-number {
   font-weight: normal;
   font-size: 36px;
 }
-.main-browse .module-content .cards .card .card-body .card-text.stat-label {
+.main-stats .module-content .cards .card .card-body .card-text.stat-label {
   font-weight: bold;
   font-size: 21px;
 }
 
 
 /* Main Containers */
-.main-browse .container .module-content h2,
+.main-stats {
+  order: 1;
+}
+.main-featured {
+  order: 2;
+}
+.main-popular {
+  order: 3;
+}
+.main-groups {
+  order: 4;
+}
+.main-showcase {
+  order: 5;
+}
+
+.main-stats .container .module-content h2,
 .main-featured .container .module-content h2,
 .main-popular .container .module-content h2,
 .main-showcase .container .module-content h2 {
@@ -120,19 +133,19 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-weight: bold !important;
   border-bottom: 4px solid #075A83 !important;
 }
-.main-browse .container .module-content h2 a,
+.main-stats .container .module-content h2 a,
 .main-featured .container .module-content h2 a,
 .main-popular .container .module-content h2 a,
 .main-showcase .container .module-content h2 a {
   color: #173055;
 }
-.main-browse .container .module-content h2 a:hover,
+.main-stats .container .module-content h2 a:hover,
 .main-featured .container .module-content h2 a:hover,
 .main-popular .container .module-content h2 a:hover,
 .main-showcase .container .module-content h2 a:hover {
   text-decoration: none;
 }
-.main-browse .container .module-content section .dataset-list,
+.main-stats .container .module-content section .dataset-list,
 .main-featured .container .module-content section .dataset-list,
 .main-popular .container .module-content section .dataset-list,
 .main-showcase .container .module-content section .dataset-list {
@@ -142,14 +155,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   flex-wrap: wrap;
 }
 @media screen and (max-width: 768px) {
-  .main-browse .container .module-content section .dataset-list,
+  .main-stats .container .module-content section .dataset-list,
   .main-featured .container .module-content section .dataset-list,
   .main-popular .container .module-content section .dataset-list,
   .main-showcase .container .module-content section .dataset-list {
     flex-wrap: wrap;
   }
 }
-.main-browse .container .module-content section .dataset-list .dataset-item,
+.main-stats .container .module-content section .dataset-list .dataset-item,
 .main-featured .container .module-content section .dataset-list .dataset-item,
 .main-popular .container .module-content section .dataset-list .dataset-item,
 .main-showcase .container .module-content section .dataset-list .dataset-item {
@@ -158,7 +171,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin: 0 2% 0 0;
 }
 @media screen and (max-width: 768px) {
-  .main-browse .container .module-content section .dataset-list .dataset-item,
+  .main-stats .container .module-content section .dataset-list .dataset-item,
   .main-featured .container .module-content section .dataset-list .dataset-item,
   .main-popular .container .module-content section .dataset-list .dataset-item,
   .main-showcase .container .module-content section .dataset-list .dataset-item {
@@ -166,7 +179,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     margin: 0 0 30px;
   }
 }
-.main-browse .container .module-content section .dataset-list .dataset-item:nth-child(n+3),
+.main-stats .container .module-content section .dataset-list .dataset-item:nth-child(n+3),
 .main-featured .container .module-content section .dataset-list .dataset-item:nth-child(n+3),
 .main-popular .container .module-content section .dataset-list .dataset-item:nth-child(n+3),
 .main-showcase .container .module-content section .dataset-list .dataset-item:nth-child(n+3) {
@@ -176,7 +189,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .main-popular .dataset-content {
   min-height: 235px;
 }
-.main-browse .container .module-content section .dataset-list .dataset-item .dataset-content,
+.main-stats .container .module-content section .dataset-list .dataset-item .dataset-content,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content {
@@ -185,14 +198,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   padding: 30px;
   position: relative;
 }
-.main-browse .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading,
+.main-stats .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading {
   position: relative;
   font-size: 24px;
 }
-.main-browse .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a,
+.main-stats .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a {
@@ -200,13 +213,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   text-align: center;
   text-decoration: none;
 }
-.main-browse .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover,
+.main-stats .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading a:hover {
   text-decoration: underline;
 }
-.main-browse .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading::after,
+.main-stats .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading::after,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading::after,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading::after,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content h3.dataset-heading::after {
@@ -220,14 +233,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   align-items: center;
   justify-content: center;
 }
-.main-browse .container .module-content section .dataset-list .dataset-item .dataset-content .dataset-description,
+.main-stats .container .module-content section .dataset-list .dataset-item .dataset-content .dataset-description,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content .dataset-description,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content .dataset-description,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content .dataset-description {
   color: #FFFFFF;
   font-size: 16px;
 }
-.main-browse .container .module-content section .dataset-list .dataset-item .dataset-content figure.showcase-image img,
+.main-stats .container .module-content section .dataset-list .dataset-item .dataset-content figure.showcase-image img,
 .main-featured .container .module-content section .dataset-list .dataset-item .dataset-content figure.showcase-image img,
 .main-popular .container .module-content section .dataset-list .dataset-item .dataset-content figure.showcase-image img,
 .main-showcase .container .module-content section .dataset-list .dataset-item .dataset-content figure.showcase-image img {
