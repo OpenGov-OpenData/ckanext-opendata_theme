@@ -1,0 +1,101 @@
+{% extends "custom_search/base.html" %}
+{% import 'macros/form.html' as form %}
+
+{% block secondary_content %}
+  <div class="filters">
+    <h2>Filters</h2>
+    <form method="get" action="" id="search-form">
+      {% for field in fields %}
+      <div class="form-group">
+        <label>{{ field }}</label>
+        <select name="{{ field }}" class="form-control filter-dropdown" data-field="{{ field }}">
+          <option value="">All {{ field }}</option>
+        </select>
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block primary_content %}
+<section class="module">
+  <div class="module-content">
+    <h2>Search for an agreement or define filter criteria in the panel on the left.</h2>
+    <div id="data-preview">
+      {% set iframe_url = "http://127.0.0.1:5002/dataset/mou-data/resource/cf86d944-0db9-4d4e-a666-bc9640be16fd/view/c40835b4-2e15-441b-81fd-644ef351233b" %}
+      {% if filters %}
+        {% set filter_pairs = [] %}
+        {% for key, value in filters.items() %}
+          {% if value %}
+            {% set _ = filter_pairs.append(key + ":" + value) %}
+          {% endif %}
+        {% endfor %}
+        {% if filter_pairs %}
+          {% set filters_string = filter_pairs|join("|") %}
+          {% set iframe_url = iframe_url + "?filters=" + filters_string|urlencode %}
+        {% endif %}
+      {% endif %}
+      <iframe width="100%" height="1200px" src="{{ iframe_url }}" frameBorder="0"></iframe>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    // Current filter values from URL parameters
+    const currentFilters = {{ filters | tojson }};
+    
+    // Function to populate dropdown options
+    async function populateDropdown(field) {
+      try {
+        const response = await fetch(`/api/filter-options?field=${encodeURIComponent(field)}`);
+        const data = await response.json();
+        
+        if (data.options) {
+          const dropdown = document.querySelector(`select[data-field="${field}"]`);
+          if (dropdown) {
+            // Clear existing options except the first one
+            dropdown.innerHTML = '<option value="">All ' + field + '</option>';
+            
+            // Add options from API
+            data.options.forEach(option => {
+              const optionElement = document.createElement('option');
+              optionElement.value = option;
+              optionElement.textContent = option;
+              
+              // Select current filter value if it matches
+              if (currentFilters[field] === option) {
+                optionElement.selected = true;
+              }
+              
+              dropdown.appendChild(optionElement);
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching options for field', field, ':', error);
+      }
+    }
+    
+    // Function to clear all filters
+    function clearFilters() {
+      const dropdowns = document.querySelectorAll('.filter-dropdown');
+      dropdowns.forEach(dropdown => {
+        dropdown.selectedIndex = 0; // Select "All" option
+      });
+    }
+    
+    // Populate all dropdowns when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdowns = document.querySelectorAll('.filter-dropdown');
+      dropdowns.forEach(dropdown => {
+        const field = dropdown.getAttribute('data-field');
+        populateDropdown(field);
+      });
+    });
+  </script>
+{% endblock %}
