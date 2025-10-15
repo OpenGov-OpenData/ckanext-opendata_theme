@@ -52,7 +52,18 @@
     // Function to populate dropdown options
     async function populateDropdown(field) {
       try {
-        const response = await fetch(`/api/filter-options?field=${encodeURIComponent(field)}`);
+        // Build query parameters including current filters
+        const params = new URLSearchParams();
+        params.append('field', field);
+        
+        // Add current filters (excluding the field we're populating)
+        Object.keys(currentFilters).forEach(key => {
+          if (key !== field && currentFilters[key]) {
+            params.append(key, currentFilters[key]);
+          }
+        });
+        
+        const response = await fetch(`/api/filter-options?${params.toString()}`);
         const data = await response.json();
         
         if (data.options) {
@@ -89,12 +100,46 @@
       });
     }
     
-    // Populate all dropdowns when page loads
-    document.addEventListener('DOMContentLoaded', function() {
+    // Function to refresh all dropdowns when filters change
+    function refreshAllDropdowns() {
       const dropdowns = document.querySelectorAll('.filter-dropdown');
       dropdowns.forEach(dropdown => {
         const field = dropdown.getAttribute('data-field');
         populateDropdown(field);
+      });
+    }
+    
+    // Populate all dropdowns when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      refreshAllDropdowns();
+      
+      // Add event listeners to dropdowns to refresh options when they change
+      const dropdowns = document.querySelectorAll('.filter-dropdown');
+      dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('change', function() {
+          // Update currentFilters with the new selection
+          const field = this.getAttribute('data-field');
+          if (this.value) {
+            currentFilters[field] = this.value;
+          } else {
+            delete currentFilters[field];
+          }
+          
+          // Refresh all other dropdowns (excluding the one that just changed)
+          const otherDropdowns = document.querySelectorAll('.filter-dropdown');
+          otherDropdowns.forEach(otherDropdown => {
+            const otherField = otherDropdown.getAttribute('data-field');
+            if (otherField !== field) {
+              populateDropdown(otherField);
+            }
+          });
+          
+          // Auto-submit the form when a filter changes
+          const form = document.getElementById('search-form');
+          if (form) {
+            form.submit();
+          }
+        });
       });
     });
   </script>

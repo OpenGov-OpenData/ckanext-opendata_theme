@@ -32,8 +32,18 @@ def custom_search():
     # Query Datastore
     result = toolkit.get_action("datastore_search")(context, data)
 
-    # Get column names
-    fields = [f["id"] for f in result["fields"] if f["id"] != "_id"]
+    # Get configured filter fields from CKAN config
+    filter_fields_config = toolkit.config.get('ckanext.custom_search.filter_fields', '')
+    
+    if filter_fields_config:
+        # Parse comma-separated field names from config
+        configured_fields = [field.strip() for field in filter_fields_config.split(';') if field.strip()]
+        # Only include fields that are both configured and exist in the dataset
+        all_fields = [f["id"] for f in result["fields"] if f["id"] != "_id"]
+        fields = [field for field in configured_fields if field in all_fields]
+    else:
+        # Fallback to all fields if no configuration is provided
+        fields = [f["id"] for f in result["fields"] if f["id"] != "_id"]
 
     return render_template(
         "custom_search/search.html",
@@ -43,14 +53,20 @@ def custom_search():
     )
 
 def get_filter_options():
-    """API endpoint to get distinct values for a specific field"""
+    """API endpoint to get distinct values for a specific field, filtered by current filters"""
     context = {"model": model, "user": toolkit.g.user}
     
     field = request.args.get('field')
     if not field:
         return jsonify({"error": "Field parameter is required"}), 400
     
-    # Build Datastore search params for distinct values
+    # Extract current filters from query parameters (excluding the field we're getting options for)
+    current_filters = {}
+    for key, value in request.args.items():
+        if value and key != 'field':  # Don't include the field parameter itself
+            current_filters[key] = value
+    
+    # Build Datastore search params for distinct values with current filters applied
     data = {
         "resource_id": RESOURCE_ID,
         "fields": [field],
@@ -59,6 +75,10 @@ def get_filter_options():
         "limit": 1000,  # Get all distinct values
         "include_total": False
     }
+    
+    # Apply current filters to the search
+    if current_filters:
+        data["filters"] = current_filters
     
     try:
         result = toolkit.get_action("datastore_search")(context, data)
