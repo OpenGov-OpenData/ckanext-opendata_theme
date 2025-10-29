@@ -16,11 +16,16 @@ def custom_search():
     if not package:
         abort(404, ('Package not found'))
 
-    # Extract filters from query parameters
+    # Extract filters from query parameters (handle multiple values per filter)
     filters = {}
     for key, value in request.args.items():
         if value:
-            filters[key] = value
+            # Get all values for this parameter (in case of multiple selections)
+            values = request.args.getlist(key)
+            if len(values) == 1:
+                filters[key] = values[0]
+            elif len(values) > 1:
+                filters[key] = values
 
     # Build Datastore search params
     data = {
@@ -64,7 +69,12 @@ def get_filter_options():
     current_filters = {}
     for key, value in request.args.items():
         if value and key != 'field':  # Don't include the field parameter itself
-            current_filters[key] = value
+            # Get all values for this parameter (in case of multiple selections)
+            values = request.args.getlist(key)
+            if len(values) == 1:
+                current_filters[key] = values[0]
+            elif len(values) > 1:
+                current_filters[key] = values
     
     # Build Datastore search params for distinct values with current filters applied
     data = {
