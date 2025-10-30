@@ -2,8 +2,13 @@
 {% import 'macros/form.html' as form %}
 
 {% block secondary_content %}
-  <div class="filters">
-    <h2>Filters</h2>
+  <div class="filters" id="filters-panel">
+    <div class="filters-header">
+      <h2>Filters</h2>
+      <button type="button" class="btn btn-sm btn-secondary filter-toggle" id="hide-filters-btn" title="Hide filters">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Hide Filters
+      </button>
+    </div>
     <form method="get" action="" id="search-form">
       {% for field in fields %}
       <div class="form-group">
@@ -12,7 +17,6 @@
         </select>
       </div>
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Search</button>
       <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
     </form>
   </div>
@@ -22,6 +26,9 @@
 <section class="module">
   <div class="module-content">
     <h2>Search for an agreement or define filter criteria in the panel on the left.</h2>
+    <button type="button" class="btn btn-sm btn-secondary filter-toggle" id="show-filters-btn" title="Show filters" style="display: none;">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Show Filters
+    </button>
     <div id="data-preview">
       {% set iframe_url = "http://127.0.0.1:5002/dataset/mou-data/resource/cf86d944-0db9-4d4e-a666-bc9640be16fd/view/c40835b4-2e15-441b-81fd-644ef351233b" %}
       {% if filters %}
@@ -95,6 +102,99 @@
     
     .select2-container .select2-selection--multiple .select2-selection__rendered {
       padding: 2px 5px;
+    }
+    
+    /* Filter panel toggle styles */
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .filters-header h2 {
+      margin: 0;
+      flex: 1;
+    }
+    
+    .filter-toggle {
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-toggle:hover {
+      color: #0d6efd;
+      background-color: rgba(13, 110, 253, 0.1);
+      border-radius: 4px;
+    }
+    
+    .show-filters-btn {
+      transform: translateY(-50%);
+      z-index: 1000;
+    }
+    
+    /* Ensure show filters button is visible when filters are hidden */
+    body.filters-hidden #show-filters-btn {
+      display: block !important;
+      margin-bottom: 15px;
+    }
+    
+    /* Hide show filters button when filters are visible */
+    body:not(.filters-hidden) #show-filters-btn {
+      display: none !important;
+    }
+    
+    /* Hide secondary sidebar when filters are hidden */
+    body.filters-hidden .secondary,
+    body.filters-hidden aside.secondary {
+      display: none !important;
+      width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    /* Hide the filters panel specifically */
+    body.filters-hidden #filters-panel {
+      display: none !important;
+    }
+    
+    /* Expand primary content when filters are hidden */
+    body.filters-hidden .primary,
+    body.filters-hidden div.primary {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      flex: 1 1 100% !important;
+    }
+    
+    /* Handle Bootstrap grid - expand primary column when secondary is hidden */
+    body.filters-hidden .row > .col-md-3:first-of-type,
+    body.filters-hidden .row > .col-sm-3:first-of-type,
+    body.filters-hidden .row > .col-lg-3:first-of-type,
+    body.filters-hidden .row > .col-md-4:first-of-type,
+    body.filters-hidden .row > .col-sm-4:first-of-type,
+    body.filters-hidden .row > .col-lg-4:first-of-type {
+      display: none !important;
+      width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    body.filters-hidden .row > .col-md-9,
+    body.filters-hidden .row > .col-sm-9,
+    body.filters-hidden .row > .col-lg-9,
+    body.filters-hidden .row > .col-md-8,
+    body.filters-hidden .row > .col-sm-8,
+    body.filters-hidden .row > .col-lg-8 {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+    
+    /* Transition for smooth expand/collapse */
+    .primary, .secondary {
+      transition: width 0.3s ease, margin 0.3s ease, max-width 0.3s ease;
     }
   </style>
 {% endblock %}
@@ -189,8 +289,47 @@
       );
     }
     
+    // Filter toggle functionality
+    function toggleFilters(hide) {
+      const body = document.body;
+      const hideBtn = document.getElementById('hide-filters-btn');
+      const showBtn = document.getElementById('show-filters-btn');
+      
+      if (hide) {
+        body.classList.add('filters-hidden');
+        hideBtn.style.display = 'none';
+        showBtn.style.display = 'block';
+        localStorage.setItem('filtersHidden', 'true');
+      } else {
+        body.classList.remove('filters-hidden');
+        hideBtn.style.display = 'block';
+        showBtn.style.display = 'none';
+        localStorage.setItem('filtersHidden', 'false');
+      }
+    }
+    
+    // Restore filter visibility state from localStorage
+    function restoreFilterState() {
+      const filtersHidden = localStorage.getItem('filtersHidden');
+      if (filtersHidden === 'true') {
+        toggleFilters(true);
+      }
+    }
+    
     // Populate all dropdowns when page loads
     document.addEventListener('DOMContentLoaded', async function() {
+      // Restore filter visibility state
+      restoreFilterState();
+      
+      // Set up toggle button event listeners
+      document.getElementById('hide-filters-btn').addEventListener('click', function() {
+        toggleFilters(true);
+      });
+      
+      document.getElementById('show-filters-btn').addEventListener('click', function() {
+        toggleFilters(false);
+      });
+      
       // Set flag to prevent auto-submit during initialization
       initializingDropdowns = true;
       
