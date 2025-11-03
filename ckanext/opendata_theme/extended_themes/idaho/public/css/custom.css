@@ -84,3 +84,7 @@ body {
   background-color: rgb(238, 241, 252);
   color: #4B3FFF !important;
 }
+
+.panel-default {
+  min-height: 135px;
+}

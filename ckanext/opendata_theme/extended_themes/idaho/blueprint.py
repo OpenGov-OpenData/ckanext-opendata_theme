@@ -102,7 +102,52 @@ def get_filter_options():
         return jsonify({"error": str(e)}), 500
 
 def custom_browse():
-    return render_template("custom_search/browse.html")
+    context = {"model": model, "user": toolkit.g.user}
+
+    # Discover the correct field name to browse for by checking the datastore schema
+    candidate_browse_fields = [
+        "Agency"
+    ]
+
+    try:
+        info = toolkit.get_action("datastore_info")({}, {"id": RESOURCE_ID})
+        schema_fields = set(info.get("schema", {}).keys())
+    except Exception:
+        schema_fields = set()
+
+    browse_field = None
+    for name in candidate_browse_fields:
+        if name in schema_fields:
+            browse_field = name
+            break
+
+    # Fallback: if none of the candidates matched, try to infer by a simple heuristic
+    if not browse_field and schema_fields:
+        for name in schema_fields:
+            lowered = name.lower()
+            if "agency" in lowered:
+                browse_field = name
+                break
+
+    browse_items = []
+    if browse_field:
+        # Get distinct list of browse items
+        params = {
+            "resource_id": RESOURCE_ID,
+            "fields": [browse_field],
+            "distinct": True,
+            "sort": browse_field,
+            "limit": 1000,
+            "include_total": False,
+        }
+        try:
+            result = toolkit.get_action("datastore_search")(context, params)
+            # Extract non-empty values
+            browse_items = [rec[browse_field] for rec in result.get("records", []) if rec.get(browse_field)]
+        except Exception:
+            browse_items = []
+
+    return render_template("custom_search/browse.html", browse_items=browse_items, browse_field=browse_field)
 
 search_blueprint.add_url_rule("/custom-search", methods=["GET", "POST"], view_func=custom_search)
 search_blueprint.add_url_rule("/custom-browse", methods=["GET"], view_func=custom_browse)
