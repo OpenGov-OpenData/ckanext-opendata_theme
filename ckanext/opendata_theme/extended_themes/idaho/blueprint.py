@@ -2,15 +2,50 @@
 from ckan import model
 import ckan.plugins.toolkit as toolkit
 from flask import Blueprint, request, abort, render_template, jsonify
+import re
 
 search_blueprint = Blueprint("custom-search", __name__)
 
-RESOURCE_ID = "cf86d944-0db9-4d4e-a666-bc9640be16fd"
+def get_iframe_url():
+    """Get iframe_url from config or return None"""
+    return toolkit.config.get('ckanext.custom_search.iframe_url') or None
+
+def get_resource_id():
+    """Extract RESOURCE_ID from iframe_url or return None"""
+    iframe_url = get_iframe_url()
+    
+    if not iframe_url:
+        return None
+    
+    # Extract resource_id from URL pattern: .../resource/{resource_id}/view/...
+    # UUID pattern: 8-4-4-4-12 hexadecimal characters
+    pattern = r'/resource/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})'
+    match = re.search(pattern, iframe_url, re.IGNORECASE)
+    
+    if match:
+        return match.group(1)
+    
+    # Return None if extraction fails
+    return None
 
 def custom_search():
     context = {"model": model, "user": toolkit.g.user}
+    
+    resource_id = get_resource_id()
+    base_iframe_url = get_iframe_url()
+    
+    # Check if configuration is missing
+    if not base_iframe_url or not resource_id:
+        return render_template(
+            "custom_search/search.html",
+            records=[],
+            fields=[],
+            filters={},
+            iframe_url=None,
+            config_missing=True
+        )
 
-    resource = toolkit.get_action('resource_show')(context, {'id': RESOURCE_ID})
+    resource = toolkit.get_action('resource_show')(context, {'id': resource_id})
     package = toolkit.get_action('package_show')(context, {'id': resource.get('package_id')})
 
     if not package:
@@ -29,7 +64,7 @@ def custom_search():
 
     # Build Datastore search params
     data = {
-        "resource_id": RESOURCE_ID,
+        "resource_id": resource_id,
         "filters": filters,
         "limit": 50
     }
@@ -41,8 +76,12 @@ def custom_search():
     filter_fields_config = toolkit.config.get('ckanext.custom_search.filter_fields', '')
     
     if filter_fields_config:
-        # Parse comma-separated field names from config
-        configured_fields = [field.strip() for field in filter_fields_config.split(';') if field.strip()]
+        # Parse comma or semicolon-separated field names from config
+        # Support both separators for flexibility
+        if ';' in filter_fields_config:
+            configured_fields = [field.strip() for field in filter_fields_config.split(';') if field.strip()]
+        else:
+            configured_fields = [field.strip() for field in filter_fields_config.split(',') if field.strip()]
         # Only include fields that are both configured and exist in the dataset
         all_fields = [f["id"] for f in result["fields"] if f["id"] != "_id"]
         fields = [field for field in configured_fields if field in all_fields]
@@ -54,7 +93,9 @@ def custom_search():
         "custom_search/search.html",
         records=result["records"],
         fields=fields,
-        filters=filters
+        filters=filters,
+        iframe_url=base_iframe_url,
+        config_missing=False
     )
 
 def get_filter_options():
@@ -64,6 +105,11 @@ def get_filter_options():
     field = request.args.get('field')
     if not field:
         return jsonify({"error": "Field parameter is required"}), 400
+    
+    resource_id = get_resource_id()
+    
+    if not resource_id:
+        return jsonify({"error": "Custom search is not configured. Please configure the Resource View URL in the admin settings."}), 500
     
     # Extract current filters from query parameters (excluding the field we're getting options for)
     current_filters = {}
@@ -78,7 +124,7 @@ def get_filter_options():
     
     # Build Datastore search params for distinct values with current filters applied
     data = {
-        "resource_id": RESOURCE_ID,
+        "resource_id": resource_id,
         "fields": [field],
         "distinct": True,
         "sort": field,
@@ -103,6 +149,11 @@ def get_filter_options():
 
 def custom_browse():
     context = {"model": model, "user": toolkit.g.user}
+    
+    resource_id = get_resource_id()
+    
+    if not resource_id:
+        return render_template("custom_search/browse.html", browse_items=[], browse_field=None, config_missing=True)
 
     # Discover the correct field name to browse for by checking the datastore schema
     candidate_browse_fields = [
@@ -110,7 +161,7 @@ def custom_browse():
     ]
 
     try:
-        info = toolkit.get_action("datastore_info")({}, {"id": RESOURCE_ID})
+        info = toolkit.get_action("datastore_info")({}, {"id": resource_id})
         schema_fields = set(info.get("schema", {}).keys())
     except Exception:
         schema_fields = set()
@@ -133,7 +184,7 @@ def custom_browse():
     if browse_field:
         # Get distinct list of browse items
         params = {
-            "resource_id": RESOURCE_ID,
+            "resource_id": resource_id,
             "fields": [browse_field],
             "distinct": True,
             "sort": browse_field,
@@ -147,7 +198,7 @@ def custom_browse():
         except Exception:
             browse_items = []
 
-    return render_template("custom_search/browse.html", browse_items=browse_items, browse_field=browse_field)
+    return render_template("custom_search/browse.html", browse_items=browse_items, browse_field=browse_field, config_missing=False)
 
 search_blueprint.add_url_rule("/custom-search", methods=["GET", "POST"], view_func=custom_search)
 search_blueprint.add_url_rule("/custom-browse", methods=["GET"], view_func=custom_browse)

@@ -20,7 +20,9 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
 
         schema.update({
             # Configuration option for filter fields
-            'ckanext.custom_search.filter_fields': [ignore_missing, ignore_not_sysadmin, text_type]
+            'ckanext.custom_search.filter_fields': [ignore_missing, ignore_not_sysadmin, text_type],
+            # Configuration option for iframe URL (resource_id is extracted from this)
+            'ckanext.custom_search.iframe_url': [ignore_missing, ignore_not_sysadmin, text_type]
         })
 
         return schema

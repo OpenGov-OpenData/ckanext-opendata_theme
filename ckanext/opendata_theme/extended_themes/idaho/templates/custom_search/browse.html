@@ -3,10 +3,17 @@
 {% block primary %}
 <section class="module">
   <div class="module-content">
-    <h2>Browse by {{ browse_field }}</h2>
-    {% if not browse_field %}
-      <p>No result for {{ browse_field }} was found in the datastore schema.</p>
+    {% if config_missing %}
+      <div class="alert alert-warning" style="margin: 20px 0; padding: 20px;">
+        <h3>Configuration Required</h3>
+        <p>The custom search feature is not configured. Please configure the <strong>Custom Search Resource View URL</strong> in the admin settings.</p>
+        <p><a href="{{ h.url_for('admin.config') }}" class="btn btn-primary">Go to Admin Settings</a></p>
+      </div>
     {% else %}
+      <h2>Browse by {{ browse_field }}</h2>
+      {% if not browse_field %}
+        <p>No result for {{ browse_field }} was found in the datastore schema.</p>
+      {% else %}
       {% if browse_items and browse_items|length > 0 %}
         <div class="search-filter-container" style="margin-bottom: 20px;">
           <input type="text" 
@@ -40,6 +47,7 @@
       {% else %}
         <p>No result for {{ browse_field }} found.</p>
       {% endif %}
+    {% endif %}
     {% endif %}
   </div>
 </section>

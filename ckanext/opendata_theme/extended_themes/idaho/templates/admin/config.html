@@ -1,0 +1,16 @@
+{% ckan_extends %}
+
+{% import 'macros/form.html' as form %}
+
+{% block admin_form %}
+    {{ super() }}
+    {{ form.input('ckanext.custom_search.iframe_url', id='field-custom-search-iframe-url', label=_('Custom Search Resource View URL'), value=data['ckanext.custom_search.iframe_url'], error=errors.get('ckanext.custom_search.iframe_url'), classes=['control-full'], placeholder='Link to a Data Table resource view') }}
+    {{ form.input('ckanext.custom_search.filter_fields', id='field-custom-search-filter-fields', label=_('Custom Search Filter Fields'), value=data['ckanext.custom_search.filter_fields'], error=errors.get('ckanext.custom_search.filter_fields'), classes=['control-full'], placeholder='e.g. Agency;Type;Status') }}
+{% endblock %}
+
+{% block admin_form_help %}
+    {{ super() }}
+    <p><strong>Custom Search Resource View URL:</strong> The URL for the Data Table resource view that displays the search results.</p>
+    <p><strong>Custom Search Filter Fields:</strong> Semicolon-separated list of field names to display as filters in the search interface.</p>
+{% endblock %}
+
