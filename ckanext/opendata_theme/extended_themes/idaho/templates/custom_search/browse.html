@@ -8,9 +8,16 @@
       <p>No result for {{ browse_field }} was found in the datastore schema.</p>
     {% else %}
       {% if browse_items and browse_items|length > 0 %}
-        <div class="row">
+        <div class="search-filter-container" style="margin-bottom: 20px;">
+          <input type="text" 
+                 id="agency-search" 
+                 class="form-control" 
+                 placeholder="Search agencies..." 
+                 style="padding: 10px 15px; font-size: 16px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div class="row" id="agencies-container">
           {% for item in browse_items %}
-            <div class="col-md-4 col-sm-6" style="margin-bottom: 15px;">
+            <div class="col-md-4 col-sm-6 agency-panel" style="margin-bottom: 15px;" data-agency-name="{{ item|lower }}">
               <a class="panel panel-default" href="/custom-search?{{ browse_field|urlencode }}={{ item|urlencode }}" style="display:block; text-decoration:none;">
                 <div class="panel-body">
                   <div class="media">
@@ -27,10 +34,48 @@
             </div>
           {% endfor %}
         </div>
+        <div id="no-results-message" style="display: none; text-align: center; padding: 40px; color: #666;">
+          <p>No agencies found matching your search.</p>
+        </div>
       {% else %}
         <p>No result for {{ browse_field }} found.</p>
       {% endif %}
     {% endif %}
   </div>
 </section>
+
+<script>
+  (function() {
+    var searchInput = document.getElementById('agency-search');
+    var agenciesContainer = document.getElementById('agencies-container');
+    var noResultsMessage = document.getElementById('no-results-message');
+    
+    if (searchInput && agenciesContainer) {
+      searchInput.addEventListener('input', function() {
+        var searchTerm = this.value.toLowerCase().trim();
+        var panels = agenciesContainer.querySelectorAll('.agency-panel');
+        var visibleCount = 0;
+        
+        panels.forEach(function(panel) {
+          var agencyName = panel.getAttribute('data-agency-name');
+          if (agencyName.includes(searchTerm)) {
+            panel.style.display = '';
+            visibleCount++;
+          } else {
+            panel.style.display = 'none';
+          }
+        });
+        
+        // Show/hide no results message
+        if (visibleCount === 0 && searchTerm !== '') {
+          noResultsMessage.style.display = 'block';
+          agenciesContainer.style.display = 'none';
+        } else {
+          noResultsMessage.style.display = 'none';
+          agenciesContainer.style.display = '';
+        }
+      });
+    }
+  })();
+</script>
 {% endblock %}
