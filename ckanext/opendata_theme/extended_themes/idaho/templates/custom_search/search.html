@@ -14,8 +14,35 @@
       {% for field in fields %}
       <div class="form-group">
         <label>{{ field }}</label>
-        <select name="{{ field }}" class="form-control filter-dropdown" data-field="{{ field }}" multiple="multiple">
-        </select>
+        {% if field == "Date of Execution (Formatted)" %}
+          {# Date range inputs for Date of Execution (Formatted) #}
+          <div class="date-range-container">
+            <div class="date-range-input-wrapper">
+              <label for="{{ field }}_start" class="date-range-label">Start Date</label>
+              <input type="date" 
+                     name="{{ field }}_start" 
+                     id="{{ field }}_start" 
+                     class="form-control date-range-input" 
+                     data-field="{{ field }}"
+                     placeholder="Start Date"
+                     value="{{ filters[field + '_start'] if filters.get(field + '_start') else '' }}">
+            </div>
+            <div class="date-range-input-wrapper">
+              <label for="{{ field }}_end" class="date-range-label">End Date</label>
+              <input type="date" 
+                     name="{{ field }}_end" 
+                     id="{{ field }}_end" 
+                     class="form-control date-range-input" 
+                     data-field="{{ field }}"
+                     placeholder="End Date"
+                     value="{{ filters[field + '_end'] if filters.get(field + '_end') else '' }}">
+            </div>
+          </div>
+        {% else %}
+          {# Select2 dropdown for other fields #}
+          <select name="{{ field }}" class="form-control filter-dropdown" data-field="{{ field }}" multiple="multiple">
+          </select>
+        {% endif %}
       </div>
       {% endfor %}
       <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
@@ -42,9 +69,22 @@
         {% set base_iframe_url = iframe_url %}
         {% if filters %}
           {% set filter_pairs = [] %}
+          {% set date_field = "Date of Execution (Formatted)" %}
+          {% set date_start_key = date_field + "_start" %}
+          {% set date_end_key = date_field + "_end" %}
+          {% set date_start = filters.get(date_start_key) %}
+          {% set date_end = filters.get(date_end_key) %}
           {% for key, values in filters.items() %}
             {% if values %}
-              {% if values is string %}
+              {# Handle date range filters - combine start and end into a single filter #}
+              {# Format: "YYYY-MM-DD to YYYY-MM-DD" #}
+              {% if key == date_start_key and date_start and date_end %}
+                {# Combine date range into "start_date to end_date" format for data table #}
+                {% set date_range_value = date_start + " to " + date_end %}
+                {% set _ = filter_pairs.append(date_field + ":" + date_range_value) %}
+              {% elif key == date_end_key %}
+                {# Skip end date key as it's already handled with start date #}
+              {% elif values is string %}
                 {# Handle single value #}
                 {% set _ = filter_pairs.append(key + ":" + values) %}
               {% else %}
@@ -289,6 +329,11 @@
       dropdowns.forEach(dropdown => {
         $(dropdown).val(null).trigger('change');
       });
+      // Clear date range inputs
+      const dateInputs = document.querySelectorAll('.date-range-input');
+      dateInputs.forEach(input => {
+        input.value = '';
+      });
       // Submit the form to clear the iframe
       document.getElementById('search-form').submit();
     }
@@ -386,6 +431,29 @@
           if (form) {
             form.submit();
           }
+        });
+      });
+      
+      // Add event listeners to date range inputs
+      const dateInputs = document.querySelectorAll('.date-range-input');
+      dateInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          const field = this.getAttribute('data-field');
+          const startInput = document.getElementById(field + '_start');
+          const endInput = document.getElementById(field + '_end');
+          const startDate = startInput ? startInput.value : '';
+          const endDate = endInput ? endInput.value : '';
+          
+          // Only submit if both dates are present, or if both are cleared
+          // If only one date is present, don't submit (wait for the other date)
+          if ((startDate && endDate) || (!startDate && !endDate)) {
+            // Auto-submit the form when both dates are set or both are cleared
+            const form = document.getElementById('search-form');
+            if (form) {
+              form.submit();
+            }
+          }
+          // If only one date is present, do nothing (wait for the other date)
         });
       });
     });
