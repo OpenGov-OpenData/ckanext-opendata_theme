@@ -24,12 +24,32 @@
         </div>
         <div class="row" id="agencies-container">
           {% for item in browse_items %}
+            {% set agency_number = '' %}
+            {% if ' -' in item %}
+              {% set item_parts = item.split(' -') %}
+            {% elif '-' in item %}
+              {% set item_parts = item.split('-') %}
+            {% endif %}
+            {% set agency_number = item_parts[0] if item_parts|length > 0 else '' %}
+            {% set agency_image_path = '/img/agency_logo/StateAgencylogo' + agency_number + '.png' if agency_number else '' %}
             <div class="col-md-4 col-sm-6 agency-panel" style="margin-bottom: 15px;" data-agency-name="{{ item|lower }}">
               <a class="panel panel-default" href="/custom-search?{{ browse_field|urlencode }}={{ item|urlencode }}" style="display:block; text-decoration:none;">
                 <div class="panel-body">
                   <div class="media">
                     <div class="media-left">
-                      <span class="fa fa-building" style="font-size: 28px; width: 36px; text-align:center;"></span>
+                      <div class="agency-icon-container" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                        {% if agency_image_path %}
+                          <img src="{{ agency_image_path }}"
+                               alt="{{ item }}"
+                               class="agency-logo"
+                               style="max-width: 64px; max-height: 64px; object-fit: contain; display: none;"
+                               onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+                               onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
+                          <span class="fa fa-building agency-icon-fallback" style="font-size: 28px; text-align:center; display: inline-block;"></span>
+                        {% else %}
+                          <span class="fa fa-building" style="font-size: 28px; width: 36px; text-align:center;"></span>
+                        {% endif %}
+                      </div>
                     </div>
                     <div class="media-body">
                       <h4 class="media-heading" style="margin-top:0;">{{ item }}</h4>
