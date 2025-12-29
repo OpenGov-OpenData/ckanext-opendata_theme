@@ -7,7 +7,7 @@ import string
 import ckan.model as model
 
 from ckan.plugins import toolkit
-from ckan.plugins.toolkit import config, c
+from ckan.plugins.toolkit import config, c, g
 from packaging.version import Version
 
 from ckanext.opendata_theme.base.compatibility_controller import BaseCompatibilityController
@@ -108,19 +108,23 @@ def new_datasets(num=3):
 
 
 def get_user_uuid():
-    """Return the user platform_uuid for a given email, if there is a token for that email"""
+    """Return the user platform_uuid for a given email, if there is a token for that email."""
     from ckanext.opengov.auth.db import UserToken
-    if c.userobj:
-        user = c.userobj
-        try:
-            user_token = model.Session.query(UserToken).filter_by(user_name=user.email).first()
-            if user_token:
-                return user_token.platform_uuid
-        except Exception as e:
-            logger.debug("[opendata_theme] Error querying user token: {}".format(e))
-            return None
-        return c.userobj.id
-    return None
+
+    user = getattr(g, 'userobj', None) or getattr(c, 'userobj', None)
+    if not user:
+        return ''
+
+    # Try to get platform_uuid from UserToken
+    try:
+        user_token = model.Session.query(UserToken).filter_by(user_name=user.email).first()
+        if user_token and user_token.platform_uuid:
+            return str(user_token.platform_uuid)
+    except Exception as e:
+        logger.debug("[opendata_theme] Error querying user token: {}".format(e))
+
+    # Fallback to user.id if no token found or on error
+    return str(user.id)
 
 
 def package_tracking_summary(package):
