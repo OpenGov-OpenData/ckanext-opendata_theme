@@ -22,6 +22,10 @@ body {
   font-size: 16px;
 }
 
+.container {
+  width: 100% !important;
+}
+
 /* Filter dropdown styles */
 .filters {
   background: #f8f9fa;
