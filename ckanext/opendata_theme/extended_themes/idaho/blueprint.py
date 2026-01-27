@@ -401,7 +401,7 @@ def get_filter_options():
                 start_date=start_date,
                 end_date=end_date,
                 filters=sql_filters,
-                limit=1000,
+                limit=25000,
                 fields=all_field_names
             )
         else:
@@ -411,7 +411,7 @@ def get_filter_options():
                 "fields": [field],
                 "distinct": True,
                 "sort": field,
-                "limit": 1000,  # Get all distinct values
+                "limit": 25000,  # Get up to 25000 distinct values
                 "include_total": False
             }
             

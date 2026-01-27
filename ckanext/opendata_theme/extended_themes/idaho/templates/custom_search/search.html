@@ -106,7 +106,7 @@
         {% else %}
           {% set iframe_url = base_iframe_url %}
         {% endif %}
-        <iframe width="100%" height="1000px" src="{{ iframe_url }}" frameBorder="0"></iframe>
+        <iframe width="100%" src="{{ iframe_url }}" frameBorder="0"></iframe>
       </div>
     {% endif %}
   </div>
@@ -124,19 +124,14 @@
       border: 1px solid #0d6efd;
       color: white;
       border-radius: 4px;
-      padding: 2px 8px;
-      margin: 3px;
       display: inline-block;
-      font-size: 13px;
     }
     
     .filter-dropdown + .select2 .select2-selection__choice__remove {
       color: white;
       cursor: pointer;
       font-weight: bold;
-      margin-right: 5px;
       border-right: 1px solid rgba(255,255,255,0.3);
-      padding-right: 5px;
     }
     
     .filter-dropdown + .select2 .select2-selection__choice__remove:hover {
@@ -188,6 +183,29 @@
       z-index: 1000;
     }
     
+    #filters-panel .form-group {
+      margin-bottom: 15px;
+    }
+
+    #data-preview > iframe {
+      min-height: 880px;
+    }
+    @media (max-width: 1600px) {
+      #data-preview > iframe {
+        min-height: 800px;
+      }
+    }
+    @media (max-width: 1440px) {
+      #data-preview > iframe {
+        min-height: 720px;
+      }
+    }
+    @media (max-width: 1280px) {
+      #data-preview > iframe {
+        min-height: 640px;
+      }
+    }
+
     /* Ensure show filters button is visible when filters are hidden */
     body.filters-hidden #show-filters-btn {
       display: block !important;

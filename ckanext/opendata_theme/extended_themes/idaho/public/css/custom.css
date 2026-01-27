@@ -29,14 +29,13 @@ body {
 /* Filter dropdown styles */
 .filters {
   background: #f8f9fa;
-  padding: 20px;
+  padding: 15px;
   border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 .filters h3 {
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: #2c3e50;
 }
 
@@ -82,7 +81,15 @@ body {
 }
 
 .panel-default {
-  min-height: 135px;
+  min-height: 110px;
+}
+@media (min-width: 768px) and (max-width: 1366px) {
+  .panel-default {
+    min-height: 150px;
+  }
+}
+.panel-default .panel-body {
+  padding: 15px 15px 10px;
 }
 
 /* Date range container */
