@@ -44,7 +44,7 @@
     </div>
     <div class="collapse navbar-collapse" id="main-navigation-toggle">
       {% block header_site_navigation %}
-      <nav class="section navigation">
+      <nav class="section navigation" aria-label="{{ _('Navigation') }}">
         <ul class="nav nav-pills">
             {% block header_site_navigation_tabs %}
               {{ h.opendata_theme_build_nav_main(
