@@ -9,7 +9,7 @@
 
   {% if header_layout_type=='sidebar' %}
     <input type="checkbox" id="hb__trigger" class="hb__trigger" aria-hidden="true">
-    <div class="main-navigation">
+    <nav class="main-navigation" aria-label="{{ _('Navigation') }}">
       <div class="main-navigation-title">
         {{ _('Menu') }}
       </div>
@@ -20,7 +20,7 @@
         {% endblock %}
         </ul>
       </div>
-    </div>
+    </nav>
   {% endif %}
 
   <div class="page" id="page">

@@ -1,0 +1,10 @@
+{% if resource_view.get('description') %}
+  {% set alt_text = resource_view.get('description') %}
+{% elif resource.get('name') and package.get('title') %}
+  {% set resource_name = resource.get('name') %}
+  {% set dataset_title = package.get('title') %}
+  {% set alt_text = 'Image for ' + resource_name + ' from the dataset ' + dataset_title %}
+{% else %}
+  {% set alt_text = '' %}
+{% endif %}
+<img style="margin:auto; max-height:100%; display:block" src="{{ resource_view.get('image_url') or resource.get('url') }}" alt="{{ alt_text }}" />
