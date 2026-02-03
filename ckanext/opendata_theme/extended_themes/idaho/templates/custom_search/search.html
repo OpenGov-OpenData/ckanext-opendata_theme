@@ -45,7 +45,10 @@
         {% endif %}
       </div>
       {% endfor %}
-      <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
+      <div class="filter-actions">
+        <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
+        <button type="button" class="btn btn-secondary" onclick="scrollToPrimaryTop()">Back to Top</button>
+      </div>
     </form>
   </div>
   {% endif %}
@@ -106,7 +109,7 @@
         {% else %}
           {% set iframe_url = base_iframe_url %}
         {% endif %}
-        <iframe width="100%" src="{{ iframe_url }}" frameBorder="0"></iframe>
+        <iframe title="Data viewer" width="100%" src="{{ iframe_url }}" frameBorder="0"></iframe>
       </div>
     {% endif %}
   </div>
@@ -185,6 +188,12 @@
     
     #filters-panel .form-group {
       margin-bottom: 15px;
+    }
+
+    .filter-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     #data-preview > iframe {
@@ -354,6 +363,14 @@
       });
       // Submit the form to clear the iframe
       document.getElementById('search-form').submit();
+    }
+    
+    // Function to scroll to top of primary content
+    function scrollToPrimaryTop() {
+      const primary = document.querySelector('.primary');
+      if (primary) {
+        primary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
     
     // Function to refresh all dropdowns when filters change
