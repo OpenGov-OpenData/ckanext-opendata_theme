@@ -11,32 +11,21 @@
       </button>
     </div>
     <form method="get" action="" id="search-form">
+      {% set date_fields = date_fields | default([]) %}
       {% for field in fields %}
       <div class="form-group">
         <label>{{ field }}</label>
-        {% if field == "Date of Execution (Formatted)" %}
-          {# Date range inputs for Date of Execution (Formatted) #}
+        {% if field in date_fields %}
+          {# Date range picker: visible input + hidden start/end for form submit #}
           <div class="date-range-container">
-            <div class="date-range-input-wrapper">
-              <label for="{{ field }}_start" class="date-range-label">Start Date</label>
-              <input type="date" 
-                     name="{{ field }}_start" 
-                     id="{{ field }}_start" 
-                     class="form-control date-range-input" 
-                     data-field="{{ field }}"
-                     placeholder="Start Date"
-                     value="{{ filters[field + '_start'] if filters.get(field + '_start') else '' }}">
-            </div>
-            <div class="date-range-input-wrapper">
-              <label for="{{ field }}_end" class="date-range-label">End Date</label>
-              <input type="date" 
-                     name="{{ field }}_end" 
-                     id="{{ field }}_end" 
-                     class="form-control date-range-input" 
-                     data-field="{{ field }}"
-                     placeholder="End Date"
-                     value="{{ filters[field + '_end'] if filters.get(field + '_end') else '' }}">
-            </div>
+            <input type="text"
+                   id="date-range-{{ loop.index0 }}"
+                   class="form-control date-range-picker-input"
+                   data-field="{{ field }}"
+                   placeholder="Select date range"
+                   readonly>
+            <input type="hidden" name="{{ field }}_start" id="{{ field }}_start" value="{{ filters[field + '_start'] if filters.get(field + '_start') else '' }}">
+            <input type="hidden" name="{{ field }}_end" id="{{ field }}_end" value="{{ filters[field + '_end'] if filters.get(field + '_end') else '' }}">
           </div>
         {% else %}
           {# Select2 dropdown for other fields #}
@@ -47,7 +36,7 @@
       {% endfor %}
       <div class="filter-actions">
         <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
-        <button type="button" class="btn btn-secondary" onclick="scrollToPrimaryTop()">Back to Top</button>
+        <button type="button" class="btn btn-secondary hidden" onclick="scrollToPrimaryTop()">Back to Top</button>
       </div>
     </form>
   </div>
@@ -70,28 +59,27 @@
       </button>
       <div id="data-preview">
         {% set base_iframe_url = iframe_url %}
+        {% set date_fields_iframe = date_fields | default([]) %}
         {% if filters %}
           {% set filter_pairs = [] %}
-          {% set date_field = "Date of Execution (Formatted)" %}
-          {% set date_start_key = date_field + "_start" %}
-          {% set date_end_key = date_field + "_end" %}
-          {% set date_start = filters.get(date_start_key) %}
-          {% set date_end = filters.get(date_end_key) %}
+          {% set date_range_keys_set = [] %}
+          {% for df in date_fields_iframe %}
+            {% set _ = date_range_keys_set.append(df + "_start") %}
+            {% set _ = date_range_keys_set.append(df + "_end") %}
+          {% endfor %}
+          {% for df in date_fields_iframe %}
+            {% set df_start = filters.get(df + "_start") %}
+            {% set df_end = filters.get(df + "_end") %}
+            {% if df_start and df_end %}
+              {% set date_range_value = df_start + " to " + df_end %}
+              {% set _ = filter_pairs.append(df + ":" + date_range_value) %}
+            {% endif %}
+          {% endfor %}
           {% for key, values in filters.items() %}
-            {% if values %}
-              {# Handle date range filters - combine start and end into a single filter #}
-              {# Format: "YYYY-MM-DD to YYYY-MM-DD" #}
-              {% if key == date_start_key and date_start and date_end %}
-                {# Combine date range into "start_date to end_date" format for data table #}
-                {% set date_range_value = date_start + " to " + date_end %}
-                {% set _ = filter_pairs.append(date_field + ":" + date_range_value) %}
-              {% elif key == date_end_key %}
-                {# Skip end date key as it's already handled with start date #}
-              {% elif values is string %}
-                {# Handle single value #}
+            {% if values and key not in date_range_keys_set %}
+              {% if values is string %}
                 {% set _ = filter_pairs.append(key + ":" + values) %}
               {% else %}
-                {# Handle multiple values #}
                 {% for value in values %}
                   {% if value %}
                     {% set _ = filter_pairs.append(key + ":" + value) %}
@@ -120,6 +108,7 @@
   {{ super() }}
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" rel="stylesheet" />
   <style>
     /* Style for Select2 selection pills */
     .filter-dropdown + .select2 .select2-selection__choice {
@@ -194,6 +183,66 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .dayContainer {
+      margin-top: 2px;
+    }
+    .flatpickr-day {
+      color: #000000;
+    }
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange,
+    .flatpickr-day.selected.inRange,
+    .flatpickr-day.startRange.inRange,
+    .flatpickr-day.endRange.inRange,
+    .flatpickr-day.selected.prevMonthDay,
+    .flatpickr-day.startRange.prevMonthDay,
+    .flatpickr-day.endRange.prevMonthDay,
+    .flatpickr-day.selected.nextMonthDay,
+    .flatpickr-day.startRange.nextMonthDay,
+    .flatpickr-day.endRange.nextMonthDay {
+      background: #4B3FFF;
+      border-color: #4B3FFF;
+      color: #fff;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    .flatpickr-day.selected:focus,
+    .flatpickr-day.startRange:focus,
+    .flatpickr-day.endRange:focus,
+    .flatpickr-day.selected:hover,
+    .flatpickr-day.startRange:hover,
+    .flatpickr-day.endRange:hover {
+      background: #19009B;
+      border-color: #19009B;
+    }
+    .flatpickr-day:focus,
+    .flatpickr-day:hover,
+    .flatpickr-day.prevMonthDay:focus,
+    .flatpickr-day.prevMonthDay:hover,
+    .flatpickr-day.nextMonthDay:focus,
+    .flatpickr-day.nextMonthDay:hover {
+      outline: rgb(75, 63, 255) solid 2px;
+    }
+    .flatpickr-day.inRange,
+    .flatpickr-day.prevMonthDay.inRange,
+    .flatpickr-day.nextMonthDay.inRange,
+    .flatpickr-day.today.inRange,
+    .flatpickr-day.prevMonthDay.today.inRange,
+    .flatpickr-day.nextMonthDay.today.inRange {
+      background: rgba(75, 63, 255, 0.12);
+      border-color: transparent;
+      border-radius: 0;
+      -webkit-box-shadow: -5px 0 0 rgba(75, 63, 255, 0.06), 5px 0 0 rgba(75, 63, 255, 0.06);
+      box-shadow: -5px 0 0 rgba(75, 63, 255, 0.06), 5px 0 0 rgba(75, 63, 255, 0.06);
+    }
+    .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+    .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+    .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+      -webkit-box-shadow: -10px 0 0 #4B3FFF;
+      box-shadow: -10px 0 0 #4B3FFF;
     }
 
     #data-preview > iframe {
@@ -283,16 +332,21 @@
 {% block scripts %}
   {{ super() }}
   {% if not config_missing %}
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
   <script>
     // Current filter values from URL parameters
     const currentFilters = {{ filters | tojson }};
-    
+    // Date fields that use range picker (from blueprint)
+    const DATE_FIELDS = {{ date_fields | default([]) | tojson }};
+
     // Flag to prevent auto-submit during initial population
     let initializingDropdowns = false;
     
     // Function to populate dropdown options
     async function populateDropdown(field) {
+      if (!field) return;
       try {
         // Build query parameters including current filters
         const params = new URLSearchParams();
@@ -350,18 +404,24 @@
       }
     }
     
+    // Flatpickr instances for date range pickers (set in DOMContentLoaded)
+    let dateRangePickerInstances = [];
+
     // Function to clear all filters
     function clearFilters() {
-      const dropdowns = document.querySelectorAll('.filter-dropdown');
+      const dropdowns = document.querySelectorAll('select.filter-dropdown');
       dropdowns.forEach(dropdown => {
         $(dropdown).val(null).trigger('change');
       });
-      // Clear date range inputs
-      const dateInputs = document.querySelectorAll('.date-range-input');
-      dateInputs.forEach(input => {
-        input.value = '';
+      dateRangePickerInstances.forEach(instance => {
+        if (instance) instance.clear();
       });
-      // Submit the form to clear the iframe
+      DATE_FIELDS.forEach(field => {
+        const startEl = document.getElementById(field + '_start');
+        const endEl = document.getElementById(field + '_end');
+        if (startEl) startEl.value = '';
+        if (endEl) endEl.value = '';
+      });
       document.getElementById('search-form').submit();
     }
     
@@ -375,11 +435,11 @@
     
     // Function to refresh all dropdowns when filters change
     async function refreshAllDropdowns() {
-      const dropdowns = document.querySelectorAll('.filter-dropdown');
+      const dropdowns = document.querySelectorAll('select.filter-dropdown');
       await Promise.all(
         Array.from(dropdowns).map(dropdown => {
           const field = dropdown.getAttribute('data-field');
-          return populateDropdown(field);
+          return field ? populateDropdown(field) : Promise.resolve();
         })
       );
     }
@@ -428,8 +488,8 @@
       // Set flag to prevent auto-submit during initialization
       initializingDropdowns = true;
       
-      // Initialize Select2 on all dropdowns
-      $('.filter-dropdown').select2({
+      // Initialize Select2 on all dropdowns (only <select> elements)
+      $('select.filter-dropdown').select2({
         theme: 'bootstrap-5',
         placeholder: 'Search and select...',
         allowClear: true,
@@ -443,8 +503,8 @@
       initializingDropdowns = false;
       
       // Add event listeners to dropdowns to refresh options when they change
-      const dropdowns = document.querySelectorAll('.filter-dropdown');
-      dropdowns.forEach(dropdown => {
+      const dropdownsForChange = document.querySelectorAll('select.filter-dropdown');
+      dropdownsForChange.forEach(dropdown => {
         $(dropdown).on('change', function() {
           // Don't submit if we're still initializing
           if (initializingDropdowns) {
@@ -453,6 +513,7 @@
           
           // Update currentFilters with the new selections
           const field = this.getAttribute('data-field');
+          if (!field) return;
           const selectedValues = $(this).val();
           
           if (selectedValues && selectedValues.length > 0) {
@@ -469,27 +530,41 @@
         });
       });
       
-      // Add event listeners to date range inputs
-      const dateInputs = document.querySelectorAll('.date-range-input');
-      dateInputs.forEach(input => {
-        input.addEventListener('change', function() {
-          const field = this.getAttribute('data-field');
-          const startInput = document.getElementById(field + '_start');
-          const endInput = document.getElementById(field + '_end');
-          const startDate = startInput ? startInput.value : '';
-          const endDate = endInput ? endInput.value : '';
-          
-          // Only submit if both dates are present, or if both are cleared
-          // If only one date is present, don't submit (wait for the other date)
-          if ((startDate && endDate) || (!startDate && !endDate)) {
-            // Auto-submit the form when both dates are set or both are cleared
-            const form = document.getElementById('search-form');
-            if (form) {
-              form.submit();
+      // Initialize Flatpickr date range picker for each date field (match by data-field, not index)
+      dateRangePickerInstances = [];
+      DATE_FIELDS.forEach((dateField) => {
+        const rangeInput = document.querySelector('.date-range-picker-input[data-field="' + dateField + '"]');
+        const startHidden = document.getElementById(dateField + '_start');
+        const endHidden = document.getElementById(dateField + '_end');
+        if (rangeInput && startHidden && endHidden) {
+          const defaultStart = (currentFilters[dateField + '_start'] || '').toString().trim();
+          const defaultEnd = (currentFilters[dateField + '_end'] || '').toString().trim();
+          const defaultDates = (defaultStart && defaultEnd) ? [defaultStart, defaultEnd] : [];
+          const instance = flatpickr(rangeInput, {
+            mode: 'range',
+            dateFormat: 'Y-m-d',
+            allowInput: false,
+            defaultDate: defaultDates.length ? defaultDates : null,
+            onChange: function(selectedDates, dateStr, inst) {
+              if (selectedDates.length === 2) {
+                startHidden.value = inst.formatDate(selectedDates[0], 'Y-m-d');
+                endHidden.value = inst.formatDate(selectedDates[1], 'Y-m-d');
+                document.getElementById('search-form').submit();
+              } else if (selectedDates.length === 0) {
+                startHidden.value = '';
+                endHidden.value = '';
+                document.getElementById('search-form').submit();
+              }
+            },
+            onClose: function(selectedDates) {
+              if (selectedDates.length === 1) {
+                startHidden.value = '';
+                endHidden.value = '';
+              }
             }
-          }
-          // If only one date is present, do nothing (wait for the other date)
-        });
+          });
+          dateRangePickerInstances.push(instance);
+        }
       });
     });
   </script>

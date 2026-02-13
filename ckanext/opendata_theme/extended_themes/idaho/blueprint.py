@@ -34,6 +34,8 @@ def get_resource_id():
 
 def _is_valid_date(date_str):
     """Check if a string is a valid date in YYYY-MM-DD format."""
+    if date_str is None or not isinstance(date_str, str):
+        return False
     try:
         datetime.strptime(date_str, '%Y-%m-%d')
         return True
@@ -203,6 +205,114 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
     except Exception as e:
         raise Exception('SQL query error: {}'.format(str(e)))
 
+
+def _build_date_range_where_clauses(column_name, start_date, end_date, field_list):
+    """
+    Build WHERE clause list for a single date range.
+    Returns a list of SQL conditions (strings).
+    """
+    is_date_type = is_date_column(column_name, field_list)
+    safe_column = '"{}"'.format(column_name.replace('"', '""'))
+    safe_start_date = start_date.replace("'", "''")
+    safe_end_date = end_date.replace("'", "''")
+    if is_date_type:
+        return [
+            '{} >= \'{}\'::date::timestamp'.format(safe_column, safe_start_date),
+            '{} < (\'{}\'::date + interval \'1 day\')::timestamp'.format(safe_column, safe_end_date)
+        ]
+    else:
+        return [
+            '{} IS NOT NULL AND {}::date >= \'{}\'::date'.format(safe_column, safe_column, safe_start_date),
+            '{}::date < (\'{}\'::date + interval \'1 day\')'.format(safe_column, safe_end_date)
+        ]
+
+
+def datastore_search_sql_date_ranges(resource_id, date_ranges, filters, limit, fields):
+    """
+    Perform a datastore_search_sql query with multiple date range filters.
+    date_ranges: list of (column_name, start_date, end_date) tuples.
+    Returns the response dictionary similar to datastore_search.
+    """
+    datastore_search_sql = toolkit.get_action('datastore_search_sql')
+    datastore_search = toolkit.get_action('datastore_search')
+    field_info_result = datastore_search({}, {
+        'resource_id': resource_id,
+        'limit': 0
+    })
+    field_list = field_info_result.get('fields', [])
+
+    where_clauses = []
+    for column_name, start_date, end_date in date_ranges:
+        where_clauses.extend(
+            _build_date_range_where_clauses(column_name, start_date, end_date, field_list)
+        )
+
+    filter_conditions = []
+    for filter_key, filter_values in filters.items():
+        if isinstance(filter_values, list):
+            if len(filter_values) == 1:
+                safe_filter_key = '"{}"'.format(filter_key.replace('"', '""'))
+                safe_filter_value = str(filter_values[0]).replace("'", "''")
+                filter_conditions.append(
+                    '{} = \'{}\''.format(safe_filter_key, safe_filter_value)
+                )
+            else:
+                safe_filter_key = '"{}"'.format(filter_key.replace('"', '""'))
+                values = ", ".join(["'" + str(v).replace("'", "''") + "'" for v in filter_values])
+                filter_conditions.append('{} IN ({})'.format(safe_filter_key, values))
+        else:
+            safe_filter_key = '"{}"'.format(filter_key.replace('"', '""'))
+            safe_filter_value = str(filter_values).replace("'", "''")
+            filter_conditions.append(
+                '{} = \'{}\''.format(safe_filter_key, safe_filter_value)
+            )
+
+    if filter_conditions:
+        where_clauses.extend(filter_conditions)
+
+    where_clause = ' AND '.join(where_clauses)
+    order_by = '"_id" asc'
+    select_fields = ', '.join(['"{}"'.format(col.replace('"', '""')) for col in fields])
+    safe_resource_id = resource_id.replace('"', '""')
+
+    sql = 'SELECT {select_fields} FROM "{safe_resource_id}" WHERE {where_clause} ORDER BY {order_by} LIMIT {limit}'.format(
+        select_fields=select_fields,
+        safe_resource_id=safe_resource_id,
+        where_clause=where_clause,
+        order_by=order_by,
+        limit=limit
+    )
+    count_sql = 'SELECT COUNT(*) as total FROM "{safe_resource_id}" WHERE {where_clause}'.format(
+        safe_resource_id=safe_resource_id,
+        where_clause=where_clause
+    )
+
+    log.debug('Date ranges SQL query: %s', sql)
+
+    try:
+        response = datastore_search_sql(None, {'sql': sql})
+        count_response = datastore_search_sql(None, {'sql': count_sql})
+        records = response.get('records', [])
+        count_records = count_response.get('records', [])
+        total = count_records[0].get('total', 0) if count_records else 0
+
+        field_map = {f['id']: f for f in field_info_result.get('fields', [])}
+        result_fields = []
+        for field_name in fields:
+            if field_name in field_map:
+                result_fields.append(field_map[field_name])
+            else:
+                result_fields.append({'id': field_name, 'type': 'text'})
+
+        return {
+            'records': records,
+            'total': total,
+            'fields': result_fields
+        }
+    except Exception as e:
+        raise Exception('SQL query error: {}'.format(str(e)))
+
+
 def custom_search():
     context = {"model": model, "user": toolkit.g.user}
     
@@ -217,6 +327,7 @@ def custom_search():
             fields=[],
             filters={},
             iframe_url=None,
+            date_fields=[],
             config_missing=True
         )
 
@@ -226,106 +337,92 @@ def custom_search():
     if not package:
         abort(404, ('Package not found'))
 
-    # Extract filters from query parameters (handle multiple values per filter)
+    # Get field list first (needed for date_fields and query)
+    filter_fields_config = toolkit.config.get('ckanext.custom_search.filter_fields', '')
+    initial_data = {
+        "resource_id": resource_id,
+        "limit": 0
+    }
+    initial_result = toolkit.get_action("datastore_search")(context, initial_data)
+
+    if filter_fields_config:
+        if ';' in filter_fields_config:
+            configured_fields = [field.strip() for field in filter_fields_config.split(';') if field.strip()]
+        else:
+            configured_fields = [field.strip() for field in filter_fields_config.split(',') if field.strip()]
+        all_field_names = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
+        fields = [field for field in configured_fields if field in all_field_names]
+    else:
+        fields = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
+
+    # Auto-detect date fields from datastore schema (timestamp/timestamptz/date)
+    date_fields = [
+        f["id"] for f in initial_result["fields"]
+        if f["id"] in fields and is_date_column(f["id"], initial_result["fields"])
+    ]
+
+    # Build set of date param keys for request parsing
+    date_param_keys = set()
+    for df in date_fields:
+        date_param_keys.add(df + "_start")
+        date_param_keys.add(df + "_end")
+
+    # Extract filters from query parameters
     filters = {}
-    date_field = "Date of Execution (Formatted)"
-    date_start_key = date_field + "_start"
-    date_end_key = date_field + "_end"
-    start_date = None
-    end_date = None
-    
     for key, value in request.args.items():
         if value:
-            # Handle date range fields separately
-            if key == date_start_key:
+            if key in date_param_keys:
                 if _is_valid_date(value):
-                    start_date = value
-                    filters[date_start_key] = value
-            elif key == date_end_key:
-                if _is_valid_date(value):
-                    end_date = value
-                    filters[date_end_key] = value
+                    filters[key] = value
             else:
-                # Get all values for this parameter (in case of multiple selections)
                 values = request.args.getlist(key)
                 if len(values) == 1:
                     filters[key] = values[0]
                 elif len(values) > 1:
                     filters[key] = values
 
-    # Get field list first (needed for both regular and date range queries)
-    # Get configured filter fields from CKAN config
-    filter_fields_config = toolkit.config.get('ckanext.custom_search.filter_fields', '')
-    
-    # Get all fields from datastore to determine which fields to use
-    initial_data = {
-        "resource_id": resource_id,
-        "limit": 0
-    }
-    initial_result = toolkit.get_action("datastore_search")(context, initial_data)
-    
-    if filter_fields_config:
-        # Parse comma or semicolon-separated field names from config
-        # Support both separators for flexibility
-        if ';' in filter_fields_config:
-            configured_fields = [field.strip() for field in filter_fields_config.split(';') if field.strip()]
-        else:
-            configured_fields = [field.strip() for field in filter_fields_config.split(',') if field.strip()]
-        # Only include fields that are both configured and exist in the dataset
-        all_fields = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
-        fields = [field for field in configured_fields if field in all_fields]
-    else:
-        # Fallback to all fields if no configuration is provided
-        fields = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
-    
-    # Check if we have a date range filter
-    # Verify the date field exists in the dataset
+    # Active date ranges: (field_name, start_date, end_date) with both dates valid
+    date_ranges = [
+        (df, filters[df + "_start"], filters[df + "_end"])
+        for df in date_fields
+        if _is_valid_date(filters.get(df + "_start")) and _is_valid_date(filters.get(df + "_end"))
+    ]
+
     all_field_names = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
-    date_field_exists = date_field in all_field_names
-    
-    if start_date and end_date and date_field_exists:
-        # Use SQL query for date range filtering
-        # Remove date range keys from filters for the SQL query (they're handled separately)
-        sql_filters = {k: v for k, v in filters.items() if k not in [date_start_key, date_end_key]}
-        
+    date_range_keys = {df + "_start" for df in date_fields} | {df + "_end" for df in date_fields}
+    sql_filters = {k: v for k, v in filters.items() if k not in date_range_keys}
+
+    if date_ranges and all(df in all_field_names for df, _, _ in date_ranges):
         try:
-            result = datastore_search_sql_date_range(
+            result = datastore_search_sql_date_ranges(
                 resource_id=resource_id,
-                column_name=date_field,
-                start_date=start_date,
-                end_date=end_date,
+                date_ranges=date_ranges,
                 filters=sql_filters,
                 limit=50,
                 fields=all_field_names
             )
         except Exception as e:
-            # Log the error for debugging
             log.error('Date range SQL query failed: %s', str(e))
-            # Fall back to regular search if SQL query fails
-            # Note: regular search won't support date ranges, so results may be empty
             data = {
                 "resource_id": resource_id,
-                "filters": sql_filters,  # Use sql_filters (without date range keys)
+                "filters": sql_filters,
                 "limit": 50
             }
             result = toolkit.get_action("datastore_search")(context, data)
-    elif (start_date or end_date) and not date_field_exists:
-        # Date field doesn't exist, use regular search without date filter
-        log.warning('Date field "%s" not found in dataset, ignoring date range filter', date_field)
+    elif date_ranges and not all(df in all_field_names for df, _, _ in date_ranges):
+        for df, _, _ in date_ranges:
+            if df not in all_field_names:
+                log.warning('Date field "%s" not found in dataset, ignoring date range filter', df)
         data = {
             "resource_id": resource_id,
-            "filters": {k: v for k, v in filters.items() if k not in [date_start_key, date_end_key]},
+            "filters": sql_filters,
             "limit": 50
         }
         result = toolkit.get_action("datastore_search")(context, data)
     else:
-        # Use regular datastore_search
-        # Remove partial date range filters (only one date present) from filters
-        # Date range requires both start and end dates
-        filters_for_search = {k: v for k, v in filters.items() if k not in [date_start_key, date_end_key]}
         data = {
             "resource_id": resource_id,
-            "filters": filters_for_search,
+            "filters": sql_filters,
             "limit": 50
         }
         result = toolkit.get_action("datastore_search")(context, data)
@@ -336,99 +433,95 @@ def custom_search():
         fields=fields,
         filters=filters,
         iframe_url=base_iframe_url,
+        date_fields=date_fields,
         config_missing=False
     )
 
 def get_filter_options():
     """API endpoint to get distinct values for a specific field, filtered by current filters"""
     context = {"model": model, "user": toolkit.g.user}
-    
+
     field = request.args.get('field')
     if not field:
         return jsonify({"error": "Field parameter is required"}), 400
-    
+
     resource_id = get_resource_id()
-    
+
     if not resource_id:
         return jsonify({"error": "Custom search is not configured. Please configure the Resource View URL in the admin settings."}), 500
-    
+
+    # Get fields and date_fields the same way as custom_search
+    filter_fields_config = toolkit.config.get('ckanext.custom_search.filter_fields', '')
+    initial_data = {"resource_id": resource_id, "limit": 0}
+    initial_result = toolkit.get_action("datastore_search")(context, initial_data)
+    if filter_fields_config:
+        if ';' in filter_fields_config:
+            configured_fields = [f.strip() for f in filter_fields_config.split(';') if f.strip()]
+        else:
+            configured_fields = [f.strip() for f in filter_fields_config.split(',') if f.strip()]
+        all_field_names = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
+        fields = [f for f in configured_fields if f in all_field_names]
+    else:
+        fields = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
+
+    date_fields = [
+        f["id"] for f in initial_result["fields"]
+        if f["id"] in fields and is_date_column(f["id"], initial_result["fields"])
+    ]
+    date_param_keys = {df + "_start" for df in date_fields} | {df + "_end" for df in date_fields}
+
     # Extract current filters from query parameters (excluding the field we're getting options for)
     current_filters = {}
-    date_field = "Date of Execution (Formatted)"
-    date_start_key = date_field + "_start"
-    date_end_key = date_field + "_end"
-    start_date = None
-    end_date = None
-    
     for key, value in request.args.items():
-        if value and key != 'field':  # Don't include the field parameter itself
-            # Handle date range fields separately
-            if key == date_start_key:
+        if value and key != 'field':
+            if key in date_param_keys:
                 if _is_valid_date(value):
-                    start_date = value
-                    current_filters[date_start_key] = value
-            elif key == date_end_key:
-                if _is_valid_date(value):
-                    end_date = value
-                    current_filters[date_end_key] = value
+                    current_filters[key] = value
             else:
-                # Get all values for this parameter (in case of multiple selections)
                 values = request.args.getlist(key)
                 if len(values) == 1:
                     current_filters[key] = values[0]
                 elif len(values) > 1:
                     current_filters[key] = values
-    
+
+    date_ranges = [
+        (df, current_filters[df + "_start"], current_filters[df + "_end"])
+        for df in date_fields
+        if _is_valid_date(current_filters.get(df + "_start")) and _is_valid_date(current_filters.get(df + "_end"))
+    ]
+    date_range_keys = {df + "_start" for df in date_fields} | {df + "_end" for df in date_fields}
+    sql_filters = {k: v for k, v in current_filters.items() if k not in date_range_keys}
+    all_field_names = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
+
     try:
-        # Check if we have a date range filter
-        if start_date and end_date:
-            # Use SQL query for date range filtering
-            # Remove date range keys from filters for the SQL query
-            sql_filters = {k: v for k, v in current_filters.items() if k not in [date_start_key, date_end_key]}
-            
-            # Get all field names for the SQL query
-            initial_data = {
-                "resource_id": resource_id,
-                "limit": 0
-            }
-            initial_result = toolkit.get_action("datastore_search")(context, initial_data)
-            all_field_names = [f["id"] for f in initial_result["fields"] if f["id"] != "_id"]
-            
-            # Use SQL query with date range
-            result = datastore_search_sql_date_range(
+        if date_ranges and all(df in all_field_names for df, _, _ in date_ranges):
+            result = datastore_search_sql_date_ranges(
                 resource_id=resource_id,
-                column_name=date_field,
-                start_date=start_date,
-                end_date=end_date,
+                date_ranges=date_ranges,
                 filters=sql_filters,
-                limit=25000,
+                limit=30000,
                 fields=all_field_names
             )
         else:
-            # Use regular datastore_search
             data = {
                 "resource_id": resource_id,
                 "fields": [field],
                 "distinct": True,
                 "sort": field,
-                "limit": 25000,  # Get up to 25000 distinct values
+                "limit": 30000,
                 "include_total": False
             }
-            
-            # Apply current filters to the search
-            if current_filters:
-                data["filters"] = current_filters
-            
+            if sql_filters:
+                data["filters"] = sql_filters
             result = toolkit.get_action("datastore_search")(context, data)
-        
-        # Extract distinct values for the requested field
+
         options = []
         seen = set()
         for record in result["records"]:
             if field in record and record[field] and record[field] not in seen:
                 options.append(record[field])
                 seen.add(record[field])
-        
+
         return jsonify({"options": options})
     except Exception as e:
         return jsonify({"error": str(e)}), 500

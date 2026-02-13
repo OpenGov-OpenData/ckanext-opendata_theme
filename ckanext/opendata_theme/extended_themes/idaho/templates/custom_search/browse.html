@@ -49,9 +49,11 @@
                                   style="max-width: 64px; max-height: 64px; object-fit: contain; display: none;"
                                   onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
                                   onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
-                              <span class="fa fa-building agency-icon-fallback" style="font-size: 28px; text-align:center; display: inline-block;"></span>
                             {% else %}
-                              <span class="fa fa-building" style="font-size: 28px; width: 36px; text-align:center;"></span>
+                              <img src="/img/agency_logo/StateAgencylogo100.png"
+                              alt="{{ item }}"
+                              class="agency-logo"
+                              style="max-width: 64px; max-height: 64px; object-fit: contain; display: inline-block;">
                             {% endif %}
                           </div>
                         </div>
