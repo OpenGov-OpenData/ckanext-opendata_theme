@@ -36,7 +36,7 @@ DEFAULT_CUSTOM_CSS = (
     '.main-navigation .main-navigation-title,.main-navigation .menu li a {color: #07305c}',
     '.module-heading {background: #165cab}',
     '.module-heading,.module-heading .action {color: #ffffff}',
-    'body, .site-footer, .footer-column-form .cke_reset {background: #07305c}',
+    '.site-footer, .footer-column-form .cke_reset {background: #07305c}',
     '.site-footer a,.site-footer a:hover,.footer-column-form .cke_reset a {color: #ffffff}',
     '.site-footer,.site-footer label,.site-footer small,.footer-column-form .cke_reset {color: #ffffff}'
 )
