@@ -87,7 +87,7 @@ class ModuleHeaderTextColor(AbstractParser):
 
 
 class FooterBackGroundColor(AbstractParser):
-    class_name = 'body, .site-footer, .footer-column-form .cke_reset'
+    class_name = '.site-footer, .footer-column-form .cke_reset'
     form_name = 'footer-background-color'
     title = 'Footer Background Color'
     location = 'background'
