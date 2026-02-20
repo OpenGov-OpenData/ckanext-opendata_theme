@@ -1,3 +1,7 @@
+body {
+  background: #ffffff;
+  background-color: #ffffff;
+}
 p a,
 .dataset-content div a {
   text-decoration: underline;
