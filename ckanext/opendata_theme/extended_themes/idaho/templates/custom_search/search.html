@@ -1,0 +1,572 @@
+{% extends "custom_search/base.html" %}
+{% import 'macros/form.html' as form %}
+
+{% block secondary_content %}
+  {% if not config_missing %}
+  <div class="filters" id="filters-panel">
+    <div class="filters-header">
+      <h2>Filters</h2>
+      <button type="button" class="btn btn-sm btn-secondary filter-toggle" id="hide-filters-btn" title="Hide filters">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Hide Filters
+      </button>
+    </div>
+    <form method="get" action="" id="search-form">
+      {% set date_fields = date_fields | default([]) %}
+      {% for field in fields %}
+      <div class="form-group">
+        <label>{{ field }}</label>
+        {% if field in date_fields %}
+          {# Date range picker: visible input + hidden start/end for form submit #}
+          <div class="date-range-container">
+            <input type="text"
+                   id="date-range-{{ loop.index0 }}"
+                   class="form-control date-range-picker-input"
+                   data-field="{{ field }}"
+                   placeholder="Select date range"
+                   readonly>
+            <input type="hidden" name="{{ field }}_start" id="{{ field }}_start" value="{{ filters[field + '_start'] if filters.get(field + '_start') else '' }}">
+            <input type="hidden" name="{{ field }}_end" id="{{ field }}_end" value="{{ filters[field + '_end'] if filters.get(field + '_end') else '' }}">
+          </div>
+        {% else %}
+          {# Select2 dropdown for other fields #}
+          <select name="{{ field }}" class="form-control filter-dropdown" data-field="{{ field }}" multiple="multiple">
+          </select>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div class="filter-actions">
+        <button type="button" class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
+        <button type="button" class="btn btn-secondary hidden" onclick="scrollToPrimaryTop()">Back to Top</button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+{% endblock %}
+
+{% block primary_content %}
+<section class="module">
+  <div class="module-content">
+    {% if config_missing %}
+      <div class="alert alert-warning" style="margin: 20px 0; padding: 20px;">
+        <h3>Configuration Required</h3>
+        <p>The custom search feature is not configured. Please configure the <strong>Custom Search Resource View URL</strong> in the admin settings.</p>
+        <p><a href="{{ h.url_for('admin.config') }}" class="btn btn-primary">Go to Admin Settings</a></p>
+      </div>
+    {% else %}
+      <h2>Search for an agreement or define filter criteria in the panel on the left.</h2>
+      <button type="button" class="btn btn-sm btn-secondary filter-toggle" id="show-filters-btn" title="Show filters" style="display: none;">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Show Filters
+      </button>
+      <div id="data-preview">
+        {% set base_iframe_url = iframe_url %}
+        {% set date_fields_iframe = date_fields | default([]) %}
+        {% if filters %}
+          {% set filter_pairs = [] %}
+          {% set date_range_keys_set = [] %}
+          {% for df in date_fields_iframe %}
+            {% set _ = date_range_keys_set.append(df + "_start") %}
+            {% set _ = date_range_keys_set.append(df + "_end") %}
+          {% endfor %}
+          {% for df in date_fields_iframe %}
+            {% set df_start = filters.get(df + "_start") %}
+            {% set df_end = filters.get(df + "_end") %}
+            {% if df_start and df_end %}
+              {% set date_range_value = df_start + " to " + df_end %}
+              {% set _ = filter_pairs.append(df + ":" + date_range_value) %}
+            {% endif %}
+          {% endfor %}
+          {% for key, values in filters.items() %}
+            {% if values and key not in date_range_keys_set %}
+              {% if values is string %}
+                {% set _ = filter_pairs.append(key + ":" + values) %}
+              {% else %}
+                {% for value in values %}
+                  {% if value %}
+                    {% set _ = filter_pairs.append(key + ":" + value) %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if filter_pairs %}
+            {% set filters_string = filter_pairs|join("|") %}
+            {% set iframe_url = base_iframe_url + "?filters=" + filters_string|urlencode %}
+          {% else %}
+            {% set iframe_url = base_iframe_url %}
+          {% endif %}
+        {% else %}
+          {% set iframe_url = base_iframe_url %}
+        {% endif %}
+        <iframe title="Data viewer" width="100%" src="{{ iframe_url }}" frameBorder="0"></iframe>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" rel="stylesheet" />
+  <style>
+    /* Style for Select2 selection pills */
+    .filter-dropdown + .select2 .select2-selection__choice {
+      background-color: #0d6efd;
+      border: 1px solid #0d6efd;
+      color: white;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    
+    .filter-dropdown + .select2 .select2-selection__choice__remove {
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      border-right: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    .filter-dropdown + .select2 .select2-selection__choice__remove:hover {
+      color: #ffcccc;
+    }
+    
+    .filter-dropdown + .select2-container--focus .select2-selection {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    
+    /* Ensure multi-select container has proper styling */
+    .select2-container .select2-selection--multiple {
+      min-height: 38px;
+      border-radius: 4px;
+    }
+    
+    .select2-container .select2-selection--multiple .select2-selection__rendered {
+      padding: 2px 5px;
+    }
+    
+    /* Filter panel toggle styles */
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .filters-header h2 {
+      margin: 0;
+      flex: 1;
+    }
+    
+    .filter-toggle {
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-toggle:hover {
+      color: #0d6efd;
+      background-color: rgba(13, 110, 253, 0.1);
+      border-radius: 4px;
+    }
+    
+    .show-filters-btn {
+      transform: translateY(-50%);
+      z-index: 1000;
+    }
+    
+    #filters-panel .form-group {
+      margin-bottom: 15px;
+    }
+
+    .filter-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dayContainer {
+      margin-top: 2px;
+    }
+    .flatpickr-day {
+      color: #000000;
+    }
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange,
+    .flatpickr-day.selected.inRange,
+    .flatpickr-day.startRange.inRange,
+    .flatpickr-day.endRange.inRange,
+    .flatpickr-day.selected.prevMonthDay,
+    .flatpickr-day.startRange.prevMonthDay,
+    .flatpickr-day.endRange.prevMonthDay,
+    .flatpickr-day.selected.nextMonthDay,
+    .flatpickr-day.startRange.nextMonthDay,
+    .flatpickr-day.endRange.nextMonthDay {
+      background: #4B3FFF;
+      border-color: #4B3FFF;
+      color: #fff;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    .flatpickr-day.selected:focus,
+    .flatpickr-day.startRange:focus,
+    .flatpickr-day.endRange:focus,
+    .flatpickr-day.selected:hover,
+    .flatpickr-day.startRange:hover,
+    .flatpickr-day.endRange:hover {
+      background: #19009B;
+      border-color: #19009B;
+    }
+    .flatpickr-day:focus,
+    .flatpickr-day:hover,
+    .flatpickr-day.prevMonthDay:focus,
+    .flatpickr-day.prevMonthDay:hover,
+    .flatpickr-day.nextMonthDay:focus,
+    .flatpickr-day.nextMonthDay:hover {
+      outline: rgb(75, 63, 255) solid 2px;
+    }
+    .flatpickr-day.inRange,
+    .flatpickr-day.prevMonthDay.inRange,
+    .flatpickr-day.nextMonthDay.inRange,
+    .flatpickr-day.today.inRange,
+    .flatpickr-day.prevMonthDay.today.inRange,
+    .flatpickr-day.nextMonthDay.today.inRange {
+      background: rgba(75, 63, 255, 0.12);
+      border-color: transparent;
+      border-radius: 0;
+      -webkit-box-shadow: -5px 0 0 rgba(75, 63, 255, 0.06), 5px 0 0 rgba(75, 63, 255, 0.06);
+      box-shadow: -5px 0 0 rgba(75, 63, 255, 0.06), 5px 0 0 rgba(75, 63, 255, 0.06);
+    }
+    .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+    .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+    .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+      -webkit-box-shadow: -10px 0 0 #4B3FFF;
+      box-shadow: -10px 0 0 #4B3FFF;
+    }
+
+    #data-preview > iframe {
+      min-height: 880px;
+    }
+    @media (max-width: 1600px) {
+      #data-preview > iframe {
+        min-height: 800px;
+      }
+    }
+    @media (max-width: 1440px) {
+      #data-preview > iframe {
+        min-height: 720px;
+      }
+    }
+    @media (max-width: 1280px) {
+      #data-preview > iframe {
+        min-height: 640px;
+      }
+    }
+
+    /* Ensure show filters button is visible when filters are hidden */
+    body.filters-hidden #show-filters-btn {
+      display: block !important;
+      margin-bottom: 15px;
+    }
+    
+    /* Hide show filters button when filters are visible */
+    body:not(.filters-hidden) #show-filters-btn {
+      display: none !important;
+    }
+    
+    /* Hide secondary sidebar when filters are hidden */
+    body.filters-hidden .secondary,
+    body.filters-hidden aside.secondary {
+      display: none !important;
+      width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    /* Hide the filters panel specifically */
+    body.filters-hidden #filters-panel {
+      display: none !important;
+    }
+    
+    /* Expand primary content when filters are hidden */
+    body.filters-hidden .primary,
+    body.filters-hidden div.primary {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      flex: 1 1 100% !important;
+    }
+    
+    /* Handle Bootstrap grid - expand primary column when secondary is hidden */
+    body.filters-hidden .row > .col-md-3:first-of-type,
+    body.filters-hidden .row > .col-sm-3:first-of-type,
+    body.filters-hidden .row > .col-lg-3:first-of-type,
+    body.filters-hidden .row > .col-md-4:first-of-type,
+    body.filters-hidden .row > .col-sm-4:first-of-type,
+    body.filters-hidden .row > .col-lg-4:first-of-type {
+      display: none !important;
+      width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    body.filters-hidden .row > .col-md-9,
+    body.filters-hidden .row > .col-sm-9,
+    body.filters-hidden .row > .col-lg-9,
+    body.filters-hidden .row > .col-md-8,
+    body.filters-hidden .row > .col-sm-8,
+    body.filters-hidden .row > .col-lg-8 {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+    
+    /* Transition for smooth expand/collapse */
+    .primary, .secondary {
+      transition: width 0.3s ease, margin 0.3s ease, max-width 0.3s ease;
+    }
+  </style>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {% if not config_missing %}
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+  <script>
+    // Current filter values from URL parameters
+    const currentFilters = {{ filters | tojson }};
+    // Date fields that use range picker (from blueprint)
+    const DATE_FIELDS = {{ date_fields | default([]) | tojson }};
+
+    // Flag to prevent auto-submit during initial population
+    let initializingDropdowns = false;
+    
+    // Function to populate dropdown options
+    async function populateDropdown(field) {
+      if (!field) return;
+      try {
+        // Build query parameters including current filters
+        const params = new URLSearchParams();
+        params.append('field', field);
+        
+        // Add current filters (excluding the field we're populating)
+        Object.keys(currentFilters).forEach(key => {
+          if (key !== field && currentFilters[key]) {
+            const values = Array.isArray(currentFilters[key]) ? currentFilters[key] : [currentFilters[key]];
+            values.forEach(value => {
+              if (value) {
+                params.append(key, value);
+              }
+            });
+          }
+        });
+        
+        const response = await fetch(`/api/filter-options?${params.toString()}`);
+        const data = await response.json();
+        
+        if (data.options) {
+          const dropdown = document.querySelector(`select[data-field="${field}"]`);
+          if (dropdown) {
+            // Clear existing options
+            dropdown.innerHTML = '';
+            
+            // Add options from API
+            data.options.forEach(option => {
+              const optionElement = document.createElement('option');
+              optionElement.value = option;
+              optionElement.textContent = option;
+              
+              // Select current filter values if they match
+              const selectedValues = Array.isArray(currentFilters[field]) ? currentFilters[field] : 
+                                     currentFilters[field] ? [currentFilters[field]] : [];
+              if (selectedValues.includes(option)) {
+                optionElement.selected = true;
+              }
+              
+              dropdown.appendChild(optionElement);
+            });
+            
+            // Update Select2 with current selection without triggering change event
+            const selectedValues = Array.isArray(currentFilters[field]) ? currentFilters[field] : 
+                                   currentFilters[field] ? [currentFilters[field]] : [];
+            if (selectedValues.length > 0) {
+              $(dropdown).val(selectedValues);
+              // Trigger Select2 to update the display
+              $(dropdown).trigger('change.select2');
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching options for field', field, ':', error);
+      }
+    }
+    
+    // Flatpickr instances for date range pickers (set in DOMContentLoaded)
+    let dateRangePickerInstances = [];
+
+    // Function to clear all filters
+    function clearFilters() {
+      const dropdowns = document.querySelectorAll('select.filter-dropdown');
+      dropdowns.forEach(dropdown => {
+        $(dropdown).val(null).trigger('change');
+      });
+      dateRangePickerInstances.forEach(instance => {
+        if (instance) instance.clear();
+      });
+      DATE_FIELDS.forEach(field => {
+        const startEl = document.getElementById(field + '_start');
+        const endEl = document.getElementById(field + '_end');
+        if (startEl) startEl.value = '';
+        if (endEl) endEl.value = '';
+      });
+      document.getElementById('search-form').submit();
+    }
+    
+    // Function to scroll to top of primary content
+    function scrollToPrimaryTop() {
+      const primary = document.querySelector('.primary');
+      if (primary) {
+        primary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    
+    // Function to refresh all dropdowns when filters change
+    async function refreshAllDropdowns() {
+      const dropdowns = document.querySelectorAll('select.filter-dropdown');
+      await Promise.all(
+        Array.from(dropdowns).map(dropdown => {
+          const field = dropdown.getAttribute('data-field');
+          return field ? populateDropdown(field) : Promise.resolve();
+        })
+      );
+    }
+    
+    // Filter toggle functionality
+    function toggleFilters(hide) {
+      const body = document.body;
+      const hideBtn = document.getElementById('hide-filters-btn');
+      const showBtn = document.getElementById('show-filters-btn');
+      
+      if (hide) {
+        body.classList.add('filters-hidden');
+        hideBtn.style.display = 'none';
+        showBtn.style.display = 'block';
+        localStorage.setItem('filtersHidden', 'true');
+      } else {
+        body.classList.remove('filters-hidden');
+        hideBtn.style.display = 'block';
+        showBtn.style.display = 'none';
+        localStorage.setItem('filtersHidden', 'false');
+      }
+    }
+    
+    // Restore filter visibility state from localStorage
+    function restoreFilterState() {
+      const filtersHidden = localStorage.getItem('filtersHidden');
+      if (filtersHidden === 'true') {
+        toggleFilters(true);
+      }
+    }
+    
+    // Populate all dropdowns when page loads
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Restore filter visibility state
+      restoreFilterState();
+      
+      // Set up toggle button event listeners
+      document.getElementById('hide-filters-btn').addEventListener('click', function() {
+        toggleFilters(true);
+      });
+      
+      document.getElementById('show-filters-btn').addEventListener('click', function() {
+        toggleFilters(false);
+      });
+      
+      // Set flag to prevent auto-submit during initialization
+      initializingDropdowns = true;
+      
+      // Initialize Select2 on all dropdowns (only <select> elements)
+      $('select.filter-dropdown').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Search and select...',
+        allowClear: true,
+        width: '100%'
+      });
+      
+      // Populate dropdowns after Select2 is initialized and wait for completion
+      await refreshAllDropdowns();
+      
+      // Reset flag after initialization is complete
+      initializingDropdowns = false;
+      
+      // Add event listeners to dropdowns to refresh options when they change
+      const dropdownsForChange = document.querySelectorAll('select.filter-dropdown');
+      dropdownsForChange.forEach(dropdown => {
+        $(dropdown).on('change', function() {
+          // Don't submit if we're still initializing
+          if (initializingDropdowns) {
+            return;
+          }
+          
+          // Update currentFilters with the new selections
+          const field = this.getAttribute('data-field');
+          if (!field) return;
+          const selectedValues = $(this).val();
+          
+          if (selectedValues && selectedValues.length > 0) {
+            currentFilters[field] = selectedValues;
+          } else {
+            delete currentFilters[field];
+          }
+          
+          // Auto-submit the form when a filter changes
+          const form = document.getElementById('search-form');
+          if (form) {
+            form.submit();
+          }
+        });
+      });
+      
+      // Initialize Flatpickr date range picker for each date field (match by data-field, not index)
+      dateRangePickerInstances = [];
+      DATE_FIELDS.forEach((dateField) => {
+        const rangeInput = document.querySelector('.date-range-picker-input[data-field="' + dateField + '"]');
+        const startHidden = document.getElementById(dateField + '_start');
+        const endHidden = document.getElementById(dateField + '_end');
+        if (rangeInput && startHidden && endHidden) {
+          const defaultStart = (currentFilters[dateField + '_start'] || '').toString().trim();
+          const defaultEnd = (currentFilters[dateField + '_end'] || '').toString().trim();
+          const defaultDates = (defaultStart && defaultEnd) ? [defaultStart, defaultEnd] : [];
+          const instance = flatpickr(rangeInput, {
+            mode: 'range',
+            dateFormat: 'Y-m-d',
+            allowInput: false,
+            defaultDate: defaultDates.length ? defaultDates : null,
+            onChange: function(selectedDates, dateStr, inst) {
+              if (selectedDates.length === 2) {
+                startHidden.value = inst.formatDate(selectedDates[0], 'Y-m-d');
+                endHidden.value = inst.formatDate(selectedDates[1], 'Y-m-d');
+                document.getElementById('search-form').submit();
+              } else if (selectedDates.length === 0) {
+                startHidden.value = '';
+                endHidden.value = '';
+                document.getElementById('search-form').submit();
+              }
+            },
+            onClose: function(selectedDates) {
+              if (selectedDates.length === 1) {
+                startHidden.value = '';
+                endHidden.value = '';
+              }
+            }
+          });
+          dateRangePickerInstances.push(instance);
+        }
+      });
+    });
+  </script>
+  {% endif %}
+{% endblock %}

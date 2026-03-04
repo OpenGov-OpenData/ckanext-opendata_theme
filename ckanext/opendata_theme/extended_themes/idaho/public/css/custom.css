@@ -1,78 +1,118 @@
+/* Roboto Slab Bold for headings */
 @font-face {
-  font-family: 'Bryant';
-  src: url('fonts/BryantWebRegular.eot');
-  src: url('fonts/BryantWebRegular.woff') format('woff'),
-       url('fonts/BryantWebRegular.woff2') format('woff2');
+  font-family: "Roboto Slab", serif;
+  src: url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
 }
-
+/* Merriweather Sans Regular for body */
 @font-face {
-  font-family: 'Bryant';
-  src: url('fonts/BryantWebBold.eot');
-  src: url('fonts/BryantWebBold.woff') format('woff'),
-       url('fonts/BryantWebBold.woff2') format('woff2');
-  font-weight: bold;
+  font-family: "Merriweather Sans", sans-serif;
+  src: url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Roboto Slab", serif;
 }
 body {
-  font-family: 'Bryant', sans-serif !important;
+  font-family: "Merriweather Sans", sans-serif;
   font-size: 16px;
 }
-.header-info {
-  float: left;
-  text-align: center;
+
+.container {
+  width: 100% !important;
 }
-.header-info ul li {
-  display: inline-block;
+
+/* Filter dropdown styles */
+.filters {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
 }
-.header-info span.text {
-  margin: 0 2px 0 4px;
-}
-.header-info a {
-  color: #ffffff;
-  line-height: 31px;
-}
-.header-info a:hover, .header-info a:focus {
-  color: #ffffff;
-  text-decoration: underline;
-}
-.header-info .fa {
-  color: #ffffff;
-}
-.header-info li.phone-info {
-  margin-right: 30px;
-}
-.account.authed i.fa-home {
-  font-size: 16px;
-}
-.account.not-authed i.fa-home,
-.account.not-authed i.fa-twitter-square,
-.account.not-authed i.fa-facebook-square {
-  font-size: 20px;
-  margin-top: 5px;
-}
-.navbar button.dropdown-toggle {
-  background-color: #445562;
-  margin-top: 15px;
-}
-.navbar .dropdown-menu>li>a:hover,
-.navbar .dropdown-menu>li>a:focus {
-  background: #4298B5;
-}
-.intro-block .box {
-  background: #445562;
-  color: #FFFFFF;
-  text-align: center;
-}
-.hero-text-heading {
+
+.filters h3 {
   margin-top: 0;
-  border-bottom: #4298B5 solid thick;
+  margin-bottom: 15px;
+  color: #2c3e50;
 }
-.sub-footer {
-  background: #4298B5;
-  height: 22px;
+
+.filter-dropdown {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  margin-bottom: 15px;
 }
-.sub-footer .idaho-logo {
-  height: 22px;
-  float: right;
-  padding: 1px;
-  margin-right: 10px;
+
+.filter-dropdown:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+  border: 1px solid #4B3FFF !important;
+  background-color: #4B3FFF !important;
+  color: #FFFFFF !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  border: 1px solid #4B3FFF !important;
+  background-color: #19009B !important;
+  color: #FFFFFF !important;
+}
+
+.btn-secondary {
+  border: 1px solid #4B3FFF !important;
+  color: #4B3FFF !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  border: 1px solid #4B3FFF !important;
+  background-color: rgb(238, 241, 252);
+  color: #4B3FFF !important;
+}
+
+.panel-default {
+  min-height: 110px;
+}
+@media (min-width: 768px) and (max-width: 1366px) {
+  .panel-default {
+    min-height: 150px;
+  }
+}
+.panel-default .panel-body {
+  padding: 15px 15px 10px;
+}
+
+/* Date range container */
+.date-range-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.date-range-input-wrapper {
+  flex: 1 1 auto;
+  min-width: 140px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.date-range-label {
+  font-weight: 500;
+  margin: 0;
+}
+.date-range-label:after {
+  content: "";
+}
+.date-range-input {
+  width: 100%;
 }

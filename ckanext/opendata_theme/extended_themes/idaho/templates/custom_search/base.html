@@ -1,0 +1,29 @@
+{% extends "page.html" %}
+
+{% block subtitle %}Custom Search{% endblock %}
+
+{% block skip %}
+{% endblock %}
+
+{%- block header %}
+{% endblock -%}
+
+{% block flash %}
+{% endblock %}
+
+{% block toolbar %}
+{% endblock %}
+
+{% block pre_primary %}
+<article class="module">
+  <header class="module-content page-header">
+    <ul class="nav nav-tabs">
+      {{ h.build_nav_icon('custom-search.custom_search', 'Search Statewide Agreements and Contracts') }}
+      {{ h.build_nav_icon('custom-search.custom_browse', 'Browse by Agency') }}
+    </ul>
+  </header>
+</article>
+{% endblock %}
+
+{%- block footer %}
+{% endblock -%}
