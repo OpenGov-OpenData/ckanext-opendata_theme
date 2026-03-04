@@ -7,8 +7,9 @@ jQuery(document).ready(function () {
                 hideAfterPaletteSelect: true,
                 preferredFormat: "hex", // sets the format of color input box
                 palette:[
-                    ["#1F76D8","#165CAB","#044187","#07305C","#FFFFFF","#9A9DA1","#616365","#131517"],
-                    ["#990000","#B45F06","#BF9000","#38761D","#45818E","#3D85C6","#674EA7","#A64D79"]
+                    ["#09015E","#19009B","#4B3FFF","#7589FF","#94A8FF","#000000","#323334","#616365","#939598","#FFFFFF"],
+                    ["#B12525","#D33423","#885604","#C68700","#037730","#07963F","#046A9B","#0285C4","#8700D3","#A627FF"],
+                    []
                 ]
             });
         });

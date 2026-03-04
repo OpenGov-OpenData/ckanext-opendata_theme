@@ -91,6 +91,61 @@ function trapFocus(modal) {
   });
 }
 
+// Dataset page primary nav: ARIA tablist and arrow-key navigation
+$(document).ready(function () {
+  var pathname = window.location.pathname || '';
+  if (pathname.indexOf('/dataset/') !== 0) {
+    return;
+  }
+  var $tablist = $('.module-content.page-header ul.nav.nav-tabs');
+  if (!$tablist.length) {
+    return;
+  }
+
+  $tablist.attr('role', 'tablist');
+  var $tabs = $tablist.find('> li > a');
+  $tablist.find('> li').attr('role', 'presentation');
+  $tabs.attr('role', 'tab');
+
+  function setRovingTabindex() {
+    var currentPath = pathname.replace(/\/$/, '');
+    $tabs.each(function () {
+      var $a = $(this);
+      var href = $a.attr('href') || '';
+      var tabPath = href.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '');
+      var isActive = $a.closest('li').hasClass('active') || tabPath === currentPath;
+      $a.attr('tabindex', isActive ? '0' : '-1');
+      $a.attr('aria-selected', isActive ? 'true' : 'false');
+    });
+  }
+  setRovingTabindex();
+
+  $tablist.on('keydown', function (e) {
+    var $target = $(e.target);
+    if ($target.attr('role') !== 'tab' || !$target.closest($tablist).length) {
+      return;
+    }
+    var key = e.key;
+    if (key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== 'Home' && key !== 'End') {
+      return;
+    }
+    e.preventDefault();
+    var index = $tabs.index($target);
+    if (key === 'ArrowRight') {
+      index = index < $tabs.length - 1 ? index + 1 : 0;
+    } else if (key === 'ArrowLeft') {
+      index = index > 0 ? index - 1 : $tabs.length - 1;
+    } else if (key === 'Home') {
+      index = 0;
+    } else if (key === 'End') {
+      index = $tabs.length - 1;
+    }
+    $tabs.attr('tabindex', '-1');
+    var $next = $tabs.eq(index);
+    $next.attr('tabindex', '0').focus();
+  });
+});
+
 // Sidebar menu
 $(document).on('keydown', function(event) {
   const $menuTrigger = $('#hb__trigger');
