@@ -8,7 +8,7 @@ from ckanext.opendata_theme.extended_themes.idaho.blueprint import search_bluepr
 class OpenDataThemePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IBlueprint)
-    
+
     # IConfigurer
     def update_config(self, config):
         toolkit.add_template_directory(config, 'templates')

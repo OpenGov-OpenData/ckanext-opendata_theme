@@ -10,27 +10,30 @@ log = logging.getLogger(__name__)
 
 search_blueprint = Blueprint("custom-search", __name__)
 
+
 def get_iframe_url():
     """Get iframe_url from config or return None"""
     return toolkit.config.get('ckanext.custom_search.iframe_url') or None
 
+
 def get_resource_id():
     """Extract RESOURCE_ID from iframe_url or return None"""
     iframe_url = get_iframe_url()
-    
+
     if not iframe_url:
         return None
-    
+
     # Extract resource_id from URL pattern: .../resource/{resource_id}/view/...
     # UUID pattern: 8-4-4-4-12 hexadecimal characters
     pattern = r'/resource/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})'
     match = re.search(pattern, iframe_url, re.IGNORECASE)
-    
+
     if match:
         return match.group(1)
-    
+
     # Return None if extraction fails
     return None
+
 
 def _is_valid_date(date_str):
     """Check if a string is a valid date in YYYY-MM-DD format."""
@@ -42,6 +45,7 @@ def _is_valid_date(date_str):
     except ValueError:
         return False
 
+
 def is_date_column(column_name, fields):
     """Check if a column is a date/timestamp type."""
     for field in fields:
@@ -50,6 +54,7 @@ def is_date_column(column_name, fields):
             return field_type in ('timestamp', 'timestamptz', 'date')
     return False
 
+
 def datastore_search_sql_date_range(resource_id, column_name, start_date, end_date,
                                     filters, limit, fields):
     """
@@ -57,7 +62,7 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
     Returns the response dictionary similar to datastore_search.
     """
     datastore_search_sql = toolkit.get_action('datastore_search_sql')
-    
+
     # Get field type to determine how to handle the date comparison
     # Get field definitions first
     datastore_search = toolkit.get_action('datastore_search')
@@ -67,22 +72,22 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
     })
     field_list = field_info_result.get('fields', [])
     is_date_type = is_date_column(column_name, field_list)
-    
+
     # Log field type detection for debugging
     field_info = next((f for f in field_list if f.get('id') == column_name), None)
     if field_info:
         log.debug('Date field "%s" type: %s, is_date_type: %s', column_name, field_info.get('type'), is_date_type)
     else:
         log.warning('Date field "%s" not found in field list', column_name)
-    
+
     # Build WHERE clause for date range
     # Escape column name to prevent SQL injection
     safe_column = '"{}"'.format(column_name.replace('"', '""'))
-    
+
     # Escape date values to prevent SQL injection
     safe_start_date = start_date.replace("'", "''")
     safe_end_date = end_date.replace("'", "''")
-    
+
     # Handle date comparison based on field type
     if is_date_type:
         # Field is already a date/timestamp type
@@ -98,7 +103,7 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
             '{} IS NOT NULL AND {}::date >= \'{}\'::date'.format(safe_column, safe_column, safe_start_date),
             '{}::date < (\'{}\'::date + interval \'1 day\')'.format(safe_column, safe_end_date)
         ]
-    
+
     # Add filters as additional WHERE conditions
     filter_conditions = []
     for filter_key, filter_values in filters.items():
@@ -119,22 +124,22 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
             filter_conditions.append(
                 '{} = \'{}\''.format(safe_filter_key, safe_filter_value)
             )
-    
+
     if filter_conditions:
         where_clauses.extend(filter_conditions)
-    
+
     where_clause = ' AND '.join(where_clauses)
-    
+
     # Build ORDER BY clause - quote column name to handle spaces
     order_by = '"_id" asc'
-    
+
     # Build SELECT clause - escape column names
     select_fields = ', '.join(['"{}"'.format(col.replace('"', '""')) for col in fields])
-    
+
     # CKAN datastore uses resource_id as table identifier
     # Escape resource_id for SQL
     safe_resource_id = resource_id.replace('"', '""')
-    
+
     # Build SQL query - CKAN datastore_search_sql uses resource_id directly
     sql = 'SELECT {select_fields} FROM "{safe_resource_id}" WHERE {where_clause} ORDER BY {order_by} LIMIT {limit}'.format(
         select_fields=select_fields,
@@ -143,16 +148,16 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
         order_by=order_by,
         limit=limit
     )
-    
+
     # Also get total count for filtered results
     count_sql = 'SELECT COUNT(*) as total FROM "{safe_resource_id}" WHERE {where_clause}'.format(
         safe_resource_id=safe_resource_id,
         where_clause=where_clause
     )
-    
+
     # Log SQL query for debugging
     log.debug('Date range SQL query: %s', sql)
-    
+
     try:
         # Execute main query
         response = datastore_search_sql(
@@ -160,34 +165,34 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
                 'sql': sql
             }
         )
-        
+
         # Execute count query
         count_response = datastore_search_sql(
             None, {
                 'sql': count_sql
             }
         )
-        
+
         # datastore_search_sql returns records as list of dicts with column names as keys
         records = response.get('records', [])
-        
+
         # Get total from count query
         count_records = count_response.get('records', [])
         total = count_records[0].get('total', 0) if count_records else 0
-        
+
         # Log results for debugging
         log.debug('Date range query returned %d records (total: %d)', len(records), total)
-        
+
         # Get field definitions from datastore_search (more reliable than datastore_info)
         datastore_search = toolkit.get_action('datastore_search')
         field_info_result = datastore_search({}, {
             'resource_id': resource_id,
             'limit': 0
         })
-        
+
         # Create a mapping of field names to field definitions
         field_map = {f['id']: f for f in field_info_result.get('fields', [])}
-        
+
         # Build result fields list
         result_fields = []
         for field_name in fields:
@@ -196,7 +201,7 @@ def datastore_search_sql_date_range(resource_id, column_name, start_date, end_da
             else:
                 # Fallback if field not found
                 result_fields.append({'id': field_name, 'type': 'text'})
-        
+
         return {
             'records': records,
             'total': total,
@@ -315,10 +320,10 @@ def datastore_search_sql_date_ranges(resource_id, date_ranges, filters, limit, f
 
 def custom_search():
     context = {"model": model, "user": toolkit.g.user}
-    
+
     resource_id = get_resource_id()
     base_iframe_url = get_iframe_url()
-    
+
     # Check if configuration is missing
     if not base_iframe_url or not resource_id:
         return render_template(
@@ -437,6 +442,7 @@ def custom_search():
         config_missing=False
     )
 
+
 def get_filter_options():
     """API endpoint to get distinct values for a specific field, filtered by current filters"""
     context = {"model": model, "user": toolkit.g.user}
@@ -448,7 +454,11 @@ def get_filter_options():
     resource_id = get_resource_id()
 
     if not resource_id:
-        return jsonify({"error": "Custom search is not configured. Please configure the Resource View URL in the admin settings."}), 500
+        msg = (
+            "Custom search is not configured. "
+            "Please configure the Resource View URL in the admin settings."
+        )
+        return jsonify({"error": msg}), 500
 
     # Get fields and date_fields the same way as custom_search
     filter_fields_config = toolkit.config.get('ckanext.custom_search.filter_fields', '')
@@ -526,11 +536,12 @@ def get_filter_options():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 def custom_browse():
     context = {"model": model, "user": toolkit.g.user}
-    
+
     resource_id = get_resource_id()
-    
+
     if not resource_id:
         return render_template("custom_search/browse.html", browse_items=[], browse_field=None, config_missing=True)
 
@@ -577,7 +588,13 @@ def custom_browse():
         except Exception:
             browse_items = []
 
-    return render_template("custom_search/browse.html", browse_items=browse_items, browse_field=browse_field, config_missing=False)
+    return render_template(
+        "custom_search/browse.html",
+        browse_items=browse_items,
+        browse_field=browse_field,
+        config_missing=False
+    )
+
 
 search_blueprint.add_url_rule("/custom-search", methods=["GET", "POST"], view_func=custom_search)
 search_blueprint.add_url_rule("/custom-browse", methods=["GET"], view_func=custom_browse)
