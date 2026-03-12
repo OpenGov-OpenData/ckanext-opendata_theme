@@ -1,70 +1,73 @@
 {% ckan_extends %}
 
 {%- block page -%}
+{% block skip %}
+  {{ super() }}
+{% endblock %}
 <input type="checkbox" id="hb__trigger" class="hb__trigger" aria-hidden="true">
-<div class="main-navigation">
+<nav class="main-navigation" aria-label="{{ _('Main Navigation') }}">
   <div class="main-navigation-title"></div>
-    <div class="region region-navigation">
-      <div class="side-nav-account">
-        {% block header_account %}
-          {% block header_account_container_content %}
-            {% if g.userobj %}
-              <div class="account avatar authed" data-module="me" data-me="{{ g.userobj.id }}">
-                <ul class="list-unstyled unstyled">
-                  {% block header_account_logged %}
-                    {% if g.userobj.sysadmin %}
-                      <li>
-                        <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
-                          <span class="text">{{ _('Admin') }}</span>
-                        </a>
-                      </li>
-                    {% endif %}
+  <div class="region region-navigation">
+    <div class="side-nav-account">
+      {% block header_account %}
+        {% block header_account_container_content %}
+          {% if g.userobj %}
+            <div class="account avatar authed" data-module="me" data-me="{{ g.userobj.id }}">
+              <ul class="list-unstyled unstyled">
+                {% block header_account_logged %}
+                  {% if g.userobj.sysadmin %}
                     <li>
-                      <a href="{{ h.url_for('user.read', id=g.userobj.name) }}" title="{{ _('View profile') }}">
-                        <span class="username">{{ g.userobj.display_name }}</span>
+                      <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
+                        <span class="text">{{ _('Admin') }}</span>
                       </a>
                     </li>
-                    {% set new_activities = h.new_activities() %}
-                    <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
-                      {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
-                      <a href="{{ h.url_for('dashboard.index') }}" title="{{ notifications_tooltip }}">
-                        <span class="text">{{ _('Dashboard') }}</span>
-                      </a>
-                    </li>
+                  {% endif %}
+                  <li>
+                    <a href="{{ h.url_for('user.read', id=g.userobj.name) }}" title="{{ _('View profile') }}">
+                      <span class="username">{{ g.userobj.display_name }}</span>
+                    </a>
+                  </li>
+                  {% set new_activities = h.new_activities() %}
+                  <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
+                    {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
+                    <a href="{{ h.url_for('dashboard.index') }}" title="{{ notifications_tooltip }}">
+                      <span class="text">{{ _('Dashboard') }}</span>
+                    </a>
+                  </li>
 
-                    {% block header_account_settings_link %}
-                    <li>
-                      <a href="{{ h.url_for('user.edit', id=g.userobj.name) }}" title="{{ _('Profile settings') }}">
-                        <span class="text">{{ _('Profile settings') }}</span>
-                      </a>
-                    </li>
-                    {% endblock %}
-                    {% block header_account_log_out_link %}
-                    <li class="logout">
-                      <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
-                        <span class="text">{{ _('Log out') }}</span>
-                      </a>
-                    </li>
-                    {% endblock %}
+                  {% block header_account_settings_link %}
+                  <li>
+                    <a href="{{ h.url_for('user.edit', id=g.userobj.name) }}" title="{{ _('Profile settings') }}">
+                      <span class="text">{{ _('Profile settings') }}</span>
+                    </a>
+                  </li>
                   {% endblock %}
-                </ul>
-              </div>
-            {% else %}
-              <nav class="account not-authed">
-                <ul class="list-unstyled unstyled">
-                  {% block header_account_notlogged %}
-                    <li>{% link_for _('Log in'), named_route='user.login' %}</li>
-                    {% if h.check_access('user_create') %}
-                      <li>{% link_for _('Register'), named_route='user.register', class_='sub' %}</li>
-                    {% endif %}
+                  {% block header_account_log_out_link %}
+                  <li class="logout">
+                    <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
+                      <span class="text">{{ _('Log out') }}</span>
+                    </a>
+                  </li>
                   {% endblock %}
-                </ul>
-              </nav>
-            {% endif %}
-          {% endblock %}
+                {% endblock %}
+              </ul>
+            </div>
+          {% else %}
+            <nav class="account not-authed">
+              <ul class="list-unstyled unstyled">
+                {% block header_account_notlogged %}
+                  <li>{% link_for _('Log in'), named_route='user.login' %}</li>
+                  {% if h.check_access('user_create') %}
+                    <li>{% link_for _('Register'), named_route='user.register', class_='sub' %}</li>
+                  {% endif %}
+                {% endblock %}
+              </ul>
+            </nav>
+          {% endif %}
         {% endblock %}
-      </div>
-      <ul class="menu list-unstyled unstyled">
+      {% endblock %}
+    </div>
+    <ul class="menu list-unstyled unstyled">
       <li class="menu__item is-leaf first leaf secondary-menu-item">
         <a href="{{ h.url_for('/') }}" class="menu__link">{{ _('Home') }}</a>
       </li>
@@ -97,12 +100,8 @@
       </li>
     </ul>
   </div>
-</div>
+</nav>
 <div class="page" id="page">
-  {% block skip %}
-    {{ super() }}
-  {% endblock %}
-
   {%- block header %}
     {% include "header.html" %}
   {% endblock -%}
