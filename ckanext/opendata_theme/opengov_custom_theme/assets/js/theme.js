@@ -146,21 +146,82 @@ $(document).ready(function () {
   });
 });
 
-// Sidebar menu
-$(document).on('keydown', function(event) {
-  const $menuTrigger = $('#hb__trigger');
-  const $navLabel = $('label[for="hb__trigger"]');
+// Sidebar menu: keyboard (Enter/Escape), focus first link when opened, skip tab when closed
+$(document).ready(function () {
+  var $menuTrigger = $('#hb__trigger');
+  var $navLabel = $('label[for="hb__trigger"]');
 
-  // Check if the focused element is the label
-  if ($(document.activeElement).is($navLabel)) {
-    // Open or close the menu with the Enter key (event.key === 'Enter')
-    if (event.key === 'Enter') {
-      $menuTrigger.prop('checked', !$menuTrigger.prop('checked'));
+  if (!$menuTrigger.length) return;
+
+  function setSidebarFocusable(focusable) {
+    var $nav = $('.main-navigation');
+    var $focusables = $nav.find('a, button');
+    if (focusable) {
+      $nav.removeAttr('aria-hidden');
+      $focusables.removeAttr('tabindex');
+    } else {
+      $nav.attr('aria-hidden', 'true');
+      $focusables.attr('tabindex', '-1');
     }
   }
 
-  // Close the menu with the Escape key (event.key === 'Escape')
-  if (event.key === 'Escape' && $menuTrigger.prop('checked')) {
-    $menuTrigger.prop('checked', false);
+  function focusSidebarFirstLink() {
+    var $nav = $('.main-navigation');
+    var $firstLink = $nav.find('.menu a').first();
+    if (!$firstLink.length) {
+      $firstLink = $nav.find('a').first();
+    }
+    if (!$firstLink.length) return;
+    setTimeout(function () {
+      requestAnimationFrame(function () {
+        $firstLink[0].focus();
+      });
+    }, 400);
   }
+
+  function openSidebar() {
+    $menuTrigger.prop('checked', true);
+    setSidebarFocusable(true);
+    focusSidebarFirstLink();
+  }
+
+  function closeSidebar() {
+    var focusWasInside = $('.main-navigation').has(document.activeElement).length > 0;
+    $menuTrigger.prop('checked', false);
+    setSidebarFocusable(false);
+    if (focusWasInside) {
+      $navLabel.focus();
+    }
+  }
+
+  // Set initial tab order based on whether the sidebar starts open
+  setSidebarFocusable($menuTrigger.prop('checked'));
+
+  // Enter toggles the sidebar; Escape closes it
+  $navLabel.on('keydown', function (event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if ($menuTrigger.prop('checked')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    }
+  });
+
+  $(document).on('keydown', function (event) {
+    if (event.key === 'Escape' && $menuTrigger.prop('checked')) {
+      closeSidebar();
+    }
+  });
+
+  // Handle click (label click fires a change event on the checkbox)
+  $menuTrigger.on('change', function () {
+    if ($(this).prop('checked')) {
+      setSidebarFocusable(true);
+      focusSidebarFirstLink();
+    } else {
+      closeSidebar();
+    }
+  });
 });
