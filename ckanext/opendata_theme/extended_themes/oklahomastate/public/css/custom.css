@@ -42,12 +42,6 @@ body {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   margin-bottom: 10px;
 }
-input#KEYWORD_SUBMIT {
-  background-color: #d15421;
-  border-color: #914014;
-  border-radius: 0;
-  box-shadow: none;
-}
 .elected-officials {
   display: block;
 }

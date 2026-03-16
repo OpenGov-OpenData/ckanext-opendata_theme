@@ -17,22 +17,18 @@
         {% endblock %}
       </div>
       <div class="col-md-4 span4" style="margin-left:auto; margin-right:auto;">
-        <ul class="list-unstyled">
-          <h6 class="imagine">STATE AGENCIES</h6>
-          <li class="nav-item">
-            <form action="https://www.ok.gov/portal/agency.php" method="get" _lpchecked="1">
-              <div id="keyword_search">
-                <div id="keyword_input_div" class="agency_footer">
-                  <label for="KEYWORD" class="search-footer">Search Agencies By Keyword</label>
-                  <div id="keyword_input">
-                    <input id="KEYWORD" name="keyword" value="" class="sm_input" placeholder="State Agencies" alt="State Agencies" aria-label="State Agencies">
-                  </div>
-                  <input type="submit" id="KEYWORD_SUBMIT" class="sm_button btn btn-primary" value="Search Agencies">
-                </div>
+        <h6 class="imagine">STATE AGENCIES</h6>
+        <form action="https://www.ok.gov/portal/agency.php" method="get" _lpchecked="1">
+          <div id="keyword_search">
+            <div id="keyword_input_div" class="agency_footer">
+              <label for="KEYWORD" class="search-footer">Search Agencies By Keyword</label>
+              <div id="keyword_input">
+                <input id="KEYWORD" name="keyword" value="" class="sm_input" placeholder="State Agencies" alt="State Agencies" aria-label="State Agencies">
               </div>
-            </form>
-          </li>
-        </ul>
+              <input type="submit" id="KEYWORD_SUBMIT" class="sm_button btn btn-primary" value="Search Agencies">
+            </div>
+          </div>
+        </form>
       </div>
       <div class="col-md-4 span4">
         {% if g.governor_name or g.lieutenant_governor_name %}
@@ -40,16 +36,22 @@
         {% endif %}
         {% if g.governor_name and g.governor_link %}
           <ul class="nav-item list-unstyled elected-officials">
-            <a class="nav-link" href="{{ g.governor_link }}" target="_blank" rel="noopener noreferrer">Governor {{ g.governor_name }}
-              <li class="official"><i>Official site</i> </li>
-            </a>
+            <li class="official">
+              <a class="nav-link" href="{{ g.governor_link }}" target="_blank" rel="noopener noreferrer">
+                Governor {{ g.governor_name }}<br>
+                <i>Official site</i>
+              </a>
+            </li>
           </ul>
         {% endif %}
         {% if g.lieutenant_governor_name and g.lieutenant_governor_link %}
           <ul class="nav-item list-unstyled elected-officials">
-            <a class="nav-link" href="{{ g.lieutenant_governor_link }}" target="_blank" rel="noopener noreferrer">Lt. Governor {{ g.lieutenant_governor_name }}
-              <li class="official"><i>Official site</i> </li>
-            </a>
+            <li class="official">
+              <a class="nav-link" href="{{ g.lieutenant_governor_link }}" target="_blank" rel="noopener noreferrer">
+                Lt. Governor {{ g.lieutenant_governor_name }}<br>
+                <i>Official site</i>
+              </a>
+            </li>
           </ul>
         {% endif %}
       </div>
