@@ -3,7 +3,8 @@ body {
   background-color: #ffffff;
 }
 p a,
-.dataset-content div a {
+.dataset-content div a,
+td a {
   text-decoration: underline;
 }
 .d-inline-block {
