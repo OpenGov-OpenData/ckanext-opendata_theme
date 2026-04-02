@@ -1,3 +1,118 @@
+/**
+ * CKAN resource-view-filters-form applies Select2 3.x to the filter value input.
+ * Select2 sets aria-labelledby on .select2-focusser to the displayed value, so the
+ * native input's aria-label is ignored. Sync label onto the focusser after init.
+ */
+function syncResourceViewFilterValueSelect2A11y($root) {
+  $root.find('.resource-view-filters input[name="filter_values"]').each(function () {
+    var $input = $(this);
+    var label = $input.attr('aria-label');
+    if (!label) {
+      return;
+    }
+    // Select2 inserts the container immediately before the original input
+    var $container = $input.prev('.select2-container');
+    if (!$container.length) {
+      return;
+    }
+    var $focusser = $container.find('input.select2-focusser');
+    if ($focusser.length) {
+      $focusser.removeAttr('aria-labelledby');
+      $focusser.attr('aria-label', label);
+    }
+  });
+}
+
+function setupResourceViewFilterValueSelect2A11y() {
+  var forms = document.querySelectorAll('[data-module="resource-view-filters-form"]');
+  if (!forms.length) {
+    return;
+  }
+  Array.prototype.forEach.call(forms, function (formEl) {
+    var $form = $(formEl);
+    var filtersEl = formEl.querySelector('.resource-view-filters');
+    if (!filtersEl) {
+      return;
+    }
+    var run = function () {
+      syncResourceViewFilterValueSelect2A11y($form);
+    };
+    run();
+    var mo = new MutationObserver(function () {
+      window.requestAnimationFrame(run);
+    });
+    mo.observe(filtersEl, { childList: true, subtree: true });
+  });
+  // CKAN modules may init after this script's ready handler
+  $(window).on('load', function () {
+    Array.prototype.forEach.call(forms, function (formEl) {
+      syncResourceViewFilterValueSelect2A11y($(formEl));
+    });
+  });
+}
+
+/**
+ * Enter on Select2 filter value controls triggers implicit form submission (first submit
+ * button, often Delete). Intercept Enter inside .resource-view-filters: open Select2 or
+ * native field select instead. Select2 3 attaches the open dropdown to body, so key
+ * events from the list do not match this delegate and keep default behavior.
+ */
+function setupResourceViewFiltersEnterKey() {
+  $(document).on('keydown.resourceViewFiltersEnter', '[data-module="resource-view-filters-form"]', function (e) {
+    if (e.key !== 'Enter' && e.which !== 13) {
+      return;
+    }
+    var target = e.target;
+    if (!target || target.nodeType !== 1) {
+      return;
+    }
+    var filtersRoot = this.querySelector('.resource-view-filters');
+    if (!filtersRoot || !filtersRoot.contains(target)) {
+      return;
+    }
+    if (target.tagName === 'SELECT') {
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof target.showPicker === 'function') {
+        try {
+          target.showPicker();
+        } catch (ignore) {
+          target.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', code: 'Space', keyCode: 32, bubbles: true }));
+        }
+      } else {
+        target.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', code: 'Space', keyCode: 32, bubbles: true }));
+      }
+      return;
+    }
+    var $container = $(target).closest('.select2-container');
+    if ($container.length && filtersRoot.contains($container[0])) {
+      var $input = $container.next('input[name="filter_values"]');
+      if (!$input.length) {
+        $input = $container.parent().find('input[name="filter_values"]');
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      if ($input.length && $input.data('select2')) {
+        $input.select2('open');
+      }
+      return;
+    }
+    if (target.tagName === 'INPUT' && target.getAttribute('name') === 'filter_values') {
+      e.preventDefault();
+      e.stopPropagation();
+      var $inp = $(target);
+      if ($inp.data('select2')) {
+        $inp.select2('open');
+      }
+    }
+  });
+}
+
+$(document).ready(function () {
+  setupResourceViewFilterValueSelect2A11y();
+  setupResourceViewFiltersEnterKey();
+});
+
 // Close popover on pressing Escape key
 $(document).on('keydown', function (e) {
   if (e.key === "Escape") {
