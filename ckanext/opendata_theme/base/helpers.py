@@ -179,6 +179,18 @@ def get_custom_name(key, default_name):
         return toolkit.h.markdown_extract(name.get('value', default_name))
 
 
+def get_custom_explanation(key, default_explanation=''):
+    custom_naming = toolkit.get_action('config_option_show')({'ignore_auth': True}, {"key": CUSTOM_NAMING})
+    if not custom_naming:
+        return default_explanation
+    custom_naming = ast.literal_eval(custom_naming)
+    explanation = custom_naming.get(key)
+    if not explanation:
+        return default_explanation
+    else:
+        return toolkit.h.markdown_extract(explanation.get('value', default_explanation))
+
+
 def get_data(key):
     return BaseCompatibilityController.get_data(key)
 

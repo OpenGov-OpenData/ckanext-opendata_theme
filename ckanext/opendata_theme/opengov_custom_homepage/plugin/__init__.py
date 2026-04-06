@@ -49,6 +49,7 @@ class OpenDataThemeHomepagePlugin(MixinPlugin):
             'opendata_theme_get_datasets_recent': helper.recent_datasets,
             'opendata_theme_get_package_tracking_summary': helper.package_tracking_summary,
             'opendata_theme_get_custom_name': helper.get_custom_name,
+            'opendata_theme_get_custom_explanation': helper.get_custom_explanation,
             'opendata_theme_get_data': helper.get_data,
             'opendata_theme_custom_page_exists': helper.custom_page_exists,
             'version': helper.version_builder,

@@ -74,8 +74,10 @@ class CustomHomepageController(BaseCompatibilityController):
     @staticmethod
     def reorder_fields(names):
         field_order = [
-            'groups-custom-name', 'showcases-custom-name',
-            'popular-datasets-custom-name', 'recent-datasets-custom-name'
+            'groups-custom-name', 'groups-custom-explanation',
+            'showcases-custom-name', 'showcases-custom-explanation',
+            'popular-datasets-custom-name', 'popular-datasets-custom-explanation',
+            'recent-datasets-custom-name', 'recent-datasets-custom-explanation'
         ]
         sorted_fields = []
         for field_name in field_order:
