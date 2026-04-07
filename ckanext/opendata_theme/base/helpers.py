@@ -167,16 +167,25 @@ def get_organization_alias():
     return str(config.get('ckan.organization_alias', 'Organization'))
 
 
-def get_custom_name(key, default_name):
+def _get_custom_value(key, default_value=''):
+    """Internal helper to retrieve custom values from CUSTOM_NAMING config."""
     custom_naming = toolkit.get_action('config_option_show')({'ignore_auth': True}, {"key": CUSTOM_NAMING})
     if not custom_naming:
-        return default_name
+        return default_value
     custom_naming = ast.literal_eval(custom_naming)
-    name = custom_naming.get(key)
-    if not name:
-        return default_name
+    item = custom_naming.get(key)
+    if not item:
+        return default_value
     else:
-        return toolkit.h.markdown_extract(name.get('value', default_name))
+        return toolkit.h.markdown_extract(item.get('value', default_value))
+
+
+def get_custom_name(key, default_name):
+    return _get_custom_value(key, default_name)
+
+
+def get_custom_explanation(key, default_explanation=''):
+    return _get_custom_value(key, default_explanation)
 
 
 def get_data(key):

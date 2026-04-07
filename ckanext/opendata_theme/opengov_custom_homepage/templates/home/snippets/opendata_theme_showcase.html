@@ -8,6 +8,10 @@
                             {{ h.opendata_theme_get_custom_name('showcases-custom-name', 'Showcases') }}
                         </a>
                     </h2>
+                    {% set showcases_explanation = h.opendata_theme_get_custom_explanation('showcases-custom-explanation', '') %}
+                    {% if showcases_explanation %}
+                        <span class="heading-explanation">{{ showcases_explanation }}</span>
+                    {% endif %}
                     {% snippet 'home/snippets/showcase_list.html', showcases=h.opendata_theme_get_showcases() %}
                 </div>
             </div>

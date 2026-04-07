@@ -2,7 +2,10 @@
 
 <div class="module-content">
   <h2 class="heading"><a href="/dataset?sort=views_recent+desc">{{ h.opendata_theme_get_custom_name('popular-datasets-custom-name', 'Popular Datasets') }}</a></h2>
-  <span class="heading-explanation">Browse popular datasets below and see what other citizens find interesting.</span>
+  {% set popular_explanation = h.opendata_theme_get_custom_explanation('popular-datasets-custom-explanation', 'Browse popular datasets below and see what other citizens find interesting.') %}
+  {% if popular_explanation %}
+    <span class="heading-explanation">{{ popular_explanation }}</span>
+  {% endif %}
   <section>
     {% snippet 'home/snippets/package_list.html', packages=popular_datasets, note_type='recent_views' %}
   </section>

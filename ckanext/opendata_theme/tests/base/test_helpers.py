@@ -1,11 +1,14 @@
 import pytest
+from unittest import mock
 
 from ckanext.opendata_theme.base.helpers import (
     abbreviate_name, is_data_dict_active,
     get_group_alias, get_organization_alias,
     version_builder, check_characters,
     sanityze_all_html,
-    get_footer_script_snippet
+    get_footer_script_snippet,
+    get_custom_name,
+    get_custom_explanation
 )
 from packaging.version import InvalidVersion
 
@@ -59,3 +62,92 @@ def test_sanityze_all_html():
 
 def test_invalid_get_footer_script_snippet():
     assert get_footer_script_snippet() is False
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_name_with_no_config(mock_get_action):
+    """Test get_custom_name returns default when no config exists"""
+    mock_get_action.return_value.return_value = None
+    result = get_custom_name('groups-custom-name', 'Default Groups')
+    assert result == 'Default Groups'
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_name_with_missing_key(mock_get_action):
+    """Test get_custom_name returns default when key is missing"""
+    mock_get_action.return_value.return_value = str({
+        'other-key': {'title': 'Other', 'value': 'Other Value'}
+    })
+    result = get_custom_name('groups-custom-name', 'Default Groups')
+    assert result == 'Default Groups'
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.h.markdown_extract')
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_name_with_valid_config(mock_get_action, mock_markdown_extract):
+    """Test get_custom_name returns custom value when config exists"""
+    mock_get_action.return_value.return_value = str({
+        'groups-custom-name': {'title': 'Groups Title', 'value': 'Custom Groups'}
+    })
+    mock_markdown_extract.return_value = 'Custom Groups'
+    result = get_custom_name('groups-custom-name', 'Default Groups')
+    assert result == 'Custom Groups'
+    mock_markdown_extract.assert_called_once_with('Custom Groups')
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_explanation_with_no_config(mock_get_action):
+    """Test get_custom_explanation returns default when no config exists"""
+    mock_get_action.return_value.return_value = None
+    result = get_custom_explanation('groups-custom-explanation', 'Default explanation text')
+    assert result == 'Default explanation text'
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_explanation_with_empty_default(mock_get_action):
+    """Test get_custom_explanation returns empty string when no config and no default"""
+    mock_get_action.return_value.return_value = None
+    result = get_custom_explanation('showcases-custom-explanation')
+    assert result == ''
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_explanation_with_missing_key(mock_get_action):
+    """Test get_custom_explanation returns default when key is missing"""
+    mock_get_action.return_value.return_value = str({
+        'other-key': {'title': 'Other', 'value': 'Other Value'}
+    })
+    result = get_custom_explanation('groups-custom-explanation', 'Default explanation')
+    assert result == 'Default explanation'
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.h.markdown_extract')
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_explanation_with_valid_config(mock_get_action, mock_markdown_extract):
+    """Test get_custom_explanation returns custom value when config exists"""
+    mock_get_action.return_value.return_value = str({
+        'groups-custom-explanation': {
+            'title': 'Groups Explanation',
+            'value': 'This is a custom explanation text'
+        }
+    })
+    mock_markdown_extract.return_value = 'This is a custom explanation text'
+    result = get_custom_explanation('groups-custom-explanation', 'Default explanation')
+    assert result == 'This is a custom explanation text'
+    mock_markdown_extract.assert_called_once_with('This is a custom explanation text')
+
+
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.h.markdown_extract')
+@mock.patch('ckanext.opendata_theme.base.helpers.toolkit.get_action')
+def test_get_custom_explanation_with_markdown(mock_get_action, mock_markdown_extract):
+    """Test get_custom_explanation processes markdown correctly"""
+    mock_get_action.return_value.return_value = str({
+        'popular-datasets-custom-explanation': {
+            'title': 'Popular Datasets Explanation',
+            'value': '**Browse** popular datasets'
+        }
+    })
+    mock_markdown_extract.return_value = 'Browse popular datasets'
+    result = get_custom_explanation('popular-datasets-custom-explanation', '')
+    assert result == 'Browse popular datasets'
+    mock_markdown_extract.assert_called_once_with('**Browse** popular datasets')
