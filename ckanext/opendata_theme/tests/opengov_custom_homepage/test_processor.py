@@ -1,13 +1,7 @@
-import pytest
-
 from ckanext.opendata_theme.opengov_custom_homepage.processor import (
-    GroupsNaming,
     GroupsExplanation,
-    ShowcasesNaming,
     ShowcasesExplanation,
-    PopularDatasetsNaming,
     PopularDatasetsExplanation,
-    RecentDatasetsNaming,
     RecentDatasetsExplanation,
     CustomNamingProcessor
 )
@@ -18,7 +12,10 @@ class TestGroupsExplanation:
 
     def test_default_value(self):
         processor = GroupsExplanation()
-        assert processor._default_value == "As datasets are published, they are grouped into categories so you can learn about popular topics."
+        assert processor._default_value == (
+            "As datasets are published, they are grouped into categories "
+            "so you can learn about popular topics."
+        )
 
     def test_form_name(self):
         processor = GroupsExplanation()
@@ -38,7 +35,7 @@ class TestGroupsExplanation:
         processor = GroupsExplanation()
         form_data = {'groups-custom-explanation': ''}
         processor.parse_form_data(form_data)
-        assert processor.value == processor._default_value
+        assert processor.value == ''
 
 
 class TestShowcasesExplanation:
@@ -68,7 +65,9 @@ class TestPopularDatasetsExplanation:
 
     def test_default_value(self):
         processor = PopularDatasetsExplanation()
-        assert processor._default_value == "Browse popular datasets below and see what other citizens find interesting."
+        assert processor._default_value == (
+            "Browse popular datasets below and see what other citizens find interesting."
+        )
 
     def test_form_name(self):
         processor = PopularDatasetsExplanation()
@@ -90,7 +89,9 @@ class TestRecentDatasetsExplanation:
 
     def test_default_value(self):
         processor = RecentDatasetsExplanation()
-        assert processor._default_value == "Browse new or modified datasets below. Click to view details or explore content."
+        assert processor._default_value == (
+            "Browse new or modified datasets below. Click to view details or explore content."
+        )
 
     def test_form_name(self):
         processor = RecentDatasetsExplanation()
@@ -173,22 +174,29 @@ class TestCustomNamingProcessor:
         result = processor.get_custom_naming(form_data)
 
         # Check that default values are used
-        assert result['groups-custom-explanation']['value'] == "As datasets are published, they are grouped into categories so you can learn about popular topics."
+        assert result['groups-custom-explanation']['value'] == (
+            "As datasets are published, they are grouped into categories "
+            "so you can learn about popular topics."
+        )
         assert result['showcases-custom-explanation']['value'] == ""
-        assert result['popular-datasets-custom-explanation']['value'] == "Browse popular datasets below and see what other citizens find interesting."
-        assert result['recent-datasets-custom-explanation']['value'] == "Browse new or modified datasets below. Click to view details or explore content."
+        assert result['popular-datasets-custom-explanation']['value'] == (
+            "Browse popular datasets below and see what other citizens find interesting."
+        )
+        assert result['recent-datasets-custom-explanation']['value'] == (
+            "Browse new or modified datasets below. Click to view details or explore content."
+        )
 
     def test_get_custom_naming_with_mixed_values(self):
         processor = CustomNamingProcessor()
         form_data = {
             'groups-custom-name': 'Custom Groups',
-            'groups-custom-explanation': '',  # Empty, should use default
+            'groups-custom-explanation': '',  # Empty, clears the text
             'showcases-custom-name': '',
             'showcases-custom-explanation': 'Custom showcases text',  # Custom value
         }
         result = processor.get_custom_naming(form_data)
 
         assert result['groups-custom-name']['value'] == 'Custom Groups'
-        assert result['groups-custom-explanation']['value'] == "As datasets are published, they are grouped into categories so you can learn about popular topics."
-        assert result['showcases-custom-name']['value'] == 'Showcases'
+        assert result['groups-custom-explanation']['value'] == ''
+        assert result['showcases-custom-name']['value'] == ''
         assert result['showcases-custom-explanation']['value'] == 'Custom showcases text'

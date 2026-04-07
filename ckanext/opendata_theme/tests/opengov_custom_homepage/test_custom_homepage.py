@@ -12,7 +12,10 @@ DEFAULT_DATA = {
     'recent-datasets-custom-name': 'New and Recent Datasets',
     'recent-datasets-custom-explanation': 'Browse new or modified datasets below. Click to view details or explore content.',
     'groups-custom-name': 'Groups',
-    'groups-custom-explanation': 'As datasets are published, they are grouped into categories so you can learn about popular topics.',
+    'groups-custom-explanation': (
+        'As datasets are published, they are grouped into categories '
+        'so you can learn about popular topics.'
+    ),
     'showcases-custom-name': 'Showcases',
     'showcases-custom-explanation': ''
 }
