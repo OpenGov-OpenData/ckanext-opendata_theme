@@ -1,25 +1,43 @@
 /**
- * CKAN resource-view-filters-form applies Select2 3.x to the filter value input.
+ * CKAN resource-view-filters-form applies Select2 3.x to filter field and value controls.
  * Select2 sets aria-labelledby on .select2-focusser to the displayed value, so the
- * native input's aria-label is ignored. Sync label onto the focusser after init.
+ * native control's aria-label is ignored. Sync label onto the focusser after init.
+ * Select2 also injects empty offscreen labels that trigger WAVE; remove those when empty.
+ * The dropdown search field (.select2-input) is created without a label; set aria-label on open.
  */
+function stripEmptySelect2OffscreenLabels($container) {
+  $container.find('label.select2-offscreen').each(function () {
+    var $lb = $(this);
+    if (!$.trim($lb.text())) {
+      $lb.remove();
+    }
+  });
+}
+
+function syncSelect2FocusserA11y($control) {
+  var $input = $($control);
+  var label = $input.attr('aria-label');
+  if (!label) {
+    return;
+  }
+  var $container = $input.prev('.select2-container');
+  if (!$container.length) {
+    return;
+  }
+  var $focusser = $container.find('input.select2-focusser');
+  if ($focusser.length) {
+    $focusser.removeAttr('aria-labelledby');
+    $focusser.attr('aria-label', label);
+  }
+  stripEmptySelect2OffscreenLabels($container);
+}
+
 function syncResourceViewFilterValueSelect2A11y($root) {
   $root.find('.resource-view-filters input[name="filter_values"]').each(function () {
-    var $input = $(this);
-    var label = $input.attr('aria-label');
-    if (!label) {
-      return;
-    }
-    // Select2 inserts the container immediately before the original input
-    var $container = $input.prev('.select2-container');
-    if (!$container.length) {
-      return;
-    }
-    var $focusser = $container.find('input.select2-focusser');
-    if ($focusser.length) {
-      $focusser.removeAttr('aria-labelledby');
-      $focusser.attr('aria-label', label);
-    }
+    syncSelect2FocusserA11y(this);
+  });
+  $root.find('.resource-view-filters select[name="filter_fields"]').each(function () {
+    syncSelect2FocusserA11y(this);
   });
 }
 
@@ -108,9 +126,137 @@ function setupResourceViewFiltersEnterKey() {
   });
 }
 
+/**
+ * Select2 3 appends the dropdown to body; the list search input has no label and triggers WAVE.
+ * On open, copy the native control's aria-label onto .select2-input (same i18n strings as HTML).
+ */
+function setupResourceViewFiltersSelect2DropdownSearchA11y() {
+  var selector =
+    '[data-module="resource-view-filters-form"] .resource-view-filters select[name="filter_fields"],' +
+    '[data-module="resource-view-filters-form"] .resource-view-filters input[name="filter_values"]';
+  $(document).on('select2-open', selector, function () {
+    var $orig = $(this);
+    var ariaLabel = $orig.attr('aria-label');
+    if (!ariaLabel) {
+      return;
+    }
+    function apply() {
+      var $drop = $('.select2-drop-active');
+      if (!$drop.length) {
+        $drop = $('#select2-drop');
+      }
+      $drop.find('.select2-input').attr('aria-label', ariaLabel);
+    }
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(apply);
+    });
+  });
+}
+
+function isEnterOrSpaceKey(e) {
+  var key = e.key || '';
+  var code = e.which || e.keyCode;
+  return key === 'Enter' || code === 13 || key === ' ' || key === 'Spacebar' || code === 32;
+}
+
+/** Open OS file chooser; showPicker when available (Chromium), else click(). */
+function openCkanFilePicker(fileInput) {
+  if (!fileInput || fileInput.tagName !== 'INPUT' || fileInput.type !== 'file') {
+    return;
+  }
+  if (typeof fileInput.showPicker === 'function') {
+    try {
+      fileInput.showPicker();
+      return;
+    } catch (ignore) {
+      // fall through
+    }
+  }
+  fileInput.click();
+}
+
+/**
+ * CKAN file upload UIs are mouse-centric:
+ * - Resource form: #resource-upload-button uses inline onclick; still handle Enter/Space so
+ *   activation always runs even if a theme or browser quirk blocks native button keys.
+ * - image-upload module: Upload is <a href="javascript:;"> with no click handler; the file
+ *   input is opacity-0 on top for pointer hit-testing only. Space does not activate <a>;
+ *   forward Enter/Space to the real file input or trigger the Link control.
+ */
+function setupCkanFileUploadKeyboard() {
+  var fileSelector = '.resource-upload-field input[type="file"], .image-upload input[type="file"]';
+  $(document).on('keydown.ckanFileUploadA11y', fileSelector, function (e) {
+    if (!isEnterOrSpaceKey(e)) {
+      return;
+    }
+    var el = this;
+    if (el.tagName !== 'INPUT' || el.type !== 'file') {
+      return;
+    }
+    e.preventDefault();
+    openCkanFilePicker(el);
+  });
+
+  $(document).on('keydown.ckanFileUploadA11y', '#resource-upload-button', function (e) {
+    if (!isEnterOrSpaceKey(e)) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    var uploadRadio = document.getElementById('resource-url-upload');
+    var fileInput = document.getElementById('field-resource-upload');
+    if (uploadRadio && fileInput) {
+      uploadRadio.checked = true;
+      openCkanFilePicker(fileInput);
+    }
+  });
+
+  $(document).on('keydown.ckanFileUploadA11y', '#resource-link-button', function (e) {
+    if (!isEnterOrSpaceKey(e)) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    var linkRadio = document.getElementById('resource-url-link');
+    var urlInput = document.getElementById('field-resource-url');
+    if (linkRadio && urlInput) {
+      linkRadio.checked = true;
+      urlInput.focus();
+    }
+  });
+
+  $(document).on('keydown.ckanFileUploadA11y', '.image-upload a.btn', function (e) {
+    if (!isEnterOrSpaceKey(e)) {
+      return;
+    }
+    if (this.classList && this.classList.contains('btn-remove-url')) {
+      return;
+    }
+    var hasUploadIcon =
+      this.querySelector &&
+      (this.querySelector('.fa-cloud-upload') ||
+        this.querySelector('.fa-cloud-upload-alt') ||
+        this.querySelector('.fa-upload'));
+    var hasLinkIcon = this.querySelector && this.querySelector('.fa-globe');
+    if (!hasUploadIcon && !hasLinkIcon) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    if (hasUploadIcon) {
+      var fileInput = $(this).closest('.image-upload').find('input[type="file"]')[0];
+      openCkanFilePicker(fileInput);
+    } else {
+      $(this).trigger('click');
+    }
+  });
+}
+
 $(document).ready(function () {
   setupResourceViewFilterValueSelect2A11y();
+  setupResourceViewFiltersSelect2DropdownSearchA11y();
   setupResourceViewFiltersEnterKey();
+  setupCkanFileUploadKeyboard();
 });
 
 // Close popover on pressing Escape key
