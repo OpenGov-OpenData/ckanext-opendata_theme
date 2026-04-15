@@ -1,3 +1,8 @@
+theme-css:
+  output: opengov_custom_theme/%(version)s_theme.css
+  contents:
+    - css/keyboard-reorder.css
+
 theme-js:
   filters: rjsmin
   output: opengov_custom_theme/%(version)s_theme.js
@@ -6,3 +11,4 @@ theme-js:
       - base/main
   contents:
     - js/theme.js
+    - js/keyboard-reorder.js
