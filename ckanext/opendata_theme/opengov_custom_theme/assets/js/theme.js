@@ -252,7 +252,39 @@ function setupCkanFileUploadKeyboard() {
   });
 }
 
+/**
+ * Server-rendered validation errors (.error-explanation summary, .error-block per-field)
+ * are static HTML present on page load. Mark them with role="alert" so assistive tech
+ * conveys error semantics, and move focus to the summary so VoiceOver reads it instead
+ * of auto-reading from the top of the page.
+ */
+function setupFormErrorA11y() {
+  var $summary = $('.error-explanation');
+  var $fieldErrors = $('.error-block');
+
+  if (!$summary.length && !$fieldErrors.length) {
+    return;
+  }
+
+  $summary.each(function () {
+    this.setAttribute('role', 'alert');
+  });
+
+  $fieldErrors.each(function () {
+    this.setAttribute('role', 'alert');
+  });
+
+  if ($summary.length) {
+    var first = $summary[0];
+    if (!first.hasAttribute('tabindex')) {
+      first.setAttribute('tabindex', '-1');
+    }
+    first.focus();
+  }
+}
+
 $(document).ready(function () {
+  setupFormErrorA11y();
   setupResourceViewFilterValueSelect2A11y();
   setupResourceViewFiltersSelect2DropdownSearchA11y();
   setupResourceViewFiltersEnterKey();
