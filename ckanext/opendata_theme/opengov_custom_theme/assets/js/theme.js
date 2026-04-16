@@ -153,6 +153,86 @@ function setupResourceViewFiltersSelect2DropdownSearchA11y() {
   });
 }
 
+/**
+ * Dataset create/edit form: Select2 3.x on License and Organization replaces the
+ * native <select> with custom DOM whose focusser has aria-labelledby pointing at
+ * the selected value, not the field label.  Resolve the <label for> text and apply
+ * it as aria-label on each Select2 focusser.
+ *
+ * CKAN modules initialise asynchronously (after an AJAX locale fetch), so the
+ * Select2 containers may not exist during document.ready or window.load.  A
+ * MutationObserver on each field's parent detects late container insertion.
+ */
+function setupDatasetFormFieldA11y() {
+  var select2Ids = ['field-license', 'field-organizations'];
+
+  function fixSelect2Field(id) {
+    var $sel = $('#' + id);
+    if (!$sel.length) {
+      return false;
+    }
+    var $container = $sel.prev('.select2-container');
+    if (!$container.length) {
+      return false;
+    }
+    var $label = $('label[for="' + id + '"]');
+    if (!$label.length || !$.trim($label.text())) {
+      return true;
+    }
+    if (!$label.attr('id')) {
+      $label.attr('id', 'label-' + id);
+    }
+    var $focusser = $container.find('input.select2-focusser');
+    if ($focusser.length) {
+      var chosenId = $focusser.attr('aria-labelledby') || '';
+      $focusser.attr('aria-labelledby', $label.attr('id') + (chosenId ? ' ' + chosenId : ''));
+    }
+    stripEmptySelect2OffscreenLabels($container);
+    return true;
+  }
+
+  $.each(select2Ids, function (_i, id) {
+    if (fixSelect2Field(id)) {
+      return;
+    }
+    var el = document.getElementById(id);
+    if (!el || !el.parentNode) {
+      return;
+    }
+    var mo = new MutationObserver(function () {
+      if (fixSelect2Field(id)) {
+        mo.disconnect();
+      }
+    });
+    mo.observe(el.parentNode, { childList: true });
+  });
+}
+
+/**
+ * When the Select2 dropdown opens for License or Organization on the dataset form,
+ * copy the field label onto the search input so VoiceOver announces it.
+ */
+function setupDatasetFormSelect2DropdownSearchA11y() {
+  $(document).on('select2-open', '#field-license, #field-organizations', function () {
+    var $orig = $(this);
+    var id = $orig.attr('id');
+    var $label = $('label[for="' + id + '"]');
+    var labelText = $label.length ? $.trim($label.text()) : '';
+    if (!labelText) {
+      return;
+    }
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        var $drop = $('.select2-drop-active');
+        if (!$drop.length) {
+          $drop = $('#select2-drop');
+        }
+        $drop.find('.select2-input').attr('aria-label', labelText);
+      });
+    });
+  });
+}
+
 function isEnterOrSpaceKey(e) {
   var key = e.key || '';
   var code = e.which || e.keyCode;
@@ -289,6 +369,8 @@ $(document).ready(function () {
   setupResourceViewFiltersSelect2DropdownSearchA11y();
   setupResourceViewFiltersEnterKey();
   setupCkanFileUploadKeyboard();
+  setupDatasetFormFieldA11y();
+  setupDatasetFormSelect2DropdownSearchA11y();
 });
 
 // Close popover on pressing Escape key
