@@ -1,0 +1,27 @@
+/* Visually hidden but accessible to screen readers.
+ * Bootstrap 3 ships .sr-only; duplicated here for resilience. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Highlight the item currently being keyboard-reordered. */
+.keyboard-reorder-active {
+  outline: 2px solid #005a9c;
+  outline-offset: -2px;
+  background-color: #e8f0fe;
+}
+
+/* Visible focus ring on list items while in reorder mode. */
+.reordering li:focus,
+.reordering .handle:focus {
+  outline: 2px solid #005a9c;
+  outline-offset: -2px;
+}
