@@ -1,5 +1,31 @@
+{% set ckan_29_or_higher = h.version(h.ckan_version()) > h.version('2.9') %}
+
+{# Check if featuredviews plugin is enabled by testing for its helper function #}
+{% set featuredviews_enabled = h.get('get_featured_view') %}
+
+{# Load featuredviews assets if plugin is enabled #}
+{% if featuredviews_enabled %}
+  {% set snippet_type = 'asset' if ckan_29_or_higher else 'resource' %}
+  {% snippet 'featuredviews/snippets/featuredviews_' ~ snippet_type ~ '.html', name='featured/featured_js' %}
+{% endif %}
+
 {% set views_created = views or resource_preview %}
 {% if views_created %}
+  {# Show canonical button if featuredviews is enabled and user has edit access #}
+  {% if featuredviews_enabled and h.check_access('package_update', {'id':pkg.id }) and view_id %}
+    {% set featured = h.get_featured_view(view_id) %}
+    <div style="float:right; display:inline-block;">
+      <button id="canonical" type="button" class="btn btn-default {{ 'active' if featured.canonical }}"
+        data-label-active="{{ _('Current Canonical View') }}"
+        data-label-inactive="{{ _('Set as Canonical View') }}">
+        {{ _('Current Canonical View') if featured.canonical else _('Set as Canonical View') }}
+      </button>
+      {% if h.display_homepage_views() %}
+        <button id="homepage" type="button" class="btn btn-warning {{ 'active' if featured.homepage }}">{{_("Show on Home Page")}}</button>
+      {% endif %}
+    </div>
+  {% endif %}
+
   {% if is_edit %}
   <ul class="nav {{ extra_class }}" data-module="resource-view-reorder keyboard-reorder" data-module-id="{{ views[0].resource_id }}" role="list" aria-roledescription="sortable list">
   {% else %}
@@ -16,14 +42,25 @@
 
   {% set current_filters = request.args.get('filters') %}
   {% for view in views %}
-  	{% set is_selected = true if view_id == view.id else false %}
-    {% snippet "package/snippets/resource_views_list_item.html",
-       view=view,
-       pkg=pkg,
-       is_edit=is_edit,
-       is_selected=is_selected,
-       current_filters=current_filters
-    %}
+    {% set is_selected = true if view_id == view.id else false %}
+    {# Use featuredviews list item template if plugin is enabled, otherwise use default #}
+    {% if featuredviews_enabled %}
+      {% snippet "package/snippets/resource_views_list_item_featured.html",
+         view=view,
+         pkg=pkg,
+         is_edit=is_edit,
+         is_selected=is_selected,
+         current_filters=current_filters
+      %}
+    {% else %}
+      {% snippet "package/snippets/resource_views_list_item.html",
+         view=view,
+         pkg=pkg,
+         is_edit=is_edit,
+         is_selected=is_selected,
+         current_filters=current_filters
+      %}
+    {% endif %}
   {% endfor %}
 </ul>
 {% endif %}
