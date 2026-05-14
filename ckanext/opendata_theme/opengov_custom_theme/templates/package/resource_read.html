@@ -60,17 +60,24 @@
 {% endblock %}
 
 {% block resource_additional_information %}
-  {% if res.datastore_active %}
-    {% set data_dict=h.datastore_dictionary(res.id) %}
-    {% if h.opendata_theme_is_data_dict_active(data_dict) %}
-      <div class="btn-group" style="float:right; top:15px;">
-        <a class="btn btn-primary" href="/datastore/dictionary_download/{{ res.id }}"><i class="fa fa-arrow-circle-o-down"></i> Data Dictionary Download</a>
-      </div>
-    {% endif %}
-  {% endif %}
   {% if res %}
+    {% if res.datastore_active %}
+      {% set data_dict=h.datastore_dictionary(res.id) %}
+      {% if h.opendata_theme_is_data_dict_active(data_dict) %}
+        <div class="btn-group" style="float:right; top:15px;">
+          <a class="btn btn-primary" href="/datastore/dictionary_download/{{ res.id }}"><i class="fa fa-arrow-circle-o-down"></i> Data Dictionary Download</a>
+        </div>
+      {% endif %}
+    {% endif %}
     <section class="module">
       {% block resource_additional_information_inner %}
+        {% if res.datastore_active %}
+          {% set data_dict=h.datastore_dictionary(res.id) %}
+          {% if h.opendata_theme_is_data_dict_active(data_dict) %}
+            {% snippet 'datastore/snippets/dictionary_view.html',
+              ddict=data_dict, res=res %}
+          {% endif %}
+        {% endif %}
         <div class="module-content">
           <h2>{{ _('Additional Information') }}</h2>
           <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
