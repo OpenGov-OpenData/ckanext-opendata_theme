@@ -1,4 +1,5 @@
 import unicodecsv as csv
+from ckanapi.datapackage import _convert_to_datapackage_resource
 from ckan.plugins.toolkit import (
     ObjectNotFound,
     NotAuthorized,
@@ -7,6 +8,19 @@ from ckan.plugins.toolkit import (
     get_action,
     _
 )
+
+
+def dictionary_filename(resource_id):
+    # Build the base name the same way ckanext-downloadall names saved resource
+    # files: ckanapi's _convert_to_datapackage_resource slugifies and lowercases
+    # the resource name (falling back to the resource id when unnamed).
+    try:
+        resource = get_action('resource_show')(None, {'id': resource_id})
+    except (ObjectNotFound, NotAuthorized):
+        resource = {'id': resource_id}
+
+    base = _convert_to_datapackage_resource(resource).get('name', resource_id)
+    return '{base}-data-dictionary.csv'.format(base=base)
 
 
 def dictionary_download(resource_id, response):
@@ -24,7 +38,8 @@ def dictionary_download(resource_id, response):
     if hasattr(response, u'headers'):
         response.headers['Content-Type'] = 'text/csv; charset=utf-8'
         response.headers['Content-disposition'] = (
-            'attachment; filename="{name}-data-dictionary.csv"'.format(name=resource_id))
+            'attachment; filename="{filename}"'.format(
+                filename=dictionary_filename(resource_id)))
 
     if check_ckan_version(min_version='2.9.0'):
         wr = csv.writer(response.stream, encoding='utf-8')
