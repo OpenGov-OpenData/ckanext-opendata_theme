@@ -11,15 +11,15 @@ from ckan.plugins.toolkit import (
 
 
 def dictionary_filename(resource_id):
-    # Build the base name the same way ckanext-downloadall names saved resource
-    # files: ckanapi's _convert_to_datapackage_resource slugifies and lowercases
-    # the resource name (falling back to the resource id when unnamed).
+    # Reuse ckanext-downloadall's naming so the data dictionary matches its
+    # saved resource files. _convert_to_datapackage_resource is a private
+    # ckanapi symbol, so guard against it (or resource_show) raising and fall
+    # back to the resource id.
     try:
         resource = get_action('resource_show')(None, {'id': resource_id})
-    except (ObjectNotFound, NotAuthorized):
-        resource = {'id': resource_id}
-
-    base = _convert_to_datapackage_resource(resource).get('name', resource_id)
+        base = _convert_to_datapackage_resource(resource).get('name', resource_id)
+    except Exception:
+        base = resource_id
     return '{base}-data-dictionary.csv'.format(base=base)
 
 
