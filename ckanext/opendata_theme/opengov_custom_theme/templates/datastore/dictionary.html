@@ -3,4 +3,10 @@
 {% block dictionary_form %}
     <h2>Edit Data Dictionary</h2>
     {{ super() }}
+    {# Stopgap: show the save success message client-side, since the server-side
+       session flash is unreliable across non-shared-session Kubernetes pods.
+       Remove once the shared-session fix lands. The msgid must stay byte-identical
+       to ckanext/datastore/blueprint.py so existing translations resolve. #}
+    <span data-module="data-dict-flash"
+          data-module-message="{{ _('Data Dictionary saved. Any type overrides will take effect when the resource is next uploaded to DataStore') }}"></span>
 {% endblock %}
