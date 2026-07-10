@@ -12,3 +12,4 @@ theme-js:
   contents:
     - js/theme.js
     - js/keyboard-reorder.js
+    - js/data-dict-flash.js
