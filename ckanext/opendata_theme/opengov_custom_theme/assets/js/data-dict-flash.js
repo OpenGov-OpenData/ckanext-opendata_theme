@@ -90,19 +90,7 @@ this.ckan.module('data-dict-flash', function ($) {
 
       // 3. Server-flash dedupe: if the server already rendered a success flash
       //    (i.e. the shared-session fix has landed), do nothing.
-      var $existingSuccess = $('.flash-messages .alert-success');
-      if ($existingSuccess.length) {
-        return false;
-      }
-      // Also skip if an alert already carries the same message text.
-      var message = this.options.message;
-      var duplicate = false;
-      $existingSuccess.each(function () {
-        if ($(this).text().indexOf(message) !== -1) {
-          duplicate = true;
-        }
-      });
-      if (duplicate) {
+      if ($('.flash-messages .alert-success').length) {
         return false;
       }
 
