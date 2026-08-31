@@ -10,6 +10,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IBlueprint)
+    plugins.implements(plugins.IPackageController, inherit=True)
 
     # IConfigurer
     def update_config(self, ckan_config):
@@ -27,6 +28,20 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
 
         return schema
 
+    # IPackageController
+    def before_dataset_search(self, search_params):
+        try:
+            res_type = toolkit.request.params.get('res_type', '')
+        except Exception:
+            res_type = ''
+        if res_type and res_type in helper.RESOURCE_TYPE_FORMATS:
+            formats = helper.RESOURCE_TYPE_FORMATS[res_type]
+            fq_parts = ['res_format:"{}"'.format(f) for f in formats]
+            fq = '({})'.format(' OR '.join(fq_parts))
+            existing_fq = search_params.get('fq', '')
+            search_params['fq'] = (existing_fq + ' ' + fq).strip() if existing_fq else fq
+        return search_params
+
     # ITemplateHelpers
     def get_helpers(self):
         return {
@@ -38,7 +53,9 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
             'version': helper.version_builder,
             'opendata_theme_segment_writekey': helper.get_segment_writekey,
             'opendata_theme_platform_uuid': helper.get_user_uuid,
-            'opendata_theme_entity': helper.get_entity_id
+            'opendata_theme_entity': helper.get_entity_id,
+            'opendata_theme_get_resource_type_categories': helper.get_resource_type_categories,
+            'opendata_theme_get_active_res_type': helper.get_active_res_type,
         }
 
     # IBlueprint

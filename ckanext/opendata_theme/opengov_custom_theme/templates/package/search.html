@@ -6,5 +6,7 @@
     {% snippet "spatial/snippets/spatial_query.html", default_extent=dataset_extent %}
   {% endif %}
 
+  {% snippet "snippets/res_type_filter.html" %}
+
   {{ super() }}
 {% endblock %}

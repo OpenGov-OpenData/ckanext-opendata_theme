@@ -306,6 +306,45 @@ def value_should_be_shorter_than_length(field_name='Field', length=30):
     return decorator
 
 
+RESOURCE_TYPE_FORMATS = {
+    'tabular': [
+        'CSV', 'XLS', 'XLSX', 'ODS', 'TSV', 'XLSM',
+        'csv', 'xls', 'xlsx', 'ods', 'tsv', 'xlsm',
+    ],
+    'documents': [
+        'PDF', 'DOC', 'DOCX', 'RTF', 'ODT', 'TXT',
+        'pdf', 'doc', 'docx', 'rtf', 'odt', 'txt',
+    ],
+    'images': [
+        'PNG', 'JPG', 'JPEG', 'GIF', 'TIFF', 'SVG', 'BMP', 'WEBP', 'GeoTIFF',
+        'png', 'jpg', 'jpeg', 'gif', 'tiff', 'svg', 'bmp', 'webp',
+    ],
+    'spatial': [
+        'GeoJSON', 'KML', 'KMZ', 'SHP', 'GML', 'WFS', 'WMS',
+        'geojson', 'kml', 'kmz', 'shp', 'gml', 'wfs', 'wms',
+        'Shapefile', 'shapefile', 'ESRI REST', 'esri rest',
+    ],
+}
+
+_RESOURCE_TYPE_LABELS = {
+    'tabular': 'Tabular',
+    'documents': 'Documents',
+    'images': 'Images',
+    'spatial': 'Spatial',
+}
+
+
+def get_resource_type_categories():
+    return [{'name': k, 'label': v} for k, v in _RESOURCE_TYPE_LABELS.items()]
+
+
+def get_active_res_type():
+    try:
+        return toolkit.request.params.get('res_type', '')
+    except Exception:
+        return ''
+
+
 def get_default_extent():
     """
     Return default extent to use with spatial widget
