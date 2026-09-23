@@ -1,10 +1,13 @@
 import ast
 import bleach
+import json
 import logging
 import re
 import string
 
 import ckan.model as model
+
+from six import string_types
 
 from ckan.plugins import toolkit
 from ckan.plugins.toolkit import config, c, g
@@ -306,41 +309,83 @@ def value_should_be_shorter_than_length(field_name='Field', length=30):
     return decorator
 
 
-RESOURCE_TYPE_FORMATS = {
-    'tabular': [
-        'CSV', 'XLS', 'XLSX', 'ODS', 'TSV', 'XLSM',
-        'csv', 'xls', 'xlsx', 'ods', 'tsv', 'xlsm',
-    ],
-    'documents': [
-        'PDF', 'DOC', 'DOCX', 'RTF', 'ODT', 'TXT',
-        'pdf', 'doc', 'docx', 'rtf', 'odt', 'txt',
-    ],
-    'images': [
-        'PNG', 'JPG', 'JPEG', 'GIF', 'TIFF', 'SVG', 'BMP', 'WEBP', 'GeoTIFF',
-        'png', 'jpg', 'jpeg', 'gif', 'tiff', 'svg', 'bmp', 'webp',
-    ],
-    'spatial': [
-        'GeoJSON', 'KML', 'KMZ', 'SHP', 'GML', 'WFS', 'WMS',
-        'geojson', 'kml', 'kmz', 'shp', 'gml', 'wfs', 'wms',
-        'Shapefile', 'shapefile', 'ESRI REST', 'esri rest',
-    ],
+RESOURCE_TYPE_CATEGORIES_KEY = 'ckanext.opendata_theme.resource_type_categories'
+RESOURCE_TYPE_FILTER_ENABLED_KEY = 'ckanext.opendata_theme.resource_type_filter_enabled'
+
+DEFAULT_RESOURCE_TYPE_CATEGORIES = {
+    'tabular': {
+        'label': 'Tabular Data',
+        'enabled': True,
+        'formats': ['CSV', 'XLS', 'XLSX', 'ODS', 'TSV', 'XLSM', 'csv', 'xls', 'xlsx', 'ods', 'tsv', 'xlsm'],
+    },
+    'documents': {
+        'label': 'Documents',
+        'enabled': True,
+        'formats': ['PDF', 'DOC', 'DOCX', 'RTF', 'ODT', 'TXT', 'pdf', 'doc', 'docx', 'rtf', 'odt', 'txt'],
+    },
+    'images': {
+        'label': 'Images',
+        'enabled': False,
+        'formats': [
+            'PNG', 'JPG', 'JPEG', 'GIF', 'TIFF', 'SVG', 'BMP', 'WEBP', 'GeoTIFF',
+            'png', 'jpg', 'jpeg', 'gif', 'tiff', 'svg', 'bmp', 'webp',
+        ],
+    },
+    'maps': {
+        'label': 'Maps',
+        'enabled': True,
+        'formats': [
+            'GeoJSON', 'KML', 'KMZ', 'SHP', 'GML', 'WFS', 'WMS',
+            'geojson', 'kml', 'kmz', 'shp', 'gml', 'wfs', 'wms',
+            'Shapefile', 'shapefile', 'ESRI REST', 'esri rest',
+        ],
+    },
 }
 
-_RESOURCE_TYPE_LABELS = {
-    'tabular': 'Tabular',
-    'documents': 'Documents',
-    'images': 'Images',
-    'spatial': 'Spatial',
-}
+
+def resource_type_categories_validator(value):
+    if isinstance(value, string_types):
+        value = value.strip()
+        if not value:
+            return {}
+        try:
+            value = json.loads(value)
+        except ValueError:
+            raise toolkit.Invalid('Resource Type Categories must be valid JSON')
+    if not isinstance(value, dict):
+        raise toolkit.Invalid('Resource Type Categories must be a JSON object')
+    for key, item in value.items():
+        if not isinstance(item, dict) or not item.get('label'):
+            raise toolkit.Invalid('Category "{}" must include a label'.format(key))
+        formats = item.get('formats')
+        if not isinstance(formats, list) or not all(isinstance(f, string_types) for f in formats):
+            raise toolkit.Invalid('Category "{}" must include a "formats" list of strings'.format(key))
+    return value
+
+
+def get_resource_type_config():
+    data = BaseCompatibilityController.get_data(RESOURCE_TYPE_CATEGORIES_KEY)
+    return data or DEFAULT_RESOURCE_TYPE_CATEGORIES
+
+
+def get_resource_type_formats():
+    return {k: v.get('formats', []) for k, v in get_resource_type_config().items()}
 
 
 def get_resource_type_categories():
-    return [{'name': k, 'label': v} for k, v in _RESOURCE_TYPE_LABELS.items()]
+    enabled = toolkit.asbool(config.get(RESOURCE_TYPE_FILTER_ENABLED_KEY) or False)
+    if not enabled:
+        return []
+    return [
+        {'name': k, 'label': v.get('label', k)}
+        for k, v in get_resource_type_config().items()
+        if v.get('enabled', False)
+    ]
 
 
 def get_active_res_type():
     try:
-        return toolkit.request.params.get('res_type', '')
+        return toolkit.request.params.get('ext_res_type', '')
     except Exception:
         return ''
 

@@ -16,26 +16,28 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, 'templates')
         toolkit.add_resource('assets', 'opengov_custom_theme')
+        toolkit.add_ckan_admin_tab(ckan_config, 'resource_types.manage_resource_types', 'Resource Types')
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
         ignore_not_sysadmin = toolkit.get_validator('ignore_not_sysadmin')
 
         schema.update({
-            # This is a custom configuration option
-            'contact_form_legend_content': [ignore_missing, ignore_not_sysadmin, text_type]
+            'contact_form_legend_content': [ignore_missing, ignore_not_sysadmin, text_type],
+            helper.RESOURCE_TYPE_FILTER_ENABLED_KEY: [ignore_missing, ignore_not_sysadmin, text_type],
+            helper.RESOURCE_TYPE_CATEGORIES_KEY: [ignore_missing, helper.resource_type_categories_validator],
         })
 
         return schema
 
     # IPackageController
-    def before_dataset_search(self, search_params):
-        try:
-            res_type = toolkit.request.params.get('res_type', '')
-        except Exception:
-            res_type = ''
-        if res_type and res_type in helper.RESOURCE_TYPE_FORMATS:
-            formats = helper.RESOURCE_TYPE_FORMATS[res_type]
+    def before_search(self, search_params):
+        enabled = toolkit.asbool(toolkit.config.get(helper.RESOURCE_TYPE_FILTER_ENABLED_KEY) or False)
+        res_type = search_params.get('extras', {}).get('ext_res_type', '')
+        if isinstance(res_type, list):
+            res_type = res_type[0] if res_type else ''
+        formats = helper.get_resource_type_formats().get(res_type) if (enabled and res_type) else None
+        if formats:
             fq_parts = ['res_format:"{}"'.format(f) for f in formats]
             fq = '({})'.format(' OR '.join(fq_parts))
             existing_fq = search_params.get('fq', '')

@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+
+{% import 'macros/form.html' as form %}
+
+{% block primary_content_inner %}
+    {{ form.errors(errors) }}
+    <h1 class="page-heading">Manage Resource Types</h1>
+    <form method="post" action="{{ h.url_for('resource_types.manage_resource_types') }}">
+        <div class="form-group control-group">
+            <label class="control-label" for="resource-type-filter-enabled">
+                <input type="checkbox" id="resource-type-filter-enabled" name="enabled" value="true" {% if enabled %}checked{% endif %}>
+                {{ _('Enable Resource Type filter on dataset search') }}
+            </label>
+        </div>
+        <div class="form-group control-group">
+            <label class="control-label" for="categories_json">{{ _('Resource Type Categories (JSON)') }}</label>
+            <div class="controls">
+                <textarea class="form-control" id="categories_json" name="categories_json" rows="25" style="font-family: monospace;">{{ categories_json }}</textarea>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary pull-right" name="save" type="submit">{{ _('Update Config') }}</button>
+        </div>
+    </form>
+    <hr>
+    <a class="btn btn-danger" data-module="confirm-action"
+       data-module-content="Do you really want to reset the resource type categories? All your changes will be lost."
+       href="{{ h.url_for('resource_types.reset_resource_types') }}">{{ _('Reset to Default') }}
+    </a>
+{% endblock %}
+
+{% block secondary_content %}
+    <div class="module module-narrow module-shallow">
+        <h2 class="module-heading">
+            <i class="fa fa-info-circle"></i>
+            {{ _('Resource Type Filter Help') }}
+        </h2>
+        <div class="module-content">
+            <p><strong>{{ _('Enable Resource Type filter:') }}</strong> {{ _('Shows or hides the Resource Type filter section on the dataset search page.') }}</p>
+            <p><strong>{{ _('Resource Type Categories:') }}</strong> {{ _('A JSON object where each key is a category id (used in the URL as ?ext_res_type=<key>). Each value needs:') }}</p>
+            <ul>
+                <li><code>label</code> &mdash; {{ _('the display name shown in the filter') }}</li>
+                <li><code>enabled</code> &mdash; {{ _('true/false, whether this category appears in the filter') }}</li>
+                <li><code>formats</code> &mdash; {{ _('a list of resource format strings that belong to this category') }}</li>
+            </ul>
+            <p>{{ _('Add a brand-new category by adding a new key to the JSON object — no code changes or restart required.') }}</p>
+        </div>
+    </div>
+{% endblock %}
