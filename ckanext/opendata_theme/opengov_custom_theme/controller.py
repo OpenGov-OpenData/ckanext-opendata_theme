@@ -30,8 +30,9 @@ class ResourceTypeController(BaseCompatibilityController):
             try:
                 parsed = helper.resource_type_categories_validator(categories_json)
                 self.store_data(helper.RESOURCE_TYPE_CATEGORIES_KEY, parsed)
+                context = {'model': model, 'user': tk.c.user}
                 tk.get_action('config_option_update')(
-                    {}, {helper.RESOURCE_TYPE_FILTER_ENABLED_KEY: 'true' if enabled else 'false'}
+                    context, {helper.RESOURCE_TYPE_FILTER_ENABLED_KEY: 'true' if enabled else 'false'}
                 )
                 categories_json = json.dumps(parsed, indent=2)
             except tk.Invalid as err:

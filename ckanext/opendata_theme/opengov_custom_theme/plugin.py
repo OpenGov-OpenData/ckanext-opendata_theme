@@ -16,7 +16,9 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
     def update_config(self, ckan_config):
         toolkit.add_template_directory(ckan_config, 'templates')
         toolkit.add_resource('assets', 'opengov_custom_theme')
-        toolkit.add_ckan_admin_tab(ckan_config, 'resource_types.manage_resource_types', 'Resource Types')
+        toolkit.add_ckan_admin_tab(
+            ckan_config, 'resource_types.manage_resource_types', 'Resource Type Filter', icon='filter'
+        )
 
     def update_config_schema(self, schema):
         ignore_missing = toolkit.get_validator('ignore_missing')
@@ -38,7 +40,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
             res_type = res_type[0] if res_type else ''
         formats = helper.get_resource_type_formats().get(res_type) if (enabled and res_type) else None
         if formats:
-            fq_parts = ['res_format:"{}"'.format(f) for f in formats]
+            fq_parts = ['res_format:"{}"'.format(helper.escape_solr_value(f)) for f in formats]
             fq = '({})'.format(' OR '.join(fq_parts))
             existing_fq = search_params.get('fq', '')
             search_params['fq'] = (existing_fq + ' ' + fq).strip() if existing_fq else fq
