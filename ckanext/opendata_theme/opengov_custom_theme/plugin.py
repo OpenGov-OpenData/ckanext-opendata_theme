@@ -21,8 +21,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
         ignore_not_sysadmin = toolkit.get_validator('ignore_not_sysadmin')
 
         schema.update({
-            # This is a custom configuration option
-            'contact_form_legend_content': [ignore_missing, ignore_not_sysadmin, text_type]
+            'contact_form_legend_content': [ignore_missing, ignore_not_sysadmin, text_type],
         })
 
         return schema
@@ -38,7 +37,7 @@ class OpenDataThemePlugin(plugins.SingletonPlugin):
             'version': helper.version_builder,
             'opendata_theme_segment_writekey': helper.get_segment_writekey,
             'opendata_theme_platform_uuid': helper.get_user_uuid,
-            'opendata_theme_entity': helper.get_entity_id
+            'opendata_theme_entity': helper.get_entity_id,
         }
 
     # IBlueprint

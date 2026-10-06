@@ -1,0 +1,29 @@
+{% set categories = h.opendata_theme_get_resource_type_categories() %}
+{% set active_res_type = h.opendata_theme_get_active_res_type() %}
+
+{% if categories %}
+<section class="module module-narrow module-shallow">
+  <h2 class="module-heading">
+    <i class="fa fa-filter"></i>
+    {{ _('Resource Type') }}
+  </h2>
+  <nav aria-label="{{ _('Resource Type') }}">
+    <ul class="list-unstyled nav nav-simple nav-facet">
+      {% for category in categories %}
+        {% set is_active = active_res_type == category.name %}
+        <li class="nav-item{% if is_active %} active{% endif %}">
+          {% if is_active %}
+            <a href="{{ h.remove_url_param('ext_res_type') }}">
+              <span class="item-label">{{ category.label }}</span>
+            </a>
+          {% else %}
+            <a href="{{ h.remove_url_param('ext_res_type', replace=category.name) }}">
+              <span class="item-label">{{ category.label }}</span>
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</section>
+{% endif %}

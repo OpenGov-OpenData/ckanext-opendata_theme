@@ -8,6 +8,7 @@ This package contains several ckan plugins:
    - opengov_custom_homepage
    - opengov_custom_header
    - opengov_custom_footer
+   - opengov_custom_search_filter
 
 ------------
 Requirements

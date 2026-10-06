@@ -6,5 +6,9 @@
     {% snippet "spatial/snippets/spatial_query.html", default_extent=dataset_extent %}
   {% endif %}
 
+  {% if 'opengov_custom_search_filter' in g.plugins %}
+    {% snippet "snippets/res_type_filter.html" %}
+  {% endif %}
+
   {{ super() }}
 {% endblock %}
