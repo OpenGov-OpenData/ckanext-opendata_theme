@@ -5,6 +5,21 @@
 {% set org_alias_pural = org_alias + 's' %}
 {% set group_alias_pural = group_alias + 's' %}
 
+  {% block search_title %}
+    {{ super() }}
+    {% if error and query and ':' in query %}
+      <div class="alert alert-warning" id="search-error-colon-hint" role="alert">
+        <p>
+          <strong>{{ _('Your search contains a colon (:).') }}</strong>
+          {{ _('To search for text with colons, put it in double quotes or remove the colons.') }}
+          {% if '"' not in query %}
+            <a href="{{ h.remove_url_param('q', replace='"' ~ query ~ '"') }}">{{ _('Search for the exact phrase instead') }}</a>
+          {% endif %}
+        </p>
+      </div>
+    {% endif %}
+  {% endblock %}
+
   {% block search_facets %}
     {% if facets %}
       <p class="filter-list">
