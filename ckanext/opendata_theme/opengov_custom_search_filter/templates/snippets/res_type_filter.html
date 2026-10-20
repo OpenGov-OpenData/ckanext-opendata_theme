@@ -1,5 +1,6 @@
 {% set categories = h.opendata_theme_get_resource_type_categories() %}
 {% set active_res_type = h.opendata_theme_get_active_res_type() %}
+{% set counts = h.opendata_theme_get_resource_type_counts() %}
 
 {% if categories %}
 <section class="module module-narrow module-shallow">
@@ -11,17 +12,22 @@
     <ul class="list-unstyled nav nav-simple nav-facet">
       {% for category in categories %}
         {% set is_active = active_res_type == category.name %}
+        {% set count = counts.get(category.name) %}
+        {% if is_active or count is none or count > 0 %}
         <li class="nav-item{% if is_active %} active{% endif %}">
           {% if is_active %}
             <a href="{{ h.remove_url_param('ext_res_type') }}">
               <span class="item-label">{{ category.label }}</span>
+              {% if count is not none %}<span class="hidden separator"> - </span><span class="item-count badge">{{ h.SI_number_span(count) }}</span>{% endif %}
             </a>
           {% else %}
             <a href="{{ h.remove_url_param('ext_res_type', replace=category.name) }}">
               <span class="item-label">{{ category.label }}</span>
+              {% if count is not none %}<span class="hidden separator"> - </span><span class="item-count badge">{{ h.SI_number_span(count) }}</span>{% endif %}
             </a>
           {% endif %}
         </li>
+        {% endif %}
       {% endfor %}
     </ul>
   </nav>
