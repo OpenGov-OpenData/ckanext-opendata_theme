@@ -108,3 +108,41 @@ def get_active_res_type():
 
 def escape_solr_value(value):
     return value.replace('\\', '\\\\').replace('"', '\\"')
+
+
+def build_res_type_fq(formats):
+    return '({})'.format(' OR '.join('res_format:"{}"'.format(escape_solr_value(f)) for f in formats))
+
+
+_NON_FACET_PARAMS = ('q', 'page', 'sort')
+
+
+def _request_filter_fq():
+    params = toolkit.request.params
+    try:
+        pairs = params.items(multi=True)
+    except TypeError:
+        pairs = params.items()
+    return ' '.join(
+        '{}:"{}"'.format(k, escape_solr_value(v))
+        for k, v in pairs
+        if k not in _NON_FACET_PARAMS and not k.startswith('ext_') and v
+    )
+
+
+def get_resource_type_counts():
+    """Number of datasets matching the current search for each enabled category."""
+    if not get_resource_type_categories():
+        return {}
+    try:
+        base_fq = _request_filter_fq()
+        q = toolkit.request.params.get('q', '')
+        package_search = toolkit.get_action('package_search')
+        counts = {}
+        for name, formats in get_resource_type_formats().items():
+            fq = ' '.join(part for part in (base_fq, build_res_type_fq(formats)) if part)
+            result = package_search({}, {'q': q, 'fq': fq, 'rows': 0, 'include_private': True})
+            counts[name] = result['count']
+        return counts
+    except Exception:
+        return {}

@@ -47,8 +47,7 @@ class OpenDataThemeSearchFilterPlugin(MixinPlugin):
             res_type = res_type[0] if res_type else ''
         formats = helper.get_resource_type_formats().get(res_type) if (enabled and res_type) else None
         if formats:
-            fq_parts = ['res_format:"{}"'.format(helper.escape_solr_value(f)) for f in formats]
-            fq = '({})'.format(' OR '.join(fq_parts))
+            fq = helper.build_res_type_fq(formats)
             existing_fq = search_params.get('fq', '')
             search_params['fq'] = (existing_fq + ' ' + fq).strip() if existing_fq else fq
         return search_params
@@ -58,4 +57,5 @@ class OpenDataThemeSearchFilterPlugin(MixinPlugin):
         return {
             'opendata_theme_get_resource_type_categories': helper.get_resource_type_categories,
             'opendata_theme_get_active_res_type': helper.get_active_res_type,
+            'opendata_theme_get_resource_type_counts': helper.get_resource_type_counts,
         }

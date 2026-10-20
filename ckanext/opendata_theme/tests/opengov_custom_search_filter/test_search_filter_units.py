@@ -174,3 +174,35 @@ class TestBeforeSearch(object):
     @pytest.mark.parametrize('enabled', [None, 'false'])
     def test_no_filter_when_feature_disabled(self, enabled):
         assert 'fq' not in self._search({'ext_res_type': 'tabular'}, enabled=enabled)
+
+
+class TestResourceTypeCounts(object):
+    def _counts(self, params, package_search, enabled='true'):
+        conf = {RESOURCE_TYPE_FILTER_ENABLED_KEY: enabled}
+        fake_toolkit = SimpleNamespace(
+            request=SimpleNamespace(params=params),
+            get_action=lambda name: package_search,
+        )
+        with mock.patch.object(helper, 'toolkit', fake_toolkit), \
+                mock.patch.object(helper, 'config', conf), \
+                mock.patch.object(helper, 'get_resource_type_config', return_value=CONFIG):
+            return helper.get_resource_type_counts()
+
+    def test_build_fq(self):
+        assert helper.build_res_type_fq(['CSV', 'a"b']) == '(res_format:"CSV" OR res_format:"a\\"b")'
+
+    def test_counts_use_current_filters_but_not_selected_type(self):
+        search = mock.Mock(return_value={'count': 7})
+        params = {'q': 'water', 'tags': 'x', 'page': '2', 'ext_res_type': 'tabular'}
+        assert self._counts(params, search) == {'tabular': 7}
+        data = search.call_args[0][1]
+        assert data['q'] == 'water' and data['rows'] == 0
+        assert data['fq'] == 'tags:"x" (res_format:"CSV")'
+
+    def test_empty_when_filter_disabled(self):
+        search = mock.Mock()
+        assert self._counts({}, search, enabled='false') == {}
+        search.assert_not_called()
+
+    def test_failure_returns_empty(self):
+        assert self._counts({}, mock.Mock(side_effect=Exception('solr down'))) == {}
