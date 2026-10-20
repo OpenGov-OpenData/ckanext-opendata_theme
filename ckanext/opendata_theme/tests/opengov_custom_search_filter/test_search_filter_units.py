@@ -180,6 +180,7 @@ class TestResourceTypeCounts(object):
     def _counts(self, params, package_search, enabled='true'):
         conf = {RESOURCE_TYPE_FILTER_ENABLED_KEY: enabled}
         fake_toolkit = SimpleNamespace(
+            asbool=toolkit.asbool,
             request=SimpleNamespace(params=params),
             get_action=lambda name: package_search,
         )
