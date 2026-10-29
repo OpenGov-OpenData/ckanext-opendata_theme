@@ -78,6 +78,9 @@
       </div>
     </li>
   {% endif %}
+  {% if res.datastore_active %}
+    <li>{% snippet 'package/snippets/data_api_button.html', resource=res %}</li>
+  {% endif %}
 {% endblock %}
 
 {% block resource_additional_information %}
