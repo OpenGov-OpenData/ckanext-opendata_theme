@@ -159,6 +159,22 @@ def get_entity_id():
     return str(config.get('ckanext.opengov.datastore.entity_id', 'controlpanel'))
 
 
+def is_copy_url_resource(res):
+    """Return True if the resource should show a Copy URL button instead of a link.
+
+    Opt-in per portal through the CKAN config option
+    ``ckanext.opendata_theme.copy_url_resource_formats`` (comma separated,
+    case insensitive), e.g. ``ArcGIS GeoServices REST API``. Empty by default,
+    so portals that do not set it are unchanged.
+    """
+    raw = config.get('ckanext.opendata_theme.copy_url_resource_formats', '') or ''
+    formats = [f.strip().lower() for f in str(raw).split(',') if f.strip()]
+    if not formats or not res:
+        return False
+    resource_format = (res.get('format') or '').strip().lower()
+    return bool(res.get('url')) and resource_format in formats
+
+
 def get_group_alias():
     return str(config.get('ckan.group_alias', 'Group'))
 

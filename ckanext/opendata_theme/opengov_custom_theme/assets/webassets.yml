@@ -13,3 +13,4 @@ theme-js:
     - js/theme.js
     - js/keyboard-reorder.js
     - js/data-dict-flash.js
+    - js/copy-url.js
