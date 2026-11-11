@@ -4,12 +4,12 @@ env:
   CODE_COVERAGE_THRESHOLD_REQUIRED: 75
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.9'
       - name: Install requirements
         run: pip install flake8 pycodestyle
       - name: Check syntax
@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
 
     name: CKAN ${{ matrix.ckan-version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: ${{ matrix.ckan-image }}
       options: --user root
