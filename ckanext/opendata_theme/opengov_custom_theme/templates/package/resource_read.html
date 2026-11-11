@@ -37,6 +37,18 @@
     <li>{% link_for _('Manage'), named_route=pkg.type ~ '_resource.edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
   {% endif %}
   {% if res.url and h.is_url(res.url) %}
+    {% if h.opendata_theme_is_copy_url_resource(res) %}
+    {# Service endpoints (e.g. ArcGIS GeoServices) are consumed by programs and web maps,
+       not opened in a browser, so offer the URL for copying instead of a link. #}
+    <li>
+      <button type="button" class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}"
+        data-module="copy-url" data-module-url="{{ res.url }}"
+        data-module-copied="{{ _('Copied!') }}" data-module-failed="{{ _('Copy failed') }}">
+        <i class="fa fa-copy"></i> <span data-copy-label>{{ _('Copy URL') }}</span>
+      </button>
+      <span class="sr-only visually-hidden" role="status" aria-live="polite" data-copy-status></span>
+    </li>
+    {% else %}
     <li>
       <div class="btn-group">
         <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
@@ -77,6 +89,7 @@
         {% endblock %}
       </div>
     </li>
+    {% endif %}
   {% endif %}
   {% if res.datastore_active %}
     <li>{% snippet 'package/snippets/data_api_button.html', resource=res %}</li>

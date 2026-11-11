@@ -151,3 +151,18 @@ def test_get_custom_explanation_with_markdown(mock_get_action, mock_markdown_ext
     result = get_custom_explanation('popular-datasets-custom-explanation', '')
     assert result == 'Browse popular datasets'
     mock_markdown_extract.assert_called_once_with('**Browse** popular datasets')
+
+
+def test_is_copy_url_resource():
+    from ckanext.opendata_theme.base.helpers import is_copy_url_resource
+    res = {'format': 'ArcGIS GeoServices REST API', 'url': 'https://example.com/MapServer/0'}
+    # Unset by default: no portal changes behavior unless it opts in.
+    with mock.patch('ckanext.opendata_theme.base.helpers.config', {}):
+        assert not is_copy_url_resource(res)
+    conf = {'ckanext.opendata_theme.copy_url_resource_formats': 'arcgis geoservices rest api, ESRI REST'}
+    with mock.patch('ckanext.opendata_theme.base.helpers.config', conf):
+        assert is_copy_url_resource(res)
+        assert is_copy_url_resource({'format': 'esri rest', 'url': 'https://x'})
+        assert not is_copy_url_resource({'format': 'CSV', 'url': 'https://x'})
+        assert not is_copy_url_resource({'format': 'esri rest', 'url': ''})
+        assert not is_copy_url_resource(None)
