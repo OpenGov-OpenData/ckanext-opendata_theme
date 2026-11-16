@@ -1,0 +1,30 @@
+{% import 'macros/form.html' as form %}
+
+<h3>{{ _( "Field {num}.").format(num=position) }} {{ field.id }} ({{ field.type }})</h3>
+
+{#
+  Data Dictionary fields may be added this snippet. New fields following
+  the 'info__' ~ position ~ '__namegoeshere' convention will be saved
+  as part of the "info" object on the column.
+
+  Option values must match the PostgreSQL type names that the DataStore
+  reports for a column, or xloader drops and recreates the table on every load.
+#}
+
+{{ form.select('info__' ~ position ~ '__type_override',
+  label=_('Type Override'), options=[
+  {'text': '', 'value': ''},
+  {'text': _('Text'), 'value': 'text'},
+  {'text': _('Numeric'), 'value': 'numeric'},
+  {'text': _('Timestamp'), 'value': 'timestamp'},
+  {'text': _('Date'), 'value': 'date'},
+  {'text': _('Time'), 'value': 'time'},
+  ], selected=field.get('info', {}).get('type_override', '')) }}
+
+{{ form.input('info__' ~ position ~ '__label',
+  label=_('Label'), id='field-f' ~ position ~ 'label',
+  value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+
+{{ form.markdown('info__' ~ position ~ '__notes',
+  label=_('Description'), id='field-d' ~ position ~ 'notes',
+  value=field.get('info', {}).get('notes', '')) }}
