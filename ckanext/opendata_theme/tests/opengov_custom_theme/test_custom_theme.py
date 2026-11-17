@@ -64,8 +64,11 @@ class TestDataDictionaryForm(object):
             "datastore_create",
             resource_id=resource["id"],
             force=True,
-            fields=[{"id": "event_date", "type": "text", "info": {"type_override": "date"}}],
-            records=[{"event_date": "2024-03-15"}],
+            fields=[
+                {"id": "event_date", "type": "text", "info": {"type_override": "date"}},
+                {"id": "amount", "type": "text", "info": {"type_override": "money"}},
+            ],
+            records=[{"event_date": "2024-03-15", "amount": "10.00"}],
         )
 
         response = app.get(
@@ -79,7 +82,9 @@ class TestDataDictionaryForm(object):
             ("timestamp", "Timestamp"),
             ("date", "Date"),
             ("time", "Time"),
+            ("money", "Currency"),
         ]:
             assert f'<option value="{value}"' in body
             assert f">{label}</option>" in body
         assert '<option value="date" selected>Date</option>' in body
+        assert '<option value="money" selected>Currency</option>' in body

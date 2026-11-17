@@ -19,6 +19,7 @@
   {'text': _('Timestamp'), 'value': 'timestamp'},
   {'text': _('Date'), 'value': 'date'},
   {'text': _('Time'), 'value': 'time'},
+  {'text': _('Currency'), 'value': 'money'},
   ], selected=field.get('info', {}).get('type_override', '')) }}
 
 {{ form.input('info__' ~ position ~ '__label',
