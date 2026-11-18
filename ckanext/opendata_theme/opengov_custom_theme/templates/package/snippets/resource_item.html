@@ -17,7 +17,7 @@
         </a>
       {% else %}
         {% if res.url and res.url_type == 'upload' %}
-          <a href="{{ res.url }}" class="btn btn-sm btn-primary resource-url-analytics" target="_blank" aria-label="Download resource {{ res.name or res.id }}">
+          <a href="{{ res.url }}" class="btn btn-sm btn-primary resource-url-analytics" aria-label="Download resource {{ res.name or res.id }}">
             <i class="fa fa-arrow-circle-o-down"></i>
             {{ _('Download') }}
           </a>
